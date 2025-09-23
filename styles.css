@@ -102,9 +102,9 @@ body {
     gap: 8px;
     background: linear-gradient(135deg, #ff7a00, #ff9500);
     color: white;
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 800;
     letter-spacing: 0.5px;
     margin-bottom: 16px;
