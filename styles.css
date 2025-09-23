@@ -96,6 +96,32 @@ body {
     margin-bottom: 40px;
 }
 
+.project-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #ff7a00, #ff9500);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+}
+
+.badge-text {
+    text-transform: uppercase;
+}
+
+.badge-version {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+}
+
 .hindi-hero { display:flex; flex-direction:column; align-items:center; gap:6px; margin-bottom: 10px; font-family: 'Ams Vedant','Jaini Purva','Noto Sans Devanagari', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 .hindi-title { font-size: 64px; font-weight: 900; color:#111; letter-spacing: .5px; line-height: 1.1; }
 .hindi-sub { font-size: 22px; font-weight: 700; color:#555; }
