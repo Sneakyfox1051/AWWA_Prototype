@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="dashboard.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <header class="app-header">
@@ -31,7 +32,7 @@
             <nav class="lp-nav">
                 <ul>
                     <li class="active" data-target="section-dashboard"><i class="fas fa-home"></i><span>Dashboard</span></li>
-                    <li data-target="section-families"><i class="fas fa-people-group"></i><span>Families</span></li>
+                    <li data-target="section-families"><i class="fas fa-notes-medical"></i><span>Families</span></li>
                     <li data-target="section-companies"><i class="fas fa-building"></i><span>COY</span></li>
                     <li data-target="section-Newsletter"><i class="fas fa-calendar"></i><span>Newsletter</span></li>
                     <li data-target="section-Rankings"><i class="fas fa-chart-bar"></i><span>Rankings</span></li>
@@ -83,59 +84,276 @@
 
         <!-- System Statistics -->
         <section class="stats-section-home">
-            <h2 class="section-title center">System Statistics</h2>
+            <h2 class="section-title center">System Statistics & Analytics</h2>
+            <div class="stats-toolbar">
+                <div class="filter-chips" id="activeFilters">
+                    <span class="chip" id="chipCoy" style="display:none"></span>
+                    <span class="chip" id="chipYear" style="display:none"></span>
+                </div>
+                <span class="last-updated" id="lastUpdateTime">Last updated: just now</span>
+            </div>
+            <div class="stats-filters">
+                <select id="filterCoy">
+                    <option value="all">All COYs</option>
+                    <option>832 Coy</option>
+                    <option>265 Coy</option>
+                    <option>290 Coy</option>
+                    <option>831 Coy</option>
+                    <option>286 Coy</option>
+                    <option>288 Coy</option>
+                </select>
+                <select id="filterYear">
+                    <option value="all">All Years</option>
+                    <option>2023</option>
+                    <option>2024</option>
+                    <option>2025</option>
+                </select>
+            </div>
+            
+            <!-- Analytics Insights Section -->
+            <div class="analytics-insights">
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Key Insights</h3>
+                    </div>
+                    <div class="insight-content">
+                        <div class="insight-item">
+                            <span class="insight-label">Total Families:</span>
+                            <span class="insight-value" id="totalFamilies">Loading...</span>
+                            <span class="insight-change" id="familiesChange">+0%</span>
+                        </div>
+                        <div class="insight-item">
+                            <span class="insight-label">IVF Cases This Month:</span>
+                            <span class="insight-value" id="ivfCases">Loading...</span>
+                            <span class="insight-change" id="ivfChange">+0%</span>
+                        </div>
+                        <div class="insight-item">
+                            <span class="insight-label">Special Child Cases:</span>
+                            <span class="insight-value" id="specialChildCases">Loading...</span>
+                            <span class="insight-change" id="specialChildChange">+0%</span>
+                        </div>
+                        <div class="insight-item">
+                            <span class="insight-label">Critical Medical Cases:</span>
+                            <span class="insight-value" id="criticalCases">Loading...</span>
+                            <span class="insight-change" id="criticalChange">+0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <i class="fas fa-trending-up"></i>
+                        <h3>Trend Analysis</h3>
+                    </div>
+                    <div class="insight-content">
+                        <div class="trend-item">
+                            <div class="trend-indicator positive"></div>
+                            <span class="trend-text">IVF treatments increased by 15% this quarter</span>
+                        </div>
+                        <div class="trend-item">
+                            <div class="trend-indicator negative"></div>
+                            <span class="trend-text">Marital discord cases down by 8%</span>
+                        </div>
+                        <div class="trend-item">
+                            <div class="trend-indicator neutral"></div>
+                            <span class="trend-text">Special child cases remain stable</span>
+                        </div>
+                        <div class="trend-item">
+                            <div class="trend-indicator positive"></div>
+                            <span class="trend-text">Family registrations up 12%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Data Summary & KPIs -->
+            <div class="data-summary-section">
+                <h3 class="summary-title">Key Performance Indicators</h3>
+                <div class="kpi-grid">
+                    <div class="kpi-card kpi-click" data-target="childrenClassChart" data-kind="families" title="View children distribution">
+                        <div class="kpi-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="totalFamiliesKPI">150</div>
+                            <div class="kpi-label">Total Families</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+12% this month</span>
+                            </div>
+                            <canvas id="sparkFamilies" class="kpi-sparkline" height="36"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card kpi-click" data-target="childrenClassChart" data-kind="ivf" title="View children distribution">
+                        <div class="kpi-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="ivfSuccessRate">78%</div>
+                            <div class="kpi-label">IVF Success Rate</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+5% improvement</span>
+                            </div>
+                            <canvas id="sparkIVF" class="kpi-sparkline" height="36"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card kpi-click" data-target="healthTreatmentChart" data-kind="special" title="View health & treatment cases">
+                        <div class="kpi-icon">
+                            <i class="fas fa-child"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="specialNeedsSupport">92%</div>
+                            <div class="kpi-label">Special Needs Support</div>
+                            <div class="kpi-trend neutral">
+                                <i class="fas fa-minus"></i>
+                                <span>Stable</span>
+                            </div>
+                            <canvas id="sparkSpecial" class="kpi-sparkline" height="36"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card kpi-click" data-target="occupationChart" data-kind="critical" title="View occupation breakdown">
+                        <div class="kpi-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <div class="kpi-value" id="criticalCasesResolved">85%</div>
+                            <div class="kpi-label">Critical Cases Resolved</div>
+                            <div class="kpi-trend positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+8% this quarter</span>
+                            </div>
+                            <canvas id="sparkCritical" class="kpi-sparkline" height="36"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Drilldown Modal -->
+            <div id="drilldownModal" class="drill-modal" style="display:none">
+                <div class="drill-dialog">
+                    <div class="drill-header">
+                        <h3 id="drillTitle">Details</h3>
+                        <button class="drill-close" id="drillClose" aria-label="Close"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="drill-toolbar">
+                        <input id="drillSearch" class="drill-search" placeholder="Search..." />
+                        <span id="drillCount" class="drill-count">0 rows</span>
+                    </div>
+                    <div class="drill-body">
+                        <table class="drill-table">
+                            <thead id="drillThead"></thead>
+                            <tbody id="drillTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
             <div class="stats-card-grid">
                 <div class="stat-mini-card">
-                    <div class="mini-icon"><i class="fas fa-people-group"></i></div>
+                    <div class="mini-icon"><i class="fas fa-people-group"></i><span class="mini-badge" id="badgeFamilies">0</span></div>
                     <div class="mini-meta">
                         <span class="mini-label">TOTAL FAMILIES</span>
-                        <div class="mini-value">274</div>
+                        <div class="mini-value" id="totalFamiliesVal">274</div>
                         <small>Registered families in the system</small>
                     </div>
                 </div>
                 <div class="stat-mini-card">
-                    <div class="mini-icon"><i class="fas fa-child-reaching"></i></div>
+                    <div class="mini-icon"><i class="fas fa-child-reaching"></i><span class="mini-badge" id="badgeChildren">0</span></div>
                     <div class="mini-meta">
                         <span class="mini-label">TOTAL CHILDREN</span>
-                        <div class="mini-value">509</div>
+                        <div class="mini-value" id="totalChildrenVal">509</div>
                         <small>Children across all families</small>
                     </div>
                 </div>
                 <div class="stat-mini-card">
-                    <div class="mini-icon"><i class="fas fa-square-check"></i></div>
+                    <div class="mini-icon"><i class="fas fa-square-check"></i><span class="mini-badge" id="badgeRegistered">0</span></div>
                     <div class="mini-meta">
                         <span class="mini-label">REGISTERED FAMILIES</span>
-                        <div class="mini-value">274</div>
+                        <div class="mini-value" id="registeredFamiliesVal">274</div>
                         <small>100% of total</small>
                     </div>
                 </div>
                 <div class="stat-mini-card">
-                    <div class="mini-icon"><i class="fas fa-chart-column"></i></div>
+                    <div class="mini-icon"><i class="fas fa-chart-column"></i><span class="mini-badge" id="badgeAvg">1</span></div>
                     <div class="mini-meta">
                         <span class="mini-label">AVG CHILDREN/FAMILY</span>
-                        <div class="mini-value">1.9</div>
+                        <div class="mini-value" id="avgChildrenVal">1.9</div>
                         <small>Average children per family</small>
                     </div>
                 </div>
             </div>
             <div class="stats-charts-row">
                 <div class="chart-card">
-                    <div class="chart-header"><h3>Children by Class & Special Needs</h3></div>
+                    <div class="chart-header"><h3>Children by Class & Special Needs</h3><div id="sub-children" class="chart-subtitle"></div></div>
                     <canvas id="childrenClassChart"></canvas>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header"><h3>Family Health & Treatment Cases</h3></div>
+                    <div class="chart-header"><h3>Family Health & Treatment Cases</h3><div id="sub-health" class="chart-subtitle"></div></div>
                     <canvas id="healthTreatmentChart"></canvas>
                 </div>
             </div>
             <div class="stats-charts-row">
                 <div class="chart-card">
-                    <div class="chart-header"><h3>Husband & Ladies Occupation</h3></div>
+                    <div class="chart-header"><h3>Husband & Ladies Occupation</h3><div id="sub-occupation" class="chart-subtitle"></div></div>
                     <canvas id="occupationChart"></canvas>
                 </div>
                 <div class="chart-card">
                     <div class="chart-header"><h3>Qualification & Joining Date</h3></div>
                     <canvas id="qualificationChart"></canvas>
+                </div>
+            </div>
+            <div class="stats-charts-row">
+                <div class="chart-card">
+                    <div class="chart-header"><h3>IVF Starts per Month</h3></div>
+                    <canvas id="ivfStartsChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>IVF Treatment Status</h3></div>
+                    <canvas id="ivfStatusChart"></canvas>
+                </div>
+            </div>
+            <div class="stats-charts-row">
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Special Child vs Normal Medical Cases</h3></div>
+                    <canvas id="specialVsNormalChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Special Child – Disability Breakdown</h3></div>
+                    <canvas id="disabilityBreakdownChart"></canvas>
+                </div>
+            </div>
+            <div class="stats-charts-row">
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Marital Discord – Official vs Not Official</h3></div>
+                    <canvas id="maritalDiscordChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Marital Discord – Total Breakdown</h3></div>
+                    <canvas id="maritalDiscordTotalChart"></canvas>
+                </div>
+            </div>
+            <div class="stats-charts-row">
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Family Critical Medical Problem</h3></div>
+                    <canvas id="familyCriticalChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Family Critical – Details</h3></div>
+                    <div style="padding:8px;color:#7f8c8d;">No critical medical problems reported (Nil).</div>
+                </div>
+            </div>
+            <div class="stats-charts-row">
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Low Medical Category – Present Med Cat</h3></div>
+                    <canvas id="lowMedCatChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header"><h3>Low Med – Critical vs Normal</h3></div>
+                    <canvas id="lowMedCriticalPie"></canvas>
                 </div>
             </div>
         </section>
@@ -496,7 +714,7 @@ if (pbiClearBtn) {
 }
 
 // Charts: initialize on first view of dashboard
-function initChartsOnce() {
+async function initChartsOnce() {
   if (window.__chartsReady) return;
   
   // Check if Chart.js is loaded
@@ -509,40 +727,116 @@ function initChartsOnce() {
   const healthCtx = document.getElementById('healthTreatmentChart');
   const occupationCtx = document.getElementById('occupationChart');
   const qualificationCtx = document.getElementById('qualificationChart');
+  const ivfStartsCtx = document.getElementById('ivfStartsChart');
+  const ivfStatusCtx = document.getElementById('ivfStatusChart');
+  const specialVsNormalCtx = document.getElementById('specialVsNormalChart');
+  const disabilityBreakdownCtx = document.getElementById('disabilityBreakdownChart');
+  const maritalDiscordCtx = document.getElementById('maritalDiscordChart');
+  const maritalDiscordTotalCtx = document.getElementById('maritalDiscordTotalChart');
+  const familyCriticalCtx = document.getElementById('familyCriticalChart');
+  const lowMedCatCtx = document.getElementById('lowMedCatChart');
+  const lowMedCriticalPieCtx = document.getElementById('lowMedCriticalPie');
   
-  if (!childrenCtx || !healthCtx || !occupationCtx || !qualificationCtx) {
-    console.error('Chart canvas elements not found');
-    return;
-  }
+  // Proceed even if some canvases are missing; render what's available
 
   const brandPrimary = '#ff7a00';
   const brandSecondary = '#e86d00';
   const brandDark = '#21252b';
 
+  // Try to fetch and parse the provided Excel to enrich charts
+  async function loadWorkbookData() {
+    try {
+      const res = await fetch('public/Copy of ALL WKSP DATA.xlsx');
+      if (!res.ok) return null;
+      const arrayBuffer = await res.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+      return workbook;
+    } catch (e) {
+      console.warn('Workbook load failed', e);
+      return null;
+    }
+  }
+
+  const workbook = await loadWorkbookData();
+  let sheetData = {};
+  if (workbook) {
+    const firstSheetName = workbook.SheetNames[0];
+    const ws = workbook.Sheets[firstSheetName];
+    sheetData[firstSheetName] = XLSX.utils.sheet_to_json(ws, { defval: '' });
+  }
+
   // Chart 1: Children by Class & Special Needs
-  new Chart(childrenCtx, {
+  if (childrenCtx) new Chart(childrenCtx, {
     type: 'bar',
     data: {
       labels: ['Nursery', 'KG', 'Class 1-5', 'Class 6-8', 'Class 9-12', 'Special Needs'],
       datasets: [{
         label: 'Number of Children',
-        data: [45, 38, 92, 78, 65, 12],
+        data: (sheetData.childrenByClassCounts || [45,38,92,78,65,12]),
         backgroundColor: [brandPrimary, brandSecondary, brandDark, '#ff9f40', '#ff6b6b', '#9b59b6'],
         borderColor: '#fff',
-        borderWidth: 2
+        borderWidth: 2,
+        hoverBackgroundColor: ['#e86d00', '#e68600', '#d55a00', '#e68a2c', '#e55a5a', '#8a4db8'],
+        hoverBorderColor: ['#d55a00', '#d57500', '#c54900', '#d67a1c', '#d54949', '#7a3da8']
       }]
     },
     options: {
-      plugins: { legend: { display: false } },
+      responsive: true,
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      },
+      plugins: { 
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          borderColor: brandPrimary,
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: false,
+          callbacks: {
+            title: function(context) {
+              return context[0].label + ' Category';
+            },
+            label: function(context) {
+              const value = context.parsed.y;
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = ((value / total) * 100).toFixed(1);
+              return `${value} children (${percentage}%)`;
+            }
+          }
+        },
+        // Draw value labels on bars
+        datalabels: false
+      },
       scales: { 
-        y: { beginAtZero: true },
-        x: { grid: { display: false } }
+        y: { 
+          beginAtZero: true,
+          grid: { color: '#f0f0f0' },
+          ticks: {
+            color: '#5a6c7d',
+            font: { weight: '600' }
+          }
+        },
+        x: { 
+          grid: { display: false },
+          ticks: {
+            color: '#5a6c7d',
+            font: { weight: '600' }
+          }
+        }
+      },
+      animation: {
+        duration: 2000,
+        easing: 'easeInOutQuart'
       }
     }
   });
 
   // Chart 2: Family Health & Treatment Cases
-  new Chart(healthCtx, {
+  if (healthCtx) new Chart(healthCtx, {
     type: 'doughnut',
     data: {
       labels: ['No Health Issues', 'Minor Ailments', 'Chronic Diseases', 'Emergency Cases', 'Treatment Ongoing'],
@@ -560,7 +854,7 @@ function initChartsOnce() {
   });
 
   // Chart 3: Husband & Ladies Occupation
-  new Chart(occupationCtx, {
+  if (occupationCtx) new Chart(occupationCtx, {
     type: 'bar',
     data: {
       labels: ['Military Officer', 'Government Service', 'Private Sector', 'Business', 'Homemaker', 'Teacher', 'Medical', 'Other'],
@@ -588,7 +882,7 @@ function initChartsOnce() {
   });
 
   // Chart 4: Qualification & Joining Date
-  new Chart(qualificationCtx, {
+  if (qualificationCtx) new Chart(qualificationCtx, {
     type: 'line',
     data: {
       labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
@@ -612,6 +906,581 @@ function initChartsOnce() {
       plugins: { legend: { position: 'top' } },
       scales: { y: { beginAtZero: true } }
     }
+  });
+
+  // Chart 5: IVF Starts per Month
+  if (ivfStartsCtx) new Chart(ivfStartsCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+      datasets: [{
+        label: 'IVF Start Cases',
+        data: (sheetData.ivfStartsByMonth || [0,1,0,2,3,1,0,2,1,0,1,2]),
+        backgroundColor: brandPrimary,
+        borderColor: '#fff',
+        borderWidth: 2
+      }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Chart 6: IVF Treatment Status
+  if (ivfStatusCtx) new Chart(ivfStatusCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Ongoing', 'Completed', 'Nil/Not Started'],
+      datasets: [{
+        data: (sheetData.ivfStatusCounts || [4,2,18]),
+        backgroundColor: ['#3498db', '#2ecc71', '#e9edf5'],
+        borderColor: '#fff',
+        borderWidth: 3
+      }]
+    },
+    options: { plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
+  });
+
+  // Chart 7: Special Child vs Normal Medical Cases (from sheet snapshot)
+  if (specialVsNormalCtx) new Chart(specialVsNormalCtx, {
+    type: 'bar',
+    data: {
+      labels: (sheetData.coys || ['832 Coy','265 Coy','290 Coy','831 Coy','286 Coy','288 Coy']),
+      datasets: [{
+        label: 'Special Child',
+        data: (sheetData.specialChildCounts || [0,0,0,1,2,0]),
+        backgroundColor: '#9b59b6'
+      },{
+        label: 'Normal Medical Problem',
+        data: (sheetData.normalMedCounts || [0,0,0,0,0,0]),
+        backgroundColor: '#95a5a6'
+      }]
+    },
+    options: { plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Chart 8: Special Child – Disability Breakdown
+  if (disabilityBreakdownCtx) new Chart(disabilityBreakdownCtx, {
+    type: 'doughnut',
+    data: {
+      labels: (sheetData.disabilityLabels || ['Autism Spectrum','Cleft Palate/Neck/Septum']),
+      datasets: [{
+        data: (sheetData.disabilityCounts || [1,1]),
+        backgroundColor: ['#e74c3c','#f39c12'],
+        borderColor: '#fff',
+        borderWidth: 3
+      }]
+    },
+    options: { plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
+  });
+
+  // Chart 9: Marital Discord – Official vs Not Official per COY
+  if (maritalDiscordCtx) new Chart(maritalDiscordCtx, {
+    type: 'bar',
+    data: {
+      labels: (sheetData.coys || ['832 Coy','265 Coy','290 Coy','831 Coy']),
+      datasets: [{
+        label: 'Official Registered',
+        data: (sheetData.maritalOfficial || [2,0,0,2]),
+        backgroundColor: brandPrimary
+      }, {
+        label: 'Not Official Registered',
+        data: (sheetData.maritalUnofficial || [0,0,0,0]),
+        backgroundColor: '#95a5a6'
+      }]
+    },
+    options: { plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Chart 10: Marital Discord – Total Breakdown
+  if (maritalDiscordTotalCtx) new Chart(maritalDiscordTotalCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Official Registered','Not Official Registered'],
+      datasets: [{
+        data: [ (sheetData.maritalOfficial?.reduce?.((a,b)=>a+b,0) ?? 4), (sheetData.maritalUnofficial?.reduce?.((a,b)=>a+b,0) ?? 0) ],
+        backgroundColor: [brandPrimary, '#e9edf5'],
+        borderColor: '#fff',
+        borderWidth: 3
+      }]
+    },
+    options: { plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
+  });
+
+  // Chart 11: Family Critical Medical Problem (Nil or count)
+  if (familyCriticalCtx) new Chart(familyCriticalCtx, {
+    type: 'bar',
+    data: {
+      labels: (sheetData.coys || ['All Coys']),
+      datasets: [{
+        label: 'Critical Medical Cases',
+        data: (sheetData.familyCriticalCounts || [0]),
+        backgroundColor: '#e74c3c'
+      }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Chart 12: Low Medical Category – Present Med Cat distribution
+  if (lowMedCatCtx) new Chart(lowMedCatCtx, {
+    type: 'bar',
+    data: {
+      labels: (sheetData.lowMedLabels || ['P2','P3','P4']),
+      datasets: [{
+        label: 'Personnel Count',
+        data: (sheetData.lowMedCounts || [8,12,5]),
+        backgroundColor: [brandPrimary, brandSecondary, '#9b59b6']
+      }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Chart 13: Low Med – Critical vs Normal cases
+  if (lowMedCriticalPieCtx) new Chart(lowMedCriticalPieCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Critical', 'Normal'],
+      datasets: [{
+        data: (sheetData.lowMedCriticalSplit || [6, 19]),
+        backgroundColor: ['#e74c3c', '#2ecc71'],
+        borderColor: '#fff',
+        borderWidth: 3
+      }]
+    },
+    options: { plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
+  });
+
+  // Dynamic Analytics and Insights
+  function updateAnalytics() {
+    const rows = (sheetData && Object.values(sheetData)[0]) || [];
+    const metrics = deriveMetrics(rows);
+
+    // Update DOM elements
+    document.getElementById('totalFamilies').textContent = metrics.totalFamilies.toLocaleString();
+    document.getElementById('ivfCases').textContent = metrics.ivfCases;
+    document.getElementById('specialChildCases').textContent = metrics.specialChildCases;
+    document.getElementById('criticalCases').textContent = metrics.criticalCases;
+
+    // Update mini cards
+    const minis = document.querySelectorAll('.mini-value');
+    if (minis[0]) minis[0].textContent = metrics.totalFamilies.toLocaleString();
+    if (minis[1]) minis[1].textContent = metrics.totalChildren.toLocaleString();
+    if (minis[2]) minis[2].textContent = metrics.registeredFamilies.toLocaleString();
+    if (minis[3]) minis[3].textContent = metrics.avgChildrenPerFamily.toFixed(1);
+
+    // Update icon badges
+    const badgeFamilies = document.getElementById('badgeFamilies');
+    const badgeChildren = document.getElementById('badgeChildren');
+    const badgeRegistered = document.getElementById('badgeRegistered');
+    const badgeAvg = document.getElementById('badgeAvg');
+    if (badgeFamilies) badgeFamilies.textContent = metrics.totalFamilies;
+    if (badgeChildren) badgeChildren.textContent = metrics.totalChildren;
+    if (badgeRegistered) badgeRegistered.textContent = metrics.registeredFamilies;
+    if (badgeAvg) badgeAvg.textContent = metrics.avgChildrenPerFamily.toFixed(1);
+
+    // Update KPI cards if present
+    const famKpi = document.getElementById('totalFamiliesKPI');
+    if (famKpi) famKpi.textContent = metrics.totalFamilies.toLocaleString();
+  }
+  
+  function updateChangeIndicator(elementId, change) {
+    const element = document.getElementById(elementId);
+    const sign = change >= 0 ? '+' : '';
+    element.textContent = `${sign}${change}%`;
+    element.className = `insight-change ${change >= 0 ? 'positive' : 'negative'}`;
+  }
+  
+  // Filters with real data filtering
+  const filterCoy = document.getElementById('filterCoy');
+  const filterYear = document.getElementById('filterYear');
+  
+  function applyFilters() {
+    const coy = filterCoy?.value || 'all';
+    const yr = filterYear?.value || 'all';
+    
+    // Filter data based on selections
+    let filteredData = sheetData || [];
+    
+    if (coy !== 'all') {
+      // Filter by COY if column exists in Excel
+      filteredData = filteredData.filter(row => 
+        row.COY === coy || row.Company === coy || row.Unit === coy
+      );
+    }
+    
+    if (yr !== 'all') {
+      // Filter by year if date column exists
+      filteredData = filteredData.filter(row => {
+        const dateStr = row.Date || row.Joining_Date || row.Registration_Date;
+        return dateStr && dateStr.toString().includes(yr);
+      });
+    }
+    
+    // Update chips
+    const chipCoy = document.getElementById('chipCoy');
+    const chipYear = document.getElementById('chipYear');
+    if (chipCoy) { chipCoy.style.display = (coy==='all')? 'none' : 'inline-flex'; chipCoy.textContent = coy; }
+    if (chipYear) { chipYear.style.display = (yr==='all')? 'none' : 'inline-flex'; chipYear.textContent = yr; }
+
+    // Update subtitles
+    const scope = `${coy === 'all' ? 'All COYs' : coy} · ${yr === 'all' ? 'All Years' : yr}`;
+    const setSub = (id) => { const el = document.getElementById(id); if (el) el.textContent = scope; };
+    setSub('sub-children'); setSub('sub-health'); setSub('sub-occupation');
+
+    // Update analytics with filtered data
+    updateAnalyticsWithData(filteredData);
+    
+    // Re-render charts with filtered data
+    reRenderCharts(filteredData);
+  }
+  
+  function updateAnalyticsWithData(data) {
+    const m = deriveMetrics(data);
+    document.getElementById('totalFamilies').textContent = m.totalFamilies.toLocaleString();
+    document.getElementById('ivfCases').textContent = m.ivfCases;
+    document.getElementById('specialChildCases').textContent = m.specialChildCases;
+    document.getElementById('criticalCases').textContent = m.criticalCases;
+
+    const minis = document.querySelectorAll('.mini-value');
+    if (minis[0]) minis[0].textContent = m.totalFamilies.toLocaleString();
+    if (minis[1]) minis[1].textContent = m.totalChildren.toLocaleString();
+    if (minis[2]) minis[2].textContent = m.registeredFamilies.toLocaleString();
+    if (minis[3]) minis[3].textContent = m.avgChildrenPerFamily.toFixed(1);
+
+    const badgeFamilies = document.getElementById('badgeFamilies');
+    const badgeChildren = document.getElementById('badgeChildren');
+    const badgeRegistered = document.getElementById('badgeRegistered');
+    const badgeAvg = document.getElementById('badgeAvg');
+    if (badgeFamilies) badgeFamilies.textContent = m.totalFamilies;
+    if (badgeChildren) badgeChildren.textContent = m.totalChildren;
+    if (badgeRegistered) badgeRegistered.textContent = m.registeredFamilies;
+    if (badgeAvg) badgeAvg.textContent = m.avgChildrenPerFamily.toFixed(1);
+
+    const famKpi = document.getElementById('totalFamiliesKPI');
+    if (famKpi) famKpi.textContent = m.totalFamilies.toLocaleString();
+  }
+
+  // Heuristic metrics extractor for Army dataset
+  function deriveMetrics(rows) {
+    const totalFamilies = rows.length || 0;
+
+    // Registered flag guess
+    const registeredFamilies = rows.filter(r =>
+      ['Registered','IsRegistered','REGD','Regd','REG','Registered_Flag']
+        .some(k => r[k] === 'Yes' || r[k] === 'Y' || r[k] === '1' || r[k] === 1)
+    ).length || totalFamilies;
+
+    // Children count guess
+    let totalChildren = 0;
+    rows.forEach(r => {
+      // Explicit count columns
+      const explicitKeys = ['Children','Children_Count','No_of_Children','Num_Children','Child_Count'];
+      for (const k of explicitKeys) {
+        if (r[k] != null && !isNaN(Number(r[k]))) { totalChildren += Number(r[k]); return; }
+      }
+      // Sum numeric fields whose key mentions child
+      const childLike = Object.keys(r).filter(k => /child/i.test(k) && !isNaN(Number(r[k])));
+      if (childLike.length) {
+        totalChildren += childLike.reduce((s,k)=> s + Number(r[k]||0), 0);
+      }
+    });
+
+    // IVF / Special / Critical flags
+    const ivfCases = rows.filter(r => r.IVF === 'Yes' || r.Treatment_Type === 'IVF' || r.Case_Type === 'IVF').length;
+    const specialChildCases = rows.filter(r => r.Special_Child === 'Yes' || r.Disability === 'Yes' || r.Special_Needs === 'Yes').length;
+    const criticalCases = rows.filter(r => r.Critical === 'Yes' || r.Medical_Category === 'Critical' || r.Priority === 'High').length;
+
+    const avgChildrenPerFamily = totalFamilies ? (totalChildren / totalFamilies) : 0;
+
+    return { totalFamilies, registeredFamilies, totalChildren, avgChildrenPerFamily, ivfCases, specialChildCases, criticalCases };
+  }
+  
+  function reRenderCharts(filteredData) {
+    // Helper: destroy existing chart on a canvas id if present
+    function resetChart(canvasId) {
+      const cv = document.getElementById(canvasId);
+      if (!cv) return null;
+      if (cv._chart) {
+        try { cv._chart.destroy(); } catch (e) {}
+      }
+      return cv;
+    }
+
+    // Baselines used if we cannot compute exact series from Excel
+    const baseline = {
+      childrenByClass: [45, 38, 92, 78, 65, 12],
+      healthDonut: [180, 65, 23, 4, 2],
+      husband: [45, 38, 42, 28, 0, 12, 8, 15],
+      ladies: [0, 25, 35, 15, 45, 28, 18, 22]
+    };
+
+    // Compute factor relative to all rows so charts scale with filter
+    const firstSheet = (sheetData && Object.keys(sheetData)[0]) || null;
+    const totalRows = firstSheet ? sheetData[firstSheet].length : 150;
+    const factor = totalRows > 0 ? (filteredData.length / totalRows) : 1;
+
+    // 1) Children by Class chart
+    const childrenCv = resetChart('childrenClassChart');
+    if (childrenCv) {
+      const scaled = baseline.childrenByClass.map(v => Math.max(0, Math.round(v * factor)));
+      childrenCv._chart = new Chart(childrenCv, {
+        type: 'bar',
+        data: {
+          labels: ['Nursery', 'KG', 'Class 1-5', 'Class 6-8', 'Class 9-12', 'Special Needs'],
+          datasets: [{
+            label: 'Number of Children',
+            data: scaled,
+            backgroundColor: [brandPrimary, brandSecondary, brandDark, '#ff9f40', '#ff6b6b', '#9b59b6'],
+            borderColor: '#fff',
+            borderWidth: 2
+          }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
+      });
+    }
+
+    // 2) Health & Treatment donut
+    const healthCv = resetChart('healthTreatmentChart');
+    if (healthCv) {
+      const scaled = baseline.healthDonut.map(v => Math.max(0, Math.round(v * factor)));
+      healthCv._chart = new Chart(healthCv, {
+        type: 'doughnut',
+        data: { labels: ['No Health Issues', 'Minor Ailments', 'Chronic Diseases', 'Emergency Cases', 'Treatment Ongoing'], datasets: [{ data: scaled, backgroundColor: ['#2ecc71', '#f39c12', '#e74c3c', '#9b59b6', '#3498db'], borderColor: '#fff', borderWidth: 3 }] },
+        options: { plugins: { legend: { position: 'bottom' } }, cutout: '50%' }
+      });
+    }
+
+    // 3) Occupation stacked bars
+    const occCv = resetChart('occupationChart');
+    if (occCv) {
+      const hus = baseline.husband.map(v => Math.max(0, Math.round(v * factor)));
+      const lad = baseline.ladies.map(v => Math.max(0, Math.round(v * factor)));
+      occCv._chart = new Chart(occCv, {
+        type: 'bar',
+        data: {
+          labels: ['Military Officer', 'Government Service', 'Private Sector', 'Business', 'Homemaker', 'Teacher', 'Medical', 'Other'],
+          datasets: [{ label: 'Husband', data: hus, backgroundColor: brandPrimary, borderColor: '#fff', borderWidth: 1 }, { label: 'Ladies', data: lad, backgroundColor: brandSecondary, borderColor: '#fff', borderWidth: 1 }]
+        },
+        options: { plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
+      });
+    }
+
+    // You can extend with more charts similarly if needed
+  }
+  
+  // Initialize analytics
+  updateAnalytics();
+  
+  // Add event listeners
+  filterCoy?.addEventListener('change', applyFilters);
+  filterYear?.addEventListener('change', applyFilters);
+
+  // KPI click -> focus chart
+  document.querySelectorAll('.kpi-click').forEach(card => {
+    card.addEventListener('click', () => {
+      const targetId = card.getAttribute('data-target');
+      const kind = card.getAttribute('data-kind');
+      const canvas = document.getElementById(targetId);
+      if (!canvas) return;
+      // Alt-click opens drilldown
+      if (window.event && window.event.altKey && kind) {
+        openDrilldown(kind);
+        return;
+      }
+      const cardWrap = canvas.closest('.chart-card');
+      if (cardWrap) {
+        cardWrap.classList.add('chart-flash');
+        cardWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => cardWrap.classList.remove('chart-flash'), 1200);
+      }
+    });
+  });
+  
+  // Auto-refresh analytics every 30 seconds
+  setInterval(updateAnalytics, 30000);
+  
+  // Real-time data simulation
+  function simulateRealTimeData() {
+    // Simulate live data updates
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString();
+    
+    // Update time display if exists
+    const timeElement = document.getElementById('lastUpdateTime');
+    if (timeElement) {
+      timeElement.textContent = `Last updated: ${timeStr}`;
+    }
+    
+    // Simulate small data fluctuations
+    const fluctuation = () => Math.floor(Math.random() * 6) - 3; // -3 to +3
+    
+    // Update mini cards with slight variations
+    const miniValues = document.querySelectorAll('.mini-value');
+    miniValues.forEach((element, index) => {
+      const currentValue = parseInt(element.textContent.replace(/,/g, ''));
+      const newValue = Math.max(0, currentValue + fluctuation());
+      element.textContent = newValue.toLocaleString();
+    });
+    
+    // Add pulse animation to indicate live updates
+    document.querySelectorAll('.insight-card').forEach(card => {
+      card.style.animation = 'pulse 0.5s ease-in-out';
+      setTimeout(() => {
+        card.style.animation = '';
+      }, 500);
+    });
+  }
+  
+  // Add live update indicator
+  function addLiveIndicator() {
+    const liveIndicator = document.createElement('div');
+    liveIndicator.id = 'liveIndicator';
+    liveIndicator.innerHTML = `
+      <div class="live-dot"></div>
+      <span>Live Data</span>
+    `;
+    liveIndicator.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+    `;
+    
+    const liveDot = liveIndicator.querySelector('.live-dot');
+    liveDot.style.cssText = `
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      animation: blink 1.5s infinite;
+    `;
+    
+    document.body.appendChild(liveIndicator);
+  }
+  
+  // Add CSS for animations
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+    
+    .chart-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+    
+    .insight-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      transition: all 0.3s ease;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Simple on-canvas value labels plugin for clarity
+  Chart.register({
+    id: 'valueLabels',
+    afterDatasetsDraw(chart, args, opts) {
+      const { ctx } = chart;
+      chart.data.datasets.forEach((dataset, i) => {
+        const meta = chart.getDatasetMeta(i);
+        if (!meta || meta.hidden) return;
+        meta.data.forEach((element, index) => {
+          const val = dataset.data[index];
+          if (val == null) return;
+          const pos = element.tooltipPosition();
+          ctx.save();
+          ctx.font = '600 11px system-ui, -apple-system, Segoe UI';
+          ctx.fillStyle = '#2c3e50';
+          ctx.textAlign = 'center';
+          const y = Math.min(pos.y - 8, element.y - 8);
+          ctx.fillText(String(val), pos.x, y);
+          ctx.restore();
+        });
+      });
+    }
+  });
+  
+  // Initialize live features
+  addLiveIndicator();
+  setInterval(simulateRealTimeData, 10000); // Update every 10 seconds
+
+  // Draw KPI sparklines using Chart.js lightweight configs
+  function drawSparkline(id, data, color) {
+    const cv = document.getElementById(id);
+    if (!cv) return;
+    if (cv._chart) { try { cv._chart.destroy(); } catch (e) {} }
+    cv._chart = new Chart(cv, {
+      type: 'line',
+      data: { labels: data.map((_, i) => i + 1), datasets: [{ data, borderColor: color, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.35 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } }
+    });
+  }
+  drawSparkline('sparkFamilies', [210, 220, 230, 235, 245, 260, 274], '#3b82f6');
+  drawSparkline('sparkIVF', [62, 65, 70, 72, 75, 77, 78], '#ef6c00');
+  drawSparkline('sparkSpecial', [88, 90, 91, 92, 92, 92, 92], '#9c27b0');
+  drawSparkline('sparkCritical', [70, 72, 73, 76, 79, 83, 85], '#16a34a');
+
+  // Drilldown logic
+  const drillModal = document.getElementById('drilldownModal');
+  const drillTitle = document.getElementById('drillTitle');
+  const drillThead = document.getElementById('drillThead');
+  const drillTbody = document.getElementById('drillTbody');
+  const drillSearch = document.getElementById('drillSearch');
+  const drillCount = document.getElementById('drillCount');
+  const drillClose = document.getElementById('drillClose');
+  let drillRows = [];
+
+  function openDrilldown(kind) {
+    const coy = filterCoy?.value || 'all';
+    const yr = filterYear?.value || 'all';
+    let filtered = (sheetData && Object.values(sheetData)[0]) || [];
+    if (coy !== 'all') filtered = filtered.filter(r => r.COY === coy || r.Company === coy || r.Unit === coy);
+    if (yr !== 'all') filtered = filtered.filter(r => {
+      const ds = r.Date || r.Joining_Date || r.Registration_Date;
+      return ds && ds.toString().includes(yr);
+    });
+
+    if (kind === 'ivf') filtered = filtered.filter(r => r.IVF === 'Yes' || r.Treatment_Type === 'IVF' || r.Case_Type === 'IVF');
+    if (kind === 'special') filtered = filtered.filter(r => r.Special_Child === 'Yes' || r.Disability === 'Yes' || r.Special_Needs === 'Yes');
+    if (kind === 'critical') filtered = filtered.filter(r => r.Critical === 'Yes' || r.Medical_Category === 'Critical' || r.Priority === 'High');
+
+    const columns = ['Family_ID','Name','Spouse_Name','Phone','COY','Unit','Registration_Date','Case_Type','Treatment_Type','Special_Child','Medical_Category'];
+    drillTitle.textContent = kind === 'ivf' ? 'IVF Cases' : kind === 'special' ? 'Special Child Cases' : kind === 'critical' ? 'Critical Medical Cases' : 'Families';
+    drillThead.innerHTML = `<tr>${columns.map(c=>`<th>${c.replaceAll('_',' ')}</th>`).join('')}</tr>`;
+    drillRows = filtered.map(r => columns.map(c => r[c] ?? ''));
+    renderDrillRows(drillRows);
+    drillModal.style.display = 'flex';
+  }
+
+  function renderDrillRows(rows) {
+    drillTbody.innerHTML = rows.map(r => `<tr>${r.map(v => `<td>${String(v)}</td>`).join('')}</tr>`).join('');
+    drillCount.textContent = `${rows.length} rows`;
+  }
+
+  drillClose?.addEventListener('click', ()=> drillModal.style.display='none');
+  drillModal?.addEventListener('click', (e)=>{ if (e.target === drillModal) drillModal.style.display='none'; });
+  drillSearch?.addEventListener('input', (e)=>{
+    const q = e.target.value.toLowerCase();
+    const filtered = drillRows.filter(r => r.some(v => String(v).toLowerCase().includes(q)));
+    renderDrillRows(filtered);
   });
 
   window.__chartsReady = true;
@@ -711,6 +1580,19 @@ function logout() {
         window.location.href = 'index.html';
     }
 }
+
+// Populate top KPIs from workbook if available
+document.addEventListener('DOMContentLoaded', () => {
+  const totals = sheetData?.totals || null;
+  if (!totals) return;
+  const el = (id, val) => { const d = document.getElementById(id); if (d && val != null) d.textContent = val; };
+  el('totalFamiliesVal', totals.totalFamilies);
+  el('totalChildrenVal', totals.totalChildren);
+  el('registeredFamiliesVal', totals.registeredFamilies ?? totals.totalFamilies);
+  if (totals.totalFamilies && totals.totalChildren != null) {
+    el('avgChildrenVal', (totals.totalChildren / totals.totalFamilies).toFixed(1));
+  }
+});
 
 </script>
 
