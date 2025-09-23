@@ -1,3 +1,11 @@
+/* Devanagari headline font for subtitle */
+@font-face {
+    font-family: 'Ams Vedant';
+    src: url('public/Ams Vedant.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -129,8 +137,11 @@ body {
 /* App Header */
 .app-header { position: sticky; top: 0; z-index: 200; background: var(--surface); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
 .app-header-inner { max-width: 1200px; margin: 0 auto; padding: 10px 20px; display:flex; align-items:center; justify-content: space-between; gap: 12px; }
+.app-brand { display:flex; align-items:center; gap: 10px; }
 .app-logo { height: 36px; width: auto; }
-.app-title { font-size: 18px; font-weight: 800; color: var(--brand-darker); }
+.app-title-wrap { display:flex; flex-direction:column; }
+.app-title { font-size: 18px; font-weight: 800; color: var(--brand-darker); line-height: 1.1; }
+.app-subtitle { font-size: 12px; color:#6c7a89; font-weight: 800; margin-top: 2px; font-family: 'Ams Vedant', system-ui, -apple-system, Segoe UI; }
 
 /* Logout Button */
 .logout-btn {
