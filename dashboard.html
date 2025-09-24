@@ -38,7 +38,7 @@
                 <ul>
                     <li class="active" data-target="section-dashboard"><i class="fas fa-home"></i><span>Dashboard</span></li>
                     <li data-target="section-families"><i class="fas fa-notes-medical"></i><span>Families</span></li>
-                    <li data-target="section-companies"><i class="fas fa-building"></i><span>COY</span></li>
+                    <li data-target="section-companies"><i class="fas fa-building"></i><span>FW Coy</span></li>
                     <li data-target="section-Newsletter"><i class="fas fa-calendar"></i><span>Newsletter</span></li>
                     <li data-target="section-Rankings"><i class="fas fa-chart-bar"></i><span>Rankings</span></li>
                     <li data-target="section-settings"><i class="fas fa-gear"></i><span>Settings</span></li>
@@ -99,7 +99,7 @@
             </div>
             <div class="stats-filters">
                 <select id="filterCoy">
-                    <option value="all">All COYs</option>
+                    <option value="all">All Coys</option>
                     <option>832 Coy</option>
                     <option>265 Coy</option>
                     <option>290 Coy</option>
@@ -403,10 +403,10 @@
     </div>
     <div class="coy-section app-section hidden" id="section-companies">
         <div class="section-header-row">
-            <h2>COY <span class="count">(24)</span></h2>
+            <h2>Coy <span class="count">(24)</span></h2>
             <div class="coy-actions">
-                <input type="text" class="fam-search" placeholder="Search COY..." />
-                <button class="check-btn">Add COY</button>
+                <input type="text" class="fam-search" placeholder="Search Coy..." />
+                <button class="check-btn">Add Coy</button>
             </div>
         </div>
         <div class="coy-grid" id="coyGrid"></div>
@@ -612,9 +612,9 @@ if (familiesNav) {
   });
 }
 
-// COY: render military company data
+// Coy: render military company data
 const coyData = Array.from({ length: 24 }).map((_, i) => ({
-  id: 'COY' + String(i + 1).padStart(3, '0'),
+  id: 'Coy' + String(i + 1).padStart(3, '0'),
   femaleName: ['Priya Sharma','Kavita Singh','Sunita Verma','Rekha Patel','Meera Gupta','Anita Kumar','Sushila Yadav','Geeta Tiwari','Poonam Joshi','Ritu Agarwal','Neha Saxena','Deepa Mishra','Shilpa Jain','Rashmi Reddy','Kiran Nair','Vidya Rao','Suman Das','Lata Iyer','Mala Krishnan','Uma Menon','Shanti Pillai','Kamala Nair','Indira Raman','Sarojini Iyer'][i],
   spouseName: ['Rajesh Sharma','Vikram Singh','Amit Verma','Ravi Patel','Suresh Gupta','Raj Kumar','Vijay Yadav','Ramesh Tiwari','Sunil Joshi','Pradeep Agarwal','Anil Saxena','Manoj Mishra','Rakesh Jain','Kiran Reddy','Suresh Nair','Ravi Rao','Kumar Das','Rajan Iyer','Mohan Krishnan','Ravi Menon','Krishnan Pillai','Raman Nair','Suresh Raman','Ravi Iyer'][i],
   education: ['B.Tech','MBA','B.Sc','M.A','B.Com','M.Tech','B.A','M.Sc','B.E','M.Com','B.Ed','M.Ed','BBA','MBA','BDS','MDS','B.Pharm','M.Pharm','B.Sc Nursing','M.Sc Nursing','B.A','M.A','B.Tech','M.Tech'][i],
@@ -622,7 +622,7 @@ const coyData = Array.from({ length: 24 }).map((_, i) => ({
   rank: ['Col','Lt Col','Maj','Capt','Lt','Sqn Ldr','Flt Lt','Fg Offr','Wg Cdr','Gp Capt','Air Cmde','Air Vice Marshal'][i % 12]
 }));
 
-function renderCOY() {
+function renderCoy() {
   const grid = document.getElementById('coyGrid');
   if (!grid) return;
   grid.innerHTML = coyData.map(c => `
@@ -646,7 +646,7 @@ if (coyNav) {
   coyNav.addEventListener('click', () => {
     const grid = document.getElementById('coyGrid');
     if (grid && !grid.dataset.rendered) {
-      renderCOY();
+      renderCoy();
       grid.dataset.rendered = 'true';
     }
   });
@@ -823,6 +823,12 @@ async function initChartsOnce() {
           ticks: {
             color: '#5a6c7d',
             font: { weight: '600' }
+          },
+          title: {
+            display: true,
+            text: 'Number of Children',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
           }
         },
         x: { 
@@ -830,6 +836,12 @@ async function initChartsOnce() {
           ticks: {
             color: '#5a6c7d',
             font: { weight: '600' }
+          },
+          title: {
+            display: true,
+            text: 'Class Categories',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
           }
         }
       },
@@ -926,7 +938,28 @@ async function initChartsOnce() {
         borderWidth: 2
       }]
     },
-    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    options: { 
+      plugins: { legend: { display: false } }, 
+      scales: { 
+        y: { 
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of Cases',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Months',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
+          }
+        }
+      }
+    }
   });
 
   // Chart 6: IVF Treatment Status
@@ -959,7 +992,28 @@ async function initChartsOnce() {
         backgroundColor: '#95a5a6'
       }]
     },
-    options: { plugins: { legend: { position: 'top' } }, scales: { y: { beginAtZero: true } } }
+    options: { 
+      plugins: { legend: { position: 'top' } }, 
+      scales: { 
+        y: { 
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of Cases',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Company (Coy)',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
+          }
+        }
+      }
+    }
   });
 
   // Chart 8: Special Child – Disability Breakdown
@@ -977,7 +1031,7 @@ async function initChartsOnce() {
     options: { plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
   });
 
-  // Chart 9: Marital Discord – Official vs Not Official per COY
+  // Chart 9: Marital Discord – Official vs Not Official per Coy
   if (maritalDiscordCtx) new Chart(maritalDiscordCtx, {
     type: 'bar',
     data: {
@@ -1021,7 +1075,28 @@ async function initChartsOnce() {
         backgroundColor: '#e74c3c'
       }]
     },
-    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    options: { 
+      plugins: { legend: { display: false } }, 
+      scales: { 
+        y: { 
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of Cases',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Company (Coy)',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
+          }
+        }
+      }
+    }
   });
 
   // Chart 12: Low Medical Category – Present Med Cat distribution
@@ -1035,7 +1110,28 @@ async function initChartsOnce() {
         backgroundColor: [brandPrimary, brandSecondary, '#9b59b6']
       }]
     },
-    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    options: { 
+      plugins: { legend: { display: false } }, 
+      scales: { 
+        y: { 
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of Personnel',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Medical Category',
+            color: '#2c3e50',
+            font: { weight: 'bold', size: 14 }
+          }
+        }
+      }
+    }
   });
 
   // Chart 13: Low Med – Critical vs Normal cases
@@ -1110,9 +1206,9 @@ async function initChartsOnce() {
     let filteredData = sheetData || [];
     
     if (coy !== 'all') {
-      // Filter by COY if column exists in Excel
+      // Filter by Coy if column exists in Excel
       filteredData = filteredData.filter(row => 
-        row.COY === coy || row.Company === coy || row.Unit === coy
+        row.Coy === coy || row.Company === coy || row.Unit === coy
       );
     }
     
@@ -1131,7 +1227,7 @@ async function initChartsOnce() {
     if (chipYear) { chipYear.style.display = (yr==='all')? 'none' : 'inline-flex'; chipYear.textContent = yr; }
 
     // Update subtitles
-    const scope = `${coy === 'all' ? 'All COYs' : coy} · ${yr === 'all' ? 'All Years' : yr}`;
+    const scope = `${coy === 'all' ? 'All Coys' : coy} · ${yr === 'all' ? 'All Years' : yr}`;
     const setSub = (id) => { const el = document.getElementById(id); if (el) el.textContent = scope; };
     setSub('sub-children'); setSub('sub-health'); setSub('sub-occupation');
 
@@ -1243,7 +1339,29 @@ async function initChartsOnce() {
             borderWidth: 2
           }]
         },
-        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
+        options: { 
+          plugins: { legend: { display: false } }, 
+          scales: { 
+            y: { 
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Number of Children',
+                color: '#2c3e50',
+                font: { weight: 'bold', size: 14 }
+              }
+            }, 
+            x: { 
+              grid: { display: false },
+              title: {
+                display: true,
+                text: 'Class Categories',
+                color: '#2c3e50',
+                font: { weight: 'bold', size: 14 }
+              }
+            } 
+          } 
+        }
       });
     }
 
@@ -1462,7 +1580,7 @@ async function initChartsOnce() {
     const coy = filterCoy?.value || 'all';
     const yr = filterYear?.value || 'all';
     let filtered = (sheetData && Object.values(sheetData)[0]) || [];
-    if (coy !== 'all') filtered = filtered.filter(r => r.COY === coy || r.Company === coy || r.Unit === coy);
+    if (coy !== 'all') filtered = filtered.filter(r => r.Coy === coy || r.Company === coy || r.Unit === coy);
     if (yr !== 'all') filtered = filtered.filter(r => {
       const ds = r.Date || r.Joining_Date || r.Registration_Date;
       return ds && ds.toString().includes(yr);
@@ -1472,7 +1590,7 @@ async function initChartsOnce() {
     if (kind === 'special') filtered = filtered.filter(r => r.Special_Child === 'Yes' || r.Disability === 'Yes' || r.Special_Needs === 'Yes');
     if (kind === 'critical') filtered = filtered.filter(r => r.Critical === 'Yes' || r.Medical_Category === 'Critical' || r.Priority === 'High');
 
-    const columns = ['Family_ID','Name','Spouse_Name','Phone','COY','Unit','Registration_Date','Case_Type','Treatment_Type','Special_Child','Medical_Category'];
+    const columns = ['Family_ID','Name','Spouse_Name','Phone','Coy','Unit','Registration_Date','Case_Type','Treatment_Type','Special_Child','Medical_Category'];
     drillTitle.textContent = kind === 'ivf' ? 'IVF Cases' : kind === 'special' ? 'Special Child Cases' : kind === 'critical' ? 'Critical Medical Cases' : 'Families';
     drillThead.innerHTML = `<tr>${columns.map(c=>`<th>${c.replaceAll('_',' ')}</th>`).join('')}</tr>`;
     drillRows = filtered.map(r => columns.map(c => r[c] ?? ''));
