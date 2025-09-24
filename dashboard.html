@@ -187,7 +187,7 @@
                                 <i class="fas fa-arrow-up"></i>
                                 <span>+12% this month</span>
                             </div>
-                            <canvas id="sparkFamilies" class="kpi-sparkline" height="36"></canvas>
+                            <canvas id="sparkFamilies" class="kpi-sparkline" height="60"></canvas>
                         </div>
                     </div>
                     
@@ -202,7 +202,7 @@
                                 <i class="fas fa-arrow-up"></i>
                                 <span>+5% improvement</span>
                             </div>
-                            <canvas id="sparkIVF" class="kpi-sparkline" height="36"></canvas>
+                            <canvas id="sparkIVF" class="kpi-sparkline" height="60"></canvas>
                         </div>
                     </div>
                     
@@ -217,7 +217,7 @@
                                 <i class="fas fa-minus"></i>
                                 <span>Stable</span>
                             </div>
-                            <canvas id="sparkSpecial" class="kpi-sparkline" height="36"></canvas>
+                            <canvas id="sparkSpecial" class="kpi-sparkline" height="60"></canvas>
                         </div>
                     </div>
                     
@@ -232,7 +232,7 @@
                                 <i class="fas fa-arrow-up"></i>
                                 <span>+8% this quarter</span>
                             </div>
-                            <canvas id="sparkCritical" class="kpi-sparkline" height="36"></canvas>
+                            <canvas id="sparkCritical" class="kpi-sparkline" height="60"></canvas>
                         </div>
                     </div>
                 </div>
@@ -1550,21 +1550,88 @@ async function initChartsOnce() {
   addLiveIndicator();
   setInterval(simulateRealTimeData, 10000); // Update every 10 seconds
 
-  // Draw KPI sparklines using Chart.js lightweight configs
-  function drawSparkline(id, data, color) {
+  // Draw KPI sparklines using Chart.js with visible axes
+  function drawSparkline(id, data, color, yAxisLabel, xAxisLabel) {
     const cv = document.getElementById(id);
     if (!cv) return;
     if (cv._chart) { try { cv._chart.destroy(); } catch (e) {} }
     cv._chart = new Chart(cv, {
       type: 'line',
-      data: { labels: data.map((_, i) => i + 1), datasets: [{ data, borderColor: color, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.35 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, scales: { x: { display: false }, y: { display: false } } }
+      data: { 
+        labels: data.map((_, i) => `Week ${i + 1}`), 
+        datasets: [{ 
+          data, 
+          borderColor: color, 
+          backgroundColor: 'transparent', 
+          borderWidth: 2, 
+          pointRadius: 0, 
+          tension: 0.35 
+        }] 
+      },
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+          legend: { display: false }, 
+          tooltip: { 
+            enabled: true,
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            titleColor: '#fff',
+            bodyColor: '#fff',
+            borderColor: color,
+            borderWidth: 1,
+            cornerRadius: 6,
+            displayColors: false,
+            callbacks: {
+              title: function(context) {
+                return context[0].label;
+              },
+              label: function(context) {
+                return `${yAxisLabel}: ${context.parsed.y}`;
+              }
+            }
+          } 
+        }, 
+        scales: { 
+          x: { 
+            display: true,
+            title: {
+              display: true,
+              text: xAxisLabel,
+              color: '#2c3e50',
+              font: { weight: 'bold', size: 10 }
+            },
+            ticks: {
+              color: '#5a6c7d',
+              font: { size: 9 }
+            },
+            grid: { display: false }
+          }, 
+          y: { 
+            display: true,
+            title: {
+              display: true,
+              text: yAxisLabel,
+              color: '#2c3e50',
+              font: { weight: 'bold', size: 10 }
+            },
+            ticks: {
+              color: '#5a6c7d',
+              font: { size: 9 }
+            },
+            grid: { 
+              color: '#f0f0f0',
+              drawBorder: false
+            }
+          } 
+        } 
+      }
     });
   }
-  drawSparkline('sparkFamilies', [210, 220, 230, 235, 245, 260, 274], '#3b82f6');
-  drawSparkline('sparkIVF', [62, 65, 70, 72, 75, 77, 78], '#ef6c00');
-  drawSparkline('sparkSpecial', [88, 90, 91, 92, 92, 92, 92], '#9c27b0');
-  drawSparkline('sparkCritical', [70, 72, 73, 76, 79, 83, 85], '#16a34a');
+  drawSparkline('sparkFamilies', [210, 220, 230, 235, 245, 260, 274], '#3b82f6', 'Families', 'Time Period');
+  drawSparkline('sparkIVF', [62, 65, 70, 72, 75, 77, 78], '#ef6c00', 'Success Rate (%)', 'Time Period');
+  drawSparkline('sparkSpecial', [88, 90, 91, 92, 92, 92, 92], '#9c27b0', 'Support Level (%)', 'Time Period');
+  drawSparkline('sparkCritical', [70, 72, 73, 76, 79, 83, 85], '#16a34a', 'Resolution Rate (%)', 'Time Period');
 
   // Drilldown logic
   const drillModal = document.getElementById('drilldownModal');
