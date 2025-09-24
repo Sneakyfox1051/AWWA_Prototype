@@ -125,23 +125,23 @@
                     <div class="insight-content">
                         <div class="insight-item">
                             <span class="insight-label">Total Families:</span>
-                            <span class="insight-value" id="totalFamilies">Loading...</span>
-                            <span class="insight-change" id="familiesChange">+0%</span>
+                            <span class="insight-value" id="totalFamilies">273</span>
+                            <span class="insight-change" id="familiesChange">+12%</span>
                         </div>
                         <div class="insight-item">
                             <span class="insight-label">IVF Cases This Month:</span>
-                            <span class="insight-value" id="ivfCases">Loading...</span>
-                            <span class="insight-change" id="ivfChange">+0%</span>
+                            <span class="insight-value" id="ivfCases">6</span>
+                            <span class="insight-change" id="ivfChange">+15%</span>
                         </div>
                         <div class="insight-item">
                             <span class="insight-label">Special Child Cases:</span>
-                            <span class="insight-value" id="specialChildCases">Loading...</span>
-                            <span class="insight-change" id="specialChildChange">+0%</span>
+                            <span class="insight-value" id="specialChildCases">2</span>
+                            <span class="insight-change" id="specialChildChange">+8%</span>
                         </div>
                         <div class="insight-item">
                             <span class="insight-label">Critical Medical Cases:</span>
-                            <span class="insight-value" id="criticalCases">Loading...</span>
-                            <span class="insight-change" id="criticalChange">+0%</span>
+                            <span class="insight-value" id="criticalCases">0</span>
+                            <span class="insight-change" id="criticalChange">0%</span>
                         </div>
                     </div>
                 </div>
@@ -1055,35 +1055,40 @@ async function initChartsOnce() {
 
   // Dynamic Analytics and Insights
   function updateAnalytics() {
-    const rows = (sheetData && Object.values(sheetData)[0]) || [];
-    const metrics = deriveMetrics(rows);
+    // Fixed data values
+    const fixedData = {
+      totalFamilies: 273,
+      ivfCases: 6,
+      specialChildCases: 12,
+      criticalCases: 8
+    };
 
-    // Update DOM elements
-    document.getElementById('totalFamilies').textContent = metrics.totalFamilies.toLocaleString();
-    document.getElementById('ivfCases').textContent = metrics.ivfCases;
-    document.getElementById('specialChildCases').textContent = metrics.specialChildCases;
-    document.getElementById('criticalCases').textContent = metrics.criticalCases;
+    // Update DOM elements with fixed data
+    document.getElementById('totalFamilies').textContent = fixedData.totalFamilies.toLocaleString();
+    document.getElementById('ivfCases').textContent = fixedData.ivfCases;
+    document.getElementById('specialChildCases').textContent = fixedData.specialChildCases;
+    document.getElementById('criticalCases').textContent = fixedData.criticalCases;
 
-    // Update mini cards
+    // Update mini cards with fixed data
     const minis = document.querySelectorAll('.mini-value');
-    if (minis[0]) minis[0].textContent = metrics.totalFamilies.toLocaleString();
-    if (minis[1]) minis[1].textContent = metrics.totalChildren.toLocaleString();
-    if (minis[2]) minis[2].textContent = metrics.registeredFamilies.toLocaleString();
-    if (minis[3]) minis[3].textContent = metrics.avgChildrenPerFamily.toFixed(1);
+    if (minis[0]) minis[0].textContent = fixedData.totalFamilies.toLocaleString();
+    if (minis[1]) minis[1].textContent = '485'; // Total children
+    if (minis[2]) minis[2].textContent = fixedData.totalFamilies.toLocaleString(); // Registered families
+    if (minis[3]) minis[3].textContent = '1.8'; // Avg children per family
 
-    // Update icon badges
+    // Update icon badges with fixed data
     const badgeFamilies = document.getElementById('badgeFamilies');
     const badgeChildren = document.getElementById('badgeChildren');
     const badgeRegistered = document.getElementById('badgeRegistered');
     const badgeAvg = document.getElementById('badgeAvg');
-    if (badgeFamilies) badgeFamilies.textContent = metrics.totalFamilies;
-    if (badgeChildren) badgeChildren.textContent = metrics.totalChildren;
-    if (badgeRegistered) badgeRegistered.textContent = metrics.registeredFamilies;
-    if (badgeAvg) badgeAvg.textContent = metrics.avgChildrenPerFamily.toFixed(1);
+    if (badgeFamilies) badgeFamilies.textContent = fixedData.totalFamilies;
+    if (badgeChildren) badgeChildren.textContent = '485';
+    if (badgeRegistered) badgeRegistered.textContent = fixedData.totalFamilies;
+    if (badgeAvg) badgeAvg.textContent = '1.8';
 
     // Update KPI cards if present
     const famKpi = document.getElementById('totalFamiliesKPI');
-    if (famKpi) famKpi.textContent = metrics.totalFamilies.toLocaleString();
+    if (famKpi) famKpi.textContent = fixedData.totalFamilies.toLocaleString();
   }
   
   function updateChangeIndicator(elementId, change) {
