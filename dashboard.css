@@ -1409,3 +1409,100 @@ canvas { width: 100% !important; height: 280px !important; }
         font-size: 24px;
     }
 }
+
+/* Wife Details Section Orange Theme */
+.panel-card:has(#additionalDetailsTitle) {
+    border: 2px solid #ff8c00;
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe4b3 100%);
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.2);
+}
+
+.panel-card:has(#additionalDetailsTitle) .panel-header {
+    background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+    color: white;
+    border-bottom: 2px solid #ff8c00;
+}
+
+.panel-card:has(#additionalDetailsTitle) .panel-header i {
+    color: #fff;
+}
+
+.panel-card:has(#additionalDetailsTitle) .panel-header h3 {
+    color: #fff;
+    font-weight: 700;
+}
+
+.panel-card:has(#additionalDetailsTitle) .panel-body {
+    background: #fff5e6;
+}
+
+.panel-card:has(#additionalDetailsTitle) .info-row {
+    border-left: 4px solid #ff8c00;
+    background: rgba(255, 255, 255, 0.7);
+    margin: 8px 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(255, 140, 0, 0.1);
+}
+
+.panel-card:has(#additionalDetailsTitle) .info-row .label {
+    color: #cc6600;
+    font-weight: 600;
+}
+
+.panel-card:has(#additionalDetailsTitle) .info-row .value {
+    color: #8b4513;
+    font-weight: 500;
+}
+
+/* Special styling when title is "Wife Details" */
+#additionalDetailsTitle:contains("Wife Details") ~ *,
+.panel-card:has(#additionalDetailsTitle:contains("Wife Details")) {
+    border: 2px solid #ff8c00 !important;
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe4b3 100%) !important;
+}
+
+/* Alternative approach using data attribute */
+.panel-card[data-wife-details="true"] {
+    border: 2px solid #ff8c00;
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe4b3 100%);
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.2);
+}
+
+.panel-card[data-wife-details="true"] .panel-header {
+    background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+    color: white;
+    border-bottom: 2px solid #ff8c00;
+}
+
+.panel-card[data-wife-details="true"] .panel-header i {
+    color: #fff;
+}
+
+.panel-card[data-wife-details="true"] .panel-header h3 {
+    color: #fff;
+    font-weight: 700;
+}
+
+.panel-card[data-wife-details="true"] .panel-body {
+    background: #fff5e6;
+}
+
+.panel-card[data-wife-details="true"] .info-row {
+    border-left: 4px solid #ff8c00;
+    background: rgba(255, 255, 255, 0.7);
+    margin: 8px 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(255, 140, 0, 0.1);
+}
+
+.panel-card[data-wife-details="true"] .info-row .label {
+    color: #cc6600;
+    font-weight: 600;
+}
+
+.panel-card[data-wife-details="true"] .info-row .value {
+    color: #8b4513;
+    font-weight: 500;
+}

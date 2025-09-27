@@ -1053,6 +1053,12 @@ function loadUserInfo() {
             // Change title to "Wife Details" for Tarunpreet Singh
             additionalDetailsTitle.textContent = 'Wife Details';
             
+            // Add orange theme data attribute
+            const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
+            if (additionalDetailsPanel) {
+                additionalDetailsPanel.setAttribute('data-wife-details', 'true');
+            }
+            
             // Add spouse information
             additionalDetailsBody.innerHTML = `
                 <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
@@ -1063,6 +1069,13 @@ function loadUserInfo() {
         } else {
             // Keep default title and show empty for other users
             additionalDetailsTitle.textContent = 'Additional Details';
+            
+            // Remove orange theme data attribute
+            const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
+            if (additionalDetailsPanel) {
+                additionalDetailsPanel.removeAttribute('data-wife-details');
+            }
+            
             additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
         }
         
@@ -1113,6 +1126,13 @@ function loadUserInfo() {
                     
                     if (currentUserId === 'tarunpreet singh') {
                         additionalDetailsTitle.textContent = 'Wife Details';
+                        
+                        // Add orange theme data attribute
+                        const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
+                        if (additionalDetailsPanel) {
+                            additionalDetailsPanel.setAttribute('data-wife-details', 'true');
+                        }
+                        
                         additionalDetailsBody.innerHTML = `
                             <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
                             <div class="info-row"><span class="label">Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
@@ -1121,6 +1141,13 @@ function loadUserInfo() {
                         `;
                     } else {
                         additionalDetailsTitle.textContent = 'Additional Details';
+                        
+                        // Remove orange theme data attribute
+                        const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
+                        if (additionalDetailsPanel) {
+                            additionalDetailsPanel.removeAttribute('data-wife-details');
+                        }
+                        
                         additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
                     }
                 }
