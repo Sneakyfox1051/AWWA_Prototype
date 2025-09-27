@@ -222,28 +222,60 @@
                             <small>Total Families</small>
                 </div>
             </div>
-                    <div class="stat-mini-card">
+            
+                 <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-child"></i></div>
                         <div class="mini-content">
-                            <div class="mini-value" id="totalChildrenVal">183</div>
+                            <div class="mini-value" id="totalChildrenVal">509</div>
                             <small>Total Children</small>
+                            <div class="gender-breakdown">
+                                <div class="male-heading">Male: 356</div>
+                                <div class="female-heading">Female: 153</div>
             </div>
                     </div>
+                        </div>
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-check-circle"></i></div>
                         <div class="mini-content">
-                            <div class="mini-value" id="registeredFamiliesVal">274</div>
-                            <small>Registered Families</small>
+                            <div class="mini-value" id="registeredFamiliesVal">2</div>
+                            <small>IVF Cases</small>
                         </div>
                         </div>
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-calculator"></i></div>
                         <div class="mini-content">
-                            <div class="mini-value" id="avgChildrenVal">1.8</div>
-                            <small>Average Children per Family</small>
+                            <div class="mini-value" id="avgChildrenVal">1</div>
+                            <small>Special Child</small>
                         </div>
                     </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-heart-broken"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="maritalDiscordVal">2</div>
+                            <small>Marital Discord Cases</small>
                 </div>
+                    </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-user-injured"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="otherMedicalVal">2</div>
+                            <small>Other Critical Medical Cases</small>
+                        </div>
+                    </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-child"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="childrenAgeVal">509</div>
+                            <small>Children Age Profile</small>
+                            <div class="age-breakdown">
+                                <div class="age-group">0-6: 122</div>
+                                <div class="age-group">6-12: 216</div>
+                                <div class="age-group">12-18: 150</div>
+                                <div class="age-group">18-24: 20</div>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
                 
                 <!-- Enhanced Family Data Charts -->
                 <div class="enhanced-charts-section">
@@ -253,30 +285,30 @@
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="medicalStatusChart"></canvas>
-                    </div>
                         </div>
+                    </div>
 
                         <!-- Chart 2: Parental Education - Horizontal Bar Chart -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="educationChart"></canvas>
-                        </div>
-                        </div>
-
+                </div>
+            </div>
+            
                         <!-- Chart 3: Marital Discord - Progress Ring -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="maritalDiscordChart"></canvas>
                         </div>
-                    </div>
+                            </div>
 
                         <!-- Chart 4: Workshop Distribution - Bar Chart -->
                         <div class="enhanced-chart-card large">
                             <div class="large-chart-container">
                                 <canvas id="workshopChart"></canvas>
-                </div>
-            </div>
-            
+                        </div>
+                    </div>
+                    
                         <!-- Chart 5: Entrepreneurship - Gauge Chart -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
@@ -315,8 +347,8 @@
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="educationalStreamsChart"></canvas>
-                        </div>
-                            </div>
+                </div>
+            </div>
 
                         <!-- Chart 10: Medical Needs - Donut Chart -->
                         <div class="enhanced-chart-card">
@@ -667,7 +699,7 @@ async function initChartsOnce() {
                         borderSkipped: false
       }]
     },
-    options: { 
+    options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -729,14 +761,14 @@ async function initChartsOnce() {
                         backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
-                    }]
-                },
-                options: {
+      }]
+    },
+    options: { 
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        title: {
-                            display: true,
+          title: {
+            display: true,
                             text: 'Family Size Distribution',
                             font: { size: 18, weight: 'bold' },
                             color: '#1F2937'
@@ -824,18 +856,18 @@ async function initChartsOnce() {
 
             // Chart 9: Educational Streams - Bar Chart
             new Chart(document.getElementById('educationalStreamsChart'), {
-        type: 'bar',
-        data: {
+    type: 'bar',
+    data: {
                     labels: ['Arts', 'Commerce', 'Science', 'PCM', 'PCB', 'Other'],
-          datasets: [{
+      datasets: [{
                         label: 'Number of Students',
                         data: [15, 8, 12, 6, 4, 25],
                         backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444'],
                         borderRadius: 8,
                         borderSkipped: false
-          }]
-        },
-        options: { 
+      }]
+    },
+    options: { 
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
@@ -847,13 +879,13 @@ async function initChartsOnce() {
                         },
                         legend: { display: false }
                     },
-                    scales: {
+      scales: { 
             x: { 
               grid: { display: false },
                             ticks: { font: { size: 11 } }
                         },
-                        y: { 
-                            beginAtZero: true, 
+        y: { 
+          beginAtZero: true,
                             grid: { display: false },
                             ticks: { stepSize: 5 }
                         }
@@ -864,10 +896,10 @@ async function initChartsOnce() {
 
             // Chart 10: Medical Needs - Donut Chart
             new Chart(document.getElementById('medicalNeedsChart'), {
-        type: 'doughnut',
-        data: {
+    type: 'doughnut',
+    data: {
                     labels: ['No Special Needs', 'Special Needs'],
-                    datasets: [{
+      datasets: [{
                         data: [271, 1],
                         backgroundColor: colorPalettes.health,
                         borderWidth: 0,
@@ -897,21 +929,21 @@ async function initChartsOnce() {
             // Chart 11: Health Status Overview - Multi-level Donut
             new Chart(document.getElementById('healthOverviewChart'), {
                 type: 'doughnut',
-      data: { 
+        data: {
                     labels: ['Healthy Families', 'Families with Medical Issues', 'Children with Special Needs'],
-        datasets: [{ 
+          datasets: [{
                         data: [239, 30, 1],
                         backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
                         borderWidth: 0,
                         hoverOffset: 20
-        }] 
-      },
-      options: { 
+          }]
+        },
+        options: { 
         responsive: true, 
         maintainAspectRatio: false, 
         plugins: { 
-            title: {
-              display: true,
+              title: {
+                display: true,
                             text: 'Overall Health Status',
                             font: { size: 18, weight: 'bold' },
                             color: '#1F2937'
@@ -984,22 +1016,98 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             
             const userInfo = JSON.parse(localStorage.getItem('userInfo') || JSON.stringify(defaultUserInfo));
-    
-            if (userInfo.name) {
-                // Update welcome title
-                document.getElementById('welcomeTitle').textContent = `Welcome, ${userInfo.name}!`;
+            
+            // Update user information panel
+            const userInfoBody = document.getElementById('userInfoBody');
+            if (userInfoBody) {
+                let userInfoHTML = `
+                    <div class="info-row"><span class="label">User ID:</span><span class="value">${userInfo.userId}</span></div>
+                    <div class="info-row"><span class="label">Name:</span><span class="value">${userInfo.name}</span></div>
+                    <div class="info-row"><span class="label">Designation:</span><span class="value">${userInfo.designation || 'N/A'}</span></div>
+                    <div class="info-row"><span class="label">Contact Number:</span><span class="value">${userInfo.phone || 'N/A'}</span></div>
+                    <div class="info-row"><span class="label">User Type:</span><span class="value">${userInfo.userType || 'admin'}</span></div>
+                `;
                 
-                // Update profile information
-                document.getElementById('profileName').textContent = userInfo.name;
-                document.getElementById('profileDesignation').textContent = userInfo.designation || 'User';
                 
-                // Update profile initials
-                const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
-                document.getElementById('profileInitials').textContent = initials;
+                userInfoBody.innerHTML = userInfoHTML;
+            }
+            
+            // Update Additional Details section
+            const additionalDetailsTitle = document.getElementById('additionalDetailsTitle');
+            const additionalDetailsBody = document.getElementById('additionalDetailsBody');
+            
+            if (userInfo.userId === 'tarunpreet singh') {
+                // Change title to "Wife Details" for Tarunpreet Singh
+                additionalDetailsTitle.textContent =  'Spouse Profile';
                 
-                // Set profile image based on user
-                let profileImage = 'public/profile.png';
-                switch(userInfo.userId) {
+                // Add wife image to the header
+                const additionalDetailsImage = document.getElementById('additionalDetailsImage');
+                const wifeImage = document.getElementById('wifeImage');
+                if (additionalDetailsImage && wifeImage) {
+                    wifeImage.src = 'public/Gemini_Generated_Image_rwk0q2rwk0q2rwk0.png';
+                    additionalDetailsImage.style.display = 'block';
+                }
+                
+                // Add orange theme data attribute
+                const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
+                if (additionalDetailsPanel) {
+                    additionalDetailsPanel.setAttribute('data-wife-details', 'true');
+                }
+                
+                // Add spouse information
+                additionalDetailsBody.innerHTML = `
+                    <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
+                    <div class="info-row"><span class="label">Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
+                    <div class="info-row"><span class="label">Contact:</span><span class="value">7052615743</span></div>
+                    <div class="info-row"><span class="label">Relationship:</span><span class="value">Spouse</span></div>
+                `;
+            } else {
+                // Keep default title and show empty for other users
+                additionalDetailsTitle.textContent = 'Additional Details';
+                
+                // Hide wife image for other users
+                const additionalDetailsImage = document.getElementById('additionalDetailsImage');
+                if (additionalDetailsImage) {
+                    additionalDetailsImage.style.display = 'none';
+                }
+                
+                // Remove orange theme data attribute
+                const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
+                if (additionalDetailsPanel) {
+                    additionalDetailsPanel.removeAttribute('data-wife-details');
+                }
+                
+                additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
+            }
+            
+            // Update welcome title
+            const welcomeTitle = document.getElementById('welcomeTitle');
+            if (welcomeTitle) {
+                welcomeTitle.textContent = `Welcome, ${userInfo.name}!`;
+            }
+        
+        // Update profile information
+            const profileName = document.getElementById('profileName');
+            const profileDesignation = document.getElementById('profileDesignation');
+            if (profileName) profileName.textContent = userInfo.name;
+            if (profileDesignation) profileDesignation.textContent = userInfo.designation || 'User';
+        
+        // Update profile initials
+            const profileInitials = document.getElementById('profileInitials');
+            if (profileInitials) {
+        const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                profileInitials.textContent = initials;
+            }
+            
+            // Update left panel name and role
+            const leftPanelName = document.querySelector('.lp-name');
+            const leftPanelRole = document.querySelector('.lp-role');
+            if (leftPanelName) leftPanelName.textContent = userInfo.name;
+            if (leftPanelRole) leftPanelRole.textContent = userInfo.designation || 'User';
+        
+        // Set profile image based on user
+            let profileImage = 'public/profile.png';
+        switch(userInfo.userId) {
             case 'tarunpreet singh':
                 profileImage = 'public/Gemini_Generated_Image_4jitd24jitd24jit.png';
                 break;
@@ -1007,7 +1115,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 profileImage = 'public/Gemini_Generated_Image_iy5po1iy5po1iy5p.png';
                 break;
             case 'harish kumar':
-                profileImage = 'public/Gemini_Generated_Image_kd3igrkd3igrkd3i%20%281%29.png';
+                    profileImage = 'public/Gemini_Generated_Image_kd3igrkd3igrkd3i (1).png';
                 break;
             case 'rahul t more':
                 profileImage = 'public/Col.jpg';
@@ -1024,148 +1132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         profileImages.forEach(img => {
             img.src = profileImage;
         });
-        
-        // Update user information panel
-        const userInfoBody = document.getElementById('userInfoBody');
-        
-        // Check if user is Tarunpreet Singh to add wife information
-        let userInfoHTML = `
-            <div class="info-row"><span class="label">User ID:</span><span class="value">${userInfo.userId}</span></div>
-            <div class="info-row"><span class="label">Name:</span><span class="value">${userInfo.name}</span></div>
-            <div class="info-row"><span class="label">Designation:</span><span class="value">${userInfo.designation || 'N/A'}</span></div>
-            <div class="info-row"><span class="label">Contact Number:</span><span class="value">${userInfo.phone || 'N/A'}</span></div>
-            <div class="info-row"><span class="label">User Type:</span><span class="value">${userInfo.userType || 'admin'}</span></div>
-        `;
-      
         }
-        
-        userInfoBody.innerHTML = userInfoHTML;
-        
-        // Update Additional Details section
-        const additionalDetailsTitle = document.getElementById('additionalDetailsTitle');
-        const additionalDetailsBody = document.getElementById('additionalDetailsBody');
-        
-        if (userInfo.userId === 'tarunpreet singh') {
-            // Change title to "Wife Details" for Tarunpreet Singh
-            additionalDetailsTitle.textContent = 'Wife Details';
-            
-            // Add orange theme data attribute
-            const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
-            if (additionalDetailsPanel) {
-                additionalDetailsPanel.setAttribute('data-wife-details', 'true');
-            }
-            
-            // Add spouse information
-            additionalDetailsBody.innerHTML = `
-                <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
-                <div class="info-row"><span class="label">Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
-                <div class="info-row"><span class="label">Contact:</span><span class="value">7052615743</span></div>
-                <div class="info-row"><span class="label">Relationship:</span><span class="value">Spouse</span></div>
-            `;
-        } else {
-            // Keep default title and show empty for other users
-            additionalDetailsTitle.textContent = 'Additional Details';
-            
-            // Remove orange theme data attribute
-            const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
-            if (additionalDetailsPanel) {
-                additionalDetailsPanel.removeAttribute('data-wife-details');
-            }
-            
-            additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
-        }
-        
-        // Update left panel name
-        const leftPanelName = document.querySelector('.lp-name');
-        if (leftPanelName) {
-            leftPanelName.textContent = userInfo.name;
-        }
-        
-        // Update left panel role
-        const leftPanelRole = document.querySelector('.lp-role');
-        if (leftPanelRole) {
-            leftPanelRole.textContent = userInfo.designation || 'User';
-        }
-    } else {
-                // Show default information if no user data
-                const userInfoBody = document.getElementById('userInfoBody');
-                if (userInfoBody) {
-                    // Check if current user is Tarunpreet Singh for default display
-                    const currentUserId = localStorage.getItem('userId') || 'admin001';
-                    let defaultUserInfoHTML = `
-                        <div class="info-row"><span class="label">User ID:</span><span class="value">admin001</span></div>
-                        <div class="info-row"><span class="label">Name:</span><span class="value">Sushma Bhatti</span></div>
-                        <div class="info-row"><span class="label">Designation:</span><span class="value">Battalion Command</span></div>
-                        <div class="info-row"><span class="label">Contact Number:</span><span class="value">+91-9876543210</span></div>
-                        <div class="info-row"><span class="label">User Type:</span><span class="value">admin</span></div>
-                    `;
-                    
-                    // Add wife information if Tarunpreet Singh is logged in
-                    if (currentUserId === 'tarunpreet singh') {
-                        defaultUserInfoHTML = `
-                            <div class="info-row"><span class="label">User ID:</span><span class="value">tarunpreet singh</span></div>
-                            <div class="info-row"><span class="label">Name:</span><span class="value">Col Tarunpreet Singh</span></div>
-                            <div class="info-row"><span class="label">Designation:</span><span class="value">Commanding Officer</span></div>
-                            <div class="info-row"><span class="label">Contact Number:</span><span class="value">9650300475</span></div>
-                            <div class="info-row"><span class="label">User Type:</span><span class="value">admin</span></div>
-                            <div class="info-row"><span class="label">Spouse Name:</span><span class="value">Deepkiran Kaur</span></div>
-                            <div class="info-row"><span class="label">Spouse Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
-                            <div class="info-row"><span class="label">Spouse Contact:</span><span class="value">7052615743</span></div>
-                        `;
-                    }
-                    
-                    userInfoBody.innerHTML = defaultUserInfoHTML;
-                    
-                    // Update Additional Details for default user
-                    const additionalDetailsTitle = document.getElementById('additionalDetailsTitle');
-                    const additionalDetailsBody = document.getElementById('additionalDetailsBody');
-                    
-                    if (currentUserId === 'tarunpreet singh') {
-                        additionalDetailsTitle.textContent = 'Wife Details';
-                        
-                        // Add orange theme data attribute
-                        const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
-                        if (additionalDetailsPanel) {
-                            additionalDetailsPanel.setAttribute('data-wife-details', 'true');
-                        }
-                        
-                        additionalDetailsBody.innerHTML = `
-                            <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
-                            <div class="info-row"><span class="label">Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
-                            <div class="info-row"><span class="label">Contact:</span><span class="value">7052615743</span></div>
-                            <div class="info-row"><span class="label">Relationship:</span><span class="value">Spouse</span></div>
-                        `;
-                    } else {
-                        additionalDetailsTitle.textContent = 'Additional Details';
-                        
-                        // Remove orange theme data attribute
-                        const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
-                        if (additionalDetailsPanel) {
-                            additionalDetailsPanel.removeAttribute('data-wife-details');
-                        }
-                        
-                        additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
-                    }
-                }
-                
-                // Update welcome title
-                document.getElementById('welcomeTitle').textContent = 'Welcome, Sushma Bhatti!';
-                
-                // Update profile information
-                document.getElementById('profileName').textContent = 'Sushma Bhatti';
-                document.getElementById('profileDesignation').textContent = 'Battalion Command';
-                
-                // Update profile initials
-                document.getElementById('profileInitials').textContent = 'SB';
-                
-                // Update left panel name and role
-                const leftPanelName = document.querySelector('.lp-name');
-                const leftPanelRole = document.querySelector('.lp-role');
-                if (leftPanelName) leftPanelName.textContent = 'Sushma Bhatti';
-                if (leftPanelRole) leftPanelRole.textContent = 'Battalion Command';
-            }
-        }
-    }
 
 // Logout function
 function logout() {
@@ -1174,155 +1141,6 @@ function logout() {
         window.location.href = 'index.html';
     }
 }
-
-        // Families: render 50 demo cards
-        const familiesData = Array.from({ length: 50 }).map((_, i) => ({
-            name: [
-                'Anita Nirala','Anjali Devi','Archa A','Aruna Kumari','Babita Kumari','Barai Bhumeshwar D','Bulti Pradhan','Dipali Pawar','Divya Kumari','Goutami','Harsha Arvind','Haruli Devi','Hemlata Verma','Jayapriya S','Juhi Kumari','Jyoti Kuntal','Jyotsna Khatun','Kavita Sunil Shirke','Khushboo Verma','Meena Sharma'
-            ][i % 20] + (i >= 20 ? ' ' + (i+1) : ''),
-            husband: ['A K Nirala','C P Shukla','Akhil PA','K A Naidu','S K Singh','B Bhumeshwar D','Samir Pradhan','Pawar Sujit T','J P Kumar','A Suresh','Nithin Krishna R V','Vikram Singh','GP Verma','Velmurugan M','Sujit Kumar','Sunil Singh Kuntal','Hav Ismail Momin','Shirke S L','Mamta Saini','Rakesh Sharma'][i % 20],
-            contact: '9' + String(100000000 + i * 3571).slice(0,9),
-            education: ['12th','BA','BSC','10 + 2','MA'][i % 5],
-            children: (i % 4) + ' children',
-            joined: i % 3 === 0 ? 'Joined Apr ' + ((i % 28)+1) + ', 2024' : ''
-        }));
-
-        function renderFamilies() {
-            const grid = document.getElementById('familiesGrid');
-            if (!grid) return;
-            grid.innerHTML = familiesData.map(f => `
-                <div class="family-card">
-                    <div class="fc-top">
-                        <h4>${f.name}</h4>
-                        <span class="badge success">Active</span>
-                    </div>
-                    <div class="fc-body">
-                        <div class="row"><span class="label">Husband:</span><span class="val">${f.husband}</span></div>
-                        <div class="row"><span class="label">Contact:</span><span class="val">${f.contact}</span></div>
-                        <div class="row"><span class="label">Education:</span><span class="val">${f.education}</span></div>
-                        <div class="row"><span class="label">Children:</span><span class="val">${f.children}</span></div>
-                        ${f.joined ? `<div class="row"><span class="label">Joined:</span><span class="val">${f.joined}</span></div>` : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Render when Families section becomes active once
-        const familiesNav = document.querySelector('.lp-nav li[data-target="section-families"]');
-        if (familiesNav) {
-            familiesNav.addEventListener('click', () => {
-                if (!document.getElementById('familiesGrid').dataset.rendered) {
-                    renderFamilies();
-                    document.getElementById('familiesGrid').dataset.rendered = 'true';
-                }
-            });
-        }
-
-        // Coy: render military company data
-        const coyData = Array.from({ length: 24 }).map((_, i) => ({
-            id: 'Coy' + String(i + 1).padStart(3, '0'),
-            femaleName: ['Priya Sharma','Kavita Singh','Sunita Verma','Rekha Patel','Meera Gupta','Anita Kumar','Sushila Yadav','Geeta Tiwari','Poonam Joshi','Ritu Agarwal','Neha Saxena','Deepa Mishra','Shilpa Jain','Rashmi Reddy','Kiran Nair','Vidya Rao','Suman Das','Lata Iyer','Mala Krishnan','Uma Menon','Shanti Pillai','Kamala Nair','Indira Raman','Sarojini Iyer'][i],
-            spouseName: ['Rajesh Sharma','Vikram Singh','Amit Verma','Ravi Patel','Suresh Gupta','Raj Kumar','Vijay Yadav','Ramesh Tiwari','Sunil Joshi','Pradeep Agarwal','Anil Saxena','Manoj Mishra','Rakesh Jain','Kiran Reddy','Suresh Nair','Ravi Rao','Kumar Das','Rajan Iyer','Mohan Krishnan','Ravi Menon','Krishnan Pillai','Raman Nair','Suresh Raman','Ravi Iyer'][i],
-            education: ['B.Tech','MBA','B.Sc','M.A','B.Com','M.Tech','B.A','M.Sc','B.E','M.Com','B.Ed','M.Ed','BBA','MBA','BDS','MDS','B.Pharm','M.Pharm','B.Sc Nursing','M.Sc Nursing','B.A','M.A','B.Tech','M.Tech'][i],
-            phoneNumber: '+91-' + (9000000000 + i * 12345),
-            rank: ['Col','Lt Col','Maj','Capt','Lt','Sqn Ldr','Flt Lt','Fg Offr','Wg Cdr','Gp Capt','Air Cmde','Air Vice Marshal'][i % 12]
-        }));
-
-        function renderCoy() {
-            const grid = document.getElementById('coyGrid');
-            if (!grid) return;
-            grid.innerHTML = coyData.map(c => `
-                <div class="family-card">
-                    <div class="fc-top">
-                        <h4>${c.id}</h4>
-                        <span class="badge success">${c.rank}</span>
-</div>
-                    <div class="fc-body">
-                        <div class="row"><span class="label">Female Name:</span><span class="val">${c.femaleName}</span></div>
-                        <div class="row"><span class="label">Spouse Name:</span><span class="val">${c.spouseName}</span></div>
-                        <div class="row"><span class="label">Education:</span><span class="val">${c.education}</span></div>
-                        <div class="row"><span class="label">Phone:</span><span class="val">${c.phoneNumber}</span></div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        const coyNav = document.querySelector('.lp-nav li[data-target="section-companies"]');
-        if (coyNav) {
-            coyNav.addEventListener('click', () => {
-                const grid = document.getElementById('coyGrid');
-                if (grid && !grid.dataset.rendered) {
-                    renderCoy();
-                    grid.dataset.rendered = 'true';
-                }
-            });
-        }
-
-        // Newsletter form submit and copy link
-        const newsletterForm = document.getElementById('newsletterForm');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = document.getElementById('nlName').value.trim();
-                const email = document.getElementById('nlEmail').value.trim();
-                const message = document.getElementById('nlMessage');
-                // Simulate successful subscription
-                message.textContent = `Thanks, ${name || 'friend'}! A confirmation email was sent to ${email}.`;
-                message.style.color = '#2ecc71';
-                newsletterForm.reset();
-            });
-        }
-
-        const copyBtn = document.getElementById('copyLinkBtn');
-        if (copyBtn) {
-            copyBtn.addEventListener('click', async () => {
-                const input = document.getElementById('nlShareLink');
-                try {
-                    await navigator.clipboard.writeText(input.value);
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(() => (copyBtn.innerHTML = '<i class="fas fa-copy"></i>'), 1200);
-                } catch (_) {
-                    input.select();
-                    document.execCommand('copy');
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(() => (copyBtn.innerHTML = '<i class="fas fa-copy"></i>'), 1200);
-                }
-            });
-        }
-
-        // Power BI embed logic (publish-to-web URL stored in localStorage)
-        const pbiKey = 'awwa_pbi_embed_url';
-        const pbiUrlInput = document.getElementById('pbiUrl');
-        const pbiFrame = document.getElementById('pbiFrame');
-        const pbiLoadBtn = document.getElementById('pbiLoadBtn');
-        const pbiClearBtn = document.getElementById('pbiClearBtn');
-
-        function loadStoredPbi() {
-            const url = localStorage.getItem(pbiKey);
-            if (pbiUrlInput && url) pbiUrlInput.value = url;
-            if (pbiFrame && url) pbiFrame.src = url;
-        }
-        loadStoredPbi();
-
-        if (pbiLoadBtn) {
-            pbiLoadBtn.addEventListener('click', () => {
-                const url = (pbiUrlInput?.value || '').trim();
-                if (!url || !/^https:\/\/app\.powerbi\.com\/view/.test(url)) {
-                    alert('Please paste a valid Power BI "Publish to web" URL.');
-                    return;
-                }
-                localStorage.setItem(pbiKey, url);
-                if (pbiFrame) pbiFrame.src = url;
-            });
-        }
-
-        if (pbiClearBtn) {
-            pbiClearBtn.addEventListener('click', () => {
-                localStorage.removeItem(pbiKey);
-                if (pbiUrlInput) pbiUrlInput.value = '';
-                if (pbiFrame) pbiFrame.removeAttribute('src');
-            });
-        }
 
         // Load user info when page loads
         document.addEventListener('DOMContentLoaded', loadUserInfo);
