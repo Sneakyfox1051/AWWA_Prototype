@@ -128,8 +128,7 @@
             <div class="app-brand">
                 <img src="public/Untitled design (27).png" alt="AWWA Logo" class="app-logo" />
                 <div class="app-title-wrap">
-                    <h1 class="app-title">Ranbankura Egale : AWWA Centralised Information Hub</h1>
-                    
+            
                 </div>
             </div>
             <button class="logout-btn" onclick="logout()">
@@ -218,7 +217,7 @@
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-users"></i></div>
                         <div class="mini-content">
-                            <div class="mini-value" id="totalFamiliesVal">274</div>
+                            <div class="mini-value" id="totalFamiliesVal">100</div>
                             <small>Total Families</small>
                 </div>
             </div>
@@ -231,8 +230,8 @@
                             <div class="gender-breakdown">
                                 <div class="male-heading">Male: 356</div>
                                 <div class="female-heading">Female: 153</div>
-            </div>
                     </div>
+                        </div>
                         </div>
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-check-circle"></i></div>
@@ -246,37 +245,37 @@
                         <div class="mini-content">
                             <div class="mini-value" id="avgChildrenVal">1</div>
                             <small>Special Child</small>
-                        </div>
                     </div>
+                </div>
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-heart-broken"></i></div>
                         <div class="mini-content">
                             <div class="mini-value" id="maritalDiscordVal">2</div>
                             <small>Marital Discord Cases</small>
-                </div>
                     </div>
+                        </div>
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-user-injured"></i></div>
                         <div class="mini-content">
                             <div class="mini-value" id="otherMedicalVal">2</div>
                             <small>Other Critical Medical Cases</small>
                         </div>
-                    </div>
+                        </div>
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-child"></i></div>
                         <div class="mini-content">
                             <div class="mini-value" id="childrenAgeVal">509</div>
                             <small>Children Age Profile</small>
-                            <div class="age-breakdown">
+                            <div class="age-breakdown-single">
                                 <div class="age-group">0-6: 122</div>
                                 <div class="age-group">6-12: 216</div>
                                 <div class="age-group">12-18: 150</div>
                                 <div class="age-group">18-24: 20</div>
                             </div>
+            </div>
                         </div>
-                    </div>
-                        </div>
-                
+                            </div>
+            
                 <!-- Enhanced Family Data Charts -->
                 <div class="enhanced-charts-section">
                     <h3 class="section-subtitle">Family-Related Analytics</h3>
@@ -287,27 +286,27 @@
                                 <canvas id="medicalStatusChart"></canvas>
                         </div>
                     </div>
-
+                    
                         <!-- Chart 2: Parental Education - Horizontal Bar Chart -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="educationChart"></canvas>
-                </div>
-            </div>
-            
+                        </div>
+                            </div>
+                    
                         <!-- Chart 3: Marital Discord - Progress Ring -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="maritalDiscordChart"></canvas>
                         </div>
-                            </div>
-
+                    </div>
+                    
                         <!-- Chart 4: Workshop Distribution - Bar Chart -->
                         <div class="enhanced-chart-card large">
                             <div class="large-chart-container">
                                 <canvas id="workshopChart"></canvas>
                         </div>
-                    </div>
+                            </div>
                     
                         <!-- Chart 5: Entrepreneurship - Gauge Chart -->
                         <div class="enhanced-chart-card">
@@ -333,14 +332,14 @@
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="genderChart"></canvas>
-                        </div>
-                            </div>
+                </div>
+            </div>
 
                         <!-- Chart 8: Children Age Profile - Radar Chart -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="ageProfileChart"></canvas>
-                        </div>
+                    </div>
                     </div>
                     
                         <!-- Chart 9: Educational Streams - Bar Chart -->
@@ -349,13 +348,13 @@
                                 <canvas id="educationalStreamsChart"></canvas>
                 </div>
             </div>
-
+            
                         <!-- Chart 10: Medical Needs - Donut Chart -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="medicalNeedsChart"></canvas>
+                    </div>
                 </div>
-            </div>
             
                         <!-- Chart 11: Health Status Overview - Multi-level Donut -->
                         <div class="enhanced-chart-card">
@@ -396,7 +395,7 @@
             <!-- Families Section -->
     <div class="families-section app-section hidden" id="section-families">
         <div class="section-header-row">
-                    <h2>Families <span class="count">(274)</span></h2>
+                    <h2>Families <span class="count">(100)</span></h2>
             <div class="families-actions">
                 <input type="text" class="fam-search" placeholder="Search families..." />
                 <button class="check-btn">Add Family</button>
@@ -985,6 +984,79 @@ async function initChartsOnce() {
             }
         }
 
+        // Sample families data (100 families matching old dashboard style)
+        const familiesData = Array.from({ length: 100 }, (_, i) => {
+            const surnames = ['Sharma', 'Singh', 'Kumar', 'Gupta', 'Verma', 'Patel', 'Reddy', 'Joshi', 'Agarwal', 'Jain', 'Yadav', 'Pandey', 'Mishra', 'Tiwari', 'Nair', 'Rao', 'Das', 'Iyer', 'Krishnan', 'Menon'];
+            const firstNames = ['Rajesh', 'Vikram', 'Amit', 'Suresh', 'Ravi', 'Raj', 'Kiran', 'Sunil', 'Pradeep', 'Anil', 'Manoj', 'Rakesh', 'Kumar', 'Suresh', 'Ravi', 'Kumar', 'Rajan', 'Mohan', 'Ravi', 'Krishnan'];
+            const educations = ['B.Tech', 'MBA', 'B.Sc', 'M.A', 'B.Com', 'M.Tech', 'B.A', 'M.Sc', 'B.E', 'M.Com', 'B.Ed', 'M.Ed', 'BBA', 'MBA', 'BDS', 'MDS', 'B.Pharm', 'M.Pharm', 'B.Sc Nursing', 'M.Sc Nursing'];
+            const childrenCounts = ['1 Child', '2 Children', '3 Children', '1 Child', '2 Children', '1 Child', '2 Children', '3 Children', '1 Child', '2 Children'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            return {
+                id: i + 1,
+                name: `${surnames[i % surnames.length]} Family`,
+                husband: `${firstNames[i % firstNames.length]} ${surnames[i % surnames.length]}`,
+                contact: `+91-${9876500000 + i}`,
+                education: educations[i % educations.length],
+                children: childrenCounts[i % childrenCounts.length],
+                joined: `${months[i % months.length]} 2024`
+            };
+        });
+
+        // Sample companies data (matching old dashboard style)
+        const companiesData = [
+            { id: "Coy001", femaleName: "Priya Sharma", spouseName: "Rajesh Sharma", education: "B.Tech", phoneNumber: "+91-9000000001", rank: "Col" },
+            { id: "Coy002", femaleName: "Kavita Singh", spouseName: "Vikram Singh", education: "MBA", phoneNumber: "+91-9000000002", rank: "Lt Col" },
+            { id: "Coy003", femaleName: "Sunita Verma", spouseName: "Amit Verma", education: "B.Sc", phoneNumber: "+91-9000000003", rank: "Maj" },
+            { id: "Coy004", femaleName: "Rekha Patel", spouseName: "Ravi Patel", education: "M.A", phoneNumber: "+91-9000000004", rank: "Capt" },
+            { id: "Coy005", femaleName: "Meera Gupta", spouseName: "Suresh Gupta", education: "B.Com", phoneNumber: "+91-9000000005", rank: "Lt" },
+            { id: "Coy006", femaleName: "Anita Kumar", spouseName: "Raj Kumar", education: "M.Tech", phoneNumber: "+91-9000000006", rank: "Sqn Ldr" },
+            { id: "Coy007", femaleName: "Sushila Yadav", spouseName: "Vijay Yadav", education: "B.A", phoneNumber: "+91-9000000007", rank: "Flt Lt" },
+            { id: "Coy008", femaleName: "Geeta Tiwari", spouseName: "Ramesh Tiwari", education: "M.Sc", phoneNumber: "+91-9000000008", rank: "Fg Offr" }
+        ];
+
+        // Load families data (matching old dashboard style)
+        function loadFamilies() {
+            const familiesGrid = document.getElementById('familiesGrid');
+            if (!familiesGrid) return;
+
+            familiesGrid.innerHTML = familiesData.map(f => `
+                <div class="family-card">
+                    <div class="fc-top">
+                        <h4>${f.name}</h4>
+                        <span class="badge success">AWWA REGISTERED</span>
+                    </div>
+                    <div class="fc-body">
+                        <div class="row"><span class="label">Husband:</span><span class="val">${f.husband}</span></div>
+                        <div class="row"><span class="label">Contact:</span><span class="val">${f.contact}</span></div>
+                        <div class="row"><span class="label">Education:</span><span class="val">${f.education}</span></div>
+                    </div>
+                    <div class="fc-footer"><a href="#">${f.children}</a>${f.joined ? `<small>${f.joined}</small>` : ''}</div>
+                </div>
+            `).join('');
+        }
+
+        // Load companies data (matching old dashboard style)
+        function loadCompanies() {
+            const coyGrid = document.getElementById('coyGrid');
+            if (!coyGrid) return;
+
+            coyGrid.innerHTML = companiesData.map(c => `
+                <div class="family-card">
+                    <div class="fc-top">
+                        <h4>${c.id}</h4>
+                        <span class="badge success">${c.rank}</span>
+                    </div>
+                    <div class="fc-body">
+                        <div class="row"><span class="label">Female Name:</span><span class="val">${c.femaleName}</span></div>
+                        <div class="row"><span class="label">Spouse Name:</span><span class="val">${c.spouseName}</span></div>
+                        <div class="row"><span class="label">Education:</span><span class="val">${c.education}</span></div>
+                        <div class="row"><span class="label">Phone:</span><span class="val">${c.phoneNumber}</span></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         // Initialize navigation
 document.addEventListener('DOMContentLoaded', function() {
             // Add click listeners to navigation
@@ -992,6 +1064,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 li.addEventListener('click', function() {
                     const target = this.getAttribute('data-target');
                     switchSection(target);
+                    
+                    // Load data based on section
+                    if (target === 'section-families') {
+                        loadFamilies();
+                    } else if (target === 'section-companies') {
+                        loadCompanies();
+                    }
                     
                     // Initialize charts when dashboard is shown
                     if (target === 'section-dashboard') {
@@ -1080,7 +1159,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
             }
             
-            // Update welcome title
+        // Update welcome title
             const welcomeTitle = document.getElementById('welcomeTitle');
             if (welcomeTitle) {
                 welcomeTitle.textContent = `Welcome, ${userInfo.name}!`;
