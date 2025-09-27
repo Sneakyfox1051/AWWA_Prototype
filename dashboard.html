@@ -1022,13 +1022,26 @@ function loadUserInfo() {
         
         // Update user information panel
         const userInfoBody = document.getElementById('userInfoBody');
-        userInfoBody.innerHTML = `
+        
+        // Check if user is Tarunpreet Singh to add wife information
+        let userInfoHTML = `
             <div class="info-row"><span class="label">User ID:</span><span class="value">${userInfo.userId}</span></div>
             <div class="info-row"><span class="label">Name:</span><span class="value">${userInfo.name}</span></div>
             <div class="info-row"><span class="label">Designation:</span><span class="value">${userInfo.designation || 'N/A'}</span></div>
             <div class="info-row"><span class="label">Contact Number:</span><span class="value">${userInfo.phone || 'N/A'}</span></div>
             <div class="info-row"><span class="label">User Type:</span><span class="value">${userInfo.userType || 'admin'}</span></div>
         `;
+        
+        // Add wife information for Tarunpreet Singh
+        if (userInfo.userId === 'tarunpreet singh') {
+            userInfoHTML += `
+                <div class="info-row"><span class="label">Spouse Name:</span><span class="value">Deepkiran Kaur</span></div>
+                <div class="info-row"><span class="label">Spouse Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
+                <div class="info-row"><span class="label">Spouse Contact:</span><span class="value">7052615743</span></div>
+            `;
+        }
+        
+        userInfoBody.innerHTML = userInfoHTML;
         
         // Update left panel name
         const leftPanelName = document.querySelector('.lp-name');
@@ -1045,13 +1058,31 @@ function loadUserInfo() {
                 // Show default information if no user data
                 const userInfoBody = document.getElementById('userInfoBody');
                 if (userInfoBody) {
-                    userInfoBody.innerHTML = `
+                    // Check if current user is Tarunpreet Singh for default display
+                    const currentUserId = localStorage.getItem('userId') || 'admin001';
+                    let defaultUserInfoHTML = `
                         <div class="info-row"><span class="label">User ID:</span><span class="value">admin001</span></div>
                         <div class="info-row"><span class="label">Name:</span><span class="value">Sushma Bhatti</span></div>
                         <div class="info-row"><span class="label">Designation:</span><span class="value">Battalion Command</span></div>
                         <div class="info-row"><span class="label">Contact Number:</span><span class="value">+91-9876543210</span></div>
                         <div class="info-row"><span class="label">User Type:</span><span class="value">admin</span></div>
                     `;
+                    
+                    // Add wife information if Tarunpreet Singh is logged in
+                    if (currentUserId === 'tarunpreet singh') {
+                        defaultUserInfoHTML = `
+                            <div class="info-row"><span class="label">User ID:</span><span class="value">tarunpreet singh</span></div>
+                            <div class="info-row"><span class="label">Name:</span><span class="value">Col Tarunpreet Singh</span></div>
+                            <div class="info-row"><span class="label">Designation:</span><span class="value">Commanding Officer</span></div>
+                            <div class="info-row"><span class="label">Contact Number:</span><span class="value">9650300475</span></div>
+                            <div class="info-row"><span class="label">User Type:</span><span class="value">admin</span></div>
+                            <div class="info-row"><span class="label">Spouse Name:</span><span class="value">Deepkiran Kaur</span></div>
+                            <div class="info-row"><span class="label">Spouse Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
+                            <div class="info-row"><span class="label">Spouse Contact:</span><span class="value">7052615743</span></div>
+                        `;
+                    }
+                    
+                    userInfoBody.innerHTML = defaultUserInfoHTML;
                 }
                 
                 // Update welcome title
