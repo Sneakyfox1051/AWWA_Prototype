@@ -44,7 +44,7 @@
                             <label for="userId">User ID</label>
                             <div class="input-container">
                                 <i class="fas fa-user input-icon"></i>
-                                <input type="text" id="userId" name="userId" value="bt01" required>
+                                <input type="text" id="userId" name="userId" value="tarunpreet singh" required>
                             </div>
                         </div>
 
@@ -52,7 +52,7 @@
                             <label for="password">Password</label>
                             <div class="input-container">
                                 <i class="fas fa-lock input-icon"></i>
-                                <input type="password" id="password" name="password" placeholder="••••••" required>
+                                <input type="password" id="password" name="password" value="admin123" required>
                             </div>
                         </div>
 
@@ -62,10 +62,10 @@
                                 <i class="fas fa-shield-alt input-icon"></i>
                                 <select id="userType" name="userType" required>
                                     <option value="">Select your role</option>
-                                    <option value="admin">L1</option>
-                                    <option value="teacher">L2</option>
-                                    <option value="student">L3</option>
-                                    <option value="parent">L4</option>
+                                    <option value="L1" selected>L1</option>
+                                    <option value="L2">L2</option>
+                                    <option value="L3">L3</option>
+                                    <option value="L4">L4</option>
                                 </select>
                                 <i class="fas fa-chevron-down select-arrow"></i>
                             </div>
@@ -82,12 +82,27 @@
     <script>
         // Example credentials
         const validUsers = [
+            // Admin users
             { userId: 'tarunpreet singh', password: 'admin123', userType: 'admin', name: 'Col Tarunpreet Singh', designation: 'Commanding Officer', phone: '9650300475' },
             { userId: 'piyush sharma',     password: 'admin123', userType: 'admin', name: 'Lt Col Piyush Sharma', designation: 'Second in Comd', phone: '9797719357' },
             { userId: 'harish kumar',     password: 'admin123', userType: 'admin', name: 'Maj Harish Kumar', designation: 'Adjt', phone: '9256172418' },
             { userId: 'rahul t more',      password: 'admin123', userType: 'admin', name: 'Lt Col Rahul T More', designation: 'OIC Tech Cell', phone: '7006216984' },
             { userId: 'admin',      password: 'admin123', userType: 'admin', name: 'Administrator', designation: 'System Admin', phone: '0000000000' },
-            { userId: 'bt01',       password: 'admin123', userType: 'admin', name: 'Sushma Bhatti', designation: 'Battalion Command', phone: '9087654321' }
+            { userId: 'bt01',       password: 'admin123', userType: 'admin', name: 'Sushma Bhatti', designation: 'Battalion Command', phone: '9087654321' },
+            
+            // L1 users
+            { userId: 'aditi', password: 'admin123', userType: 'L1', name: 'Aditi Mehra', designation: 'L1 User', phone: '9876543210' },
+            { userId: 'user1', password: 'admin123', userType: 'L1', name: 'User One', designation: 'L1 Officer', phone: '9876543211' },
+            { userId: 'test', password: 'admin123', userType: 'L1', name: 'Test User', designation: 'L1 Staff', phone: '9876543212' },
+            
+            // L2 users
+            { userId: 'user2', password: 'admin123', userType: 'L2', name: 'User Two', designation: 'L2 Officer', phone: '9876543213' },
+            
+            // L3 users
+            { userId: 'user3', password: 'admin123', userType: 'L3', name: 'User Three', designation: 'L3 Officer', phone: '9876543214' },
+            
+            // L4 users
+            { userId: 'user4', password: 'admin123', userType: 'L4', name: 'User Four', designation: 'L4 Officer', phone: '9876543215' }
         ];
 
         // Handle login
@@ -97,7 +112,21 @@
             const password = document.getElementById('password').value;
             const userType = document.getElementById('userType').value;
 
-            const match = validUsers.find(u => u.userId === userId && u.password === password && u.userType === userType);
+            console.log('Login attempt:', { userId, password, userType });
+            
+            // First try exact match with userType
+            let match = validUsers.find(u => u.userId === userId && u.password === password && u.userType === userType);
+            
+            // If no exact match, try with any valid user ID and password (flexible role)
+            if (!match) {
+                match = validUsers.find(u => u.userId === userId && u.password === password);
+                if (match) {
+                    // Update the userType to what was selected
+                    match = { ...match, userType: userType };
+                }
+            }
+            
+            console.log('Match found:', match);
             if (match) {
                 // Persist complete session info
                 localStorage.setItem('userInfo', JSON.stringify({ 
@@ -107,43 +136,14 @@
                     designation: match.designation,
                     phone: match.phone
                 }));
+                console.log('Login successful, redirecting...');
+                alert('Login successful! Redirecting to dashboard...');
                 window.location.href = 'dashboard.html';
             } else {
-                alert('Invalid credentials.\n\nTry one of these:\n- tarunpreet singh / admin123 / admin\n- piyush sharma / admin123 / admin\n- harish kumar / admin123 / admin\n- rahul t more / admin123 / admin\n- admin / admin123 / admin\n- bt01 / admin123 / admin');
+                alert('Invalid credentials.\n\nTry one of these:\n- aditi / admin123 / L1\n- user1 / admin123 / L1\n- test / admin123 / L1\n- user2 / admin123 / L2\n- user3 / admin123 / L3\n- user4 / admin123 / L4\n- tarunpreet singh / admin123 / admin\n- piyush sharma / admin123 / admin\n- harish kumar / admin123 / admin\n- rahul t more / admin123 / admin\n- admin / admin123 / admin\n- bt01 / admin123 / admin');
             }
         });
     </script>
     
-    <!-- D-ID Chatbot -->
-    <script type="module"
-          src="https://agent.d-id.com/v2/index.js"
-          data-mode="fabio"
-          data-client-key="Z29vZ2xlLW9hdXRoMnwxMDA1MjIwMjc4MDA4MjIzNDk5MDE6aDEyZUd2MFNUa2gzWkRhWG0ybjA2"
-          data-agent-id="v2_agt_CKSD5djL"
-          data-name="did-agent"
-          data-monitor="true"
-          data-orientation="horizontal"
-          data-position="right">
-    </script>
-    
-    <!-- Fallback chatbot if D-ID doesn't load -->
-    <div id="chatbot-fallback" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;">
-        <button onclick="toggleFallbackChat()" style="background: #ff7a00; color: white; border: none; padding: 15px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer;">
-            <i class="fas fa-comments" style="font-size: 20px;"></i>
-        </button>
-    </div>
-    
-    <script>
-        // Check if D-ID chatbot loads, show fallback if not
-        setTimeout(() => {
-            if (!document.querySelector('[data-name="did-agent"]')) {
-                document.getElementById('chatbot-fallback').style.display = 'block';
-            }
-        }, 3000);
-        
-        function toggleFallbackChat() {
-            alert('Chatbot is temporarily unavailable. Please contact support for assistance.');
-        }
-    </script>
 </body>
 </html>

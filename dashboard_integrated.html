@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWWA - Dashboard Home</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <!-- Tailwind CSS for enhanced charts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Inter font family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Enhanced Charts Styles */
+        .enhanced-charts-section {
+            margin-bottom: 40px;
+        }
+
+        .section-subtitle {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1F2937;
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--brand-primary);
+            display: inline-block;
+            width: 100%;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .enhanced-chart-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enhanced-chart-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .enhanced-chart-card.large {
+            grid-column: span 2;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        .large-chart-container {
+            position: relative;
+            height: 500px;
+            width: 100%;
+        }
+
+        .small-chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Responsive Design for Enhanced Charts */
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .enhanced-chart-card.large {
+                grid-column: span 1;
+            }
+            
+            .chart-container {
+                height: 350px;
+            }
+            
+            .large-chart-container {
+                height: 400px;
+            }
+            
+            .enhanced-chart-card {
+                padding: 16px;
+            }
+            
+            .section-subtitle {
+                font-size: 20px;
+                margin-bottom: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-header-inner">
+            <div class="app-brand">
+                <img src="public/Awwa2-logo.png" alt="AWWA Logo" class="app-logo" />
+                <div class="app-title-wrap">
+                    <h1 class="app-title">AWWA Family Management System</h1>
+                    <div class="app-subtitle">'दीप' 🪔 — ☼ जागरूकता से आत्मनिर्भरता ☼</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </header>
+    <div class="dash-layout">
+        <!-- Left Side Panel -->
+        <aside class="left-panel">
+            <div class="lp-header">
+                <img src="public/profile.png" alt="Profile" class="lp-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="lp-avatar" style="display:none;">SB</div>
+                <div class="lp-name">Sushma Bhatti</div>
+                <div class="lp-role">Battalion Command</div>
+            </div>
+            <nav class="lp-nav">
+                <ul>
+                    <li class="active" data-target="section-dashboard"><i class="fas fa-home"></i><span>Dashboard</span></li>
+                    <li data-target="section-families"><i class="fas fa-notes-medical"></i><span>Families</span></li>
+                    <li data-target="section-companies"><i class="fas fa-building"></i><span>FW Coy</span></li>
+                    <li data-target="section-Newsletter"><i class="fas fa-calendar"></i><span>Newsletter</span></li>
+                    <li data-target="section-Rankings"><i class="fas fa-chart-bar"></i><span>Admin Users</span></li>
+                    <li data-target="section-settings"><i class="fas fa-gear"></i><span>Settings</span></li>
+                </ul>
+            </nav>
+            
+            <!-- Logout Button in Sidebar -->
+            <div class="lp-footer">
+                <button class="sidebar-logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Area -->
+        <div class="main-area">
+            <div class="home-container app-section" id="section-dashboard">
+                <!-- Welcome Header Row -->
+                <section class="welcome-section-card">
+                    <h1 class="welcome-title" id="welcomeTitle">Welcome!</h1>
+
+                    <div class="user-grid">
+                        <!-- User Information -->
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <i class="fas fa-user-circle"></i>
+                                <h3>User Information</h3>
+                            </div>
+                            <div class="panel-body" id="userInfoBody">
+                                <!-- Dynamic content will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Additional Details (empty) -->
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <i class="fas fa-circle-info"></i>
+                                <h3>Additional Details</h3>
+                            </div>
+                            <div class="panel-body empty"></div>
+                        </div>
+
+                        <!-- Profile Card -->
+                        <div class="profile-side-card">
+                            <img src="public/profile.png" alt="Profile" class="avatar-box-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                            <div class="avatar-box" style="display:none;" id="profileInitials">SB</div>
+                            <i class="fas fa-check-circle verified"></i>
+                            <div class="profile-meta">
+                                <h4 id="profileName">Loading...</h4>
+                                <p id="profileDesignation">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stats Cards -->
+                <div class="stats-card-grid">
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-users"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="totalFamiliesVal">274</div>
+                            <small>Total Families</small>
+                        </div>
+                    </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-child"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="totalChildrenVal">183</div>
+                            <small>Total Children</small>
+                        </div>
+                    </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="registeredFamiliesVal">274</div>
+                            <small>Registered Families</small>
+                        </div>
+                    </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-calculator"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="avgChildrenVal">1.8</div>
+                            <small>Average Children per Family</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Family Data Charts -->
+                <div class="enhanced-charts-section">
+                    <h3 class="section-subtitle">Family-Related Analytics</h3>
+                    <div class="charts-grid">
+                        <!-- Chart 1: Medical Status - Doughnut Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="medicalStatusChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Parental Education - Horizontal Bar Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="educationChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 3: Marital Discord - Progress Ring -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="maritalDiscordChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 4: Workshop Distribution - Bar Chart -->
+                        <div class="enhanced-chart-card large">
+                            <div class="large-chart-container">
+                                <canvas id="workshopChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 5: Entrepreneurship - Gauge Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="entrepreneurshipChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 6: Family Size Distribution - Polar Area Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="familySizeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Children Data Charts -->
+                <div class="enhanced-charts-section">
+                    <h3 class="section-subtitle">Children-Related Analytics</h3>
+                    <div class="charts-grid">
+                        <!-- Chart 7: Gender Distribution - Pie Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="genderChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 8: Children Age Profile - Radar Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="ageProfileChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 9: Educational Streams - Bar Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="educationalStreamsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 10: Medical Needs - Donut Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="medicalNeedsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 11: Health Status Overview - Multi-level Donut -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="healthOverviewChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Summary Row -->
+                <section class="summary-row">
+                    <div class="summary-card">
+                        <h3>Data Summary</h3>
+                        <div class="summary-item">
+                            <span class="s-label">Data Completeness:</span>
+                            <span class="s-value high">High</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="s-label">Total Records:</span>
+                            <span class="s-value">783</span>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Children Breakdown</h3>
+                        <div class="summary-item">
+                            <span class="s-label">Special Needs:</span>
+                            <span class="s-value">1</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="s-label">Medical Cases:</span>
+                            <span class="s-value">30</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Other sections (Families, Companies, etc.) would go here -->
+            <div class="app-section hidden" id="section-families">
+                <h2>Families Section</h2>
+                <p>This section would contain family management functionality.</p>
+            </div>
+
+            <div class="app-section hidden" id="section-companies">
+                <h2>Companies Section</h2>
+                <p>This section would contain company/unit management functionality.</p>
+            </div>
+
+            <div class="app-section hidden" id="section-Newsletter">
+                <h2>Newsletter Section</h2>
+                <p>This section would contain newsletter management functionality.</p>
+            </div>
+
+            <div class="app-section hidden" id="section-Rankings">
+                <h2>Rankings Section</h2>
+                <p>This section would contain rankings and admin user management.</p>
+            </div>
+
+            <div class="app-section hidden" id="section-settings">
+                <h2>Settings Section</h2>
+                <p>This section would contain application settings.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Charts: initialize on first view of dashboard
+        async function initChartsOnce() {
+            if (window.__chartsReady) return;
+            
+            // Check if Chart.js is loaded
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js not loaded');
+                return;
+            }
+            
+            // Color palettes for different chart types
+            const colorPalettes = {
+                medical: ['#10B981', '#F59E0B', '#EF4444'],
+                education: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6'],
+                gender: ['#3B82F6', '#EC4899', '#6B7280'],
+                workshop: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444', '#84CC16'],
+                age: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
+                health: ['#10B981', '#EF4444']
+            };
+
+            // Chart 1: Family Medical Status - Doughnut Chart
+            new Chart(document.getElementById('medicalStatusChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['No Issues', 'Has Issues', 'Other'],
+                    datasets: [{
+                        data: [239, 30, 2],
+                        backgroundColor: colorPalettes.medical,
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Family Medical Status',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '60%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 2: Parental Education - Horizontal Bar Chart
+            new Chart(document.getElementById('educationChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Post Graduate', 'Graduation', '12th Grade', '10th Grade', 'Other'],
+                    datasets: [{
+                        label: 'Number of Families',
+                        data: [23, 72, 97, 32, 15],
+                        backgroundColor: colorPalettes.education,
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Parental Education Level',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, grid: { display: false } },
+                        y: { grid: { display: false } }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 3: Marital Discord - Progress Ring
+            new Chart(document.getElementById('maritalDiscordChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['No Discord', 'Discord Present'],
+                    datasets: [{
+                        data: [250, 24],
+                        backgroundColor: ['#10B981', '#EF4444'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Marital Discord Status',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '70%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 4: Workshop Distribution - Bar Chart
+            new Chart(document.getElementById('workshopChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['288 AW', '832 FWC', '831 FWC', '265 FWC', 'BHQ', '290 FWC', '286 FWC'],
+                    datasets: [{
+                        label: 'Number of Families',
+                        data: [65, 60, 38, 36, 30, 23, 22],
+                        backgroundColor: colorPalettes.workshop,
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Distribution of Family Members',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { beginAtZero: true, grid: { display: false } }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 5: Entrepreneurship - Gauge Chart
+            new Chart(document.getElementById('entrepreneurshipChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Not Involved', 'Involved'],
+                    datasets: [{
+                        data: [269, 5],
+                        backgroundColor: ['#6B7280', '#10B981'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'AWWA Entrepreneurship Program',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '80%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 6: Family Size Distribution - Polar Area Chart
+            new Chart(document.getElementById('familySizeChart'), {
+                type: 'polarArea',
+                data: {
+                    labels: ['1 Child', '2 Children', '3 Children', '4+ Children'],
+                    datasets: [{
+                        data: [45, 78, 32, 15],
+                        backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Family Size Distribution',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 7: Gender Distribution - Pie Chart
+            new Chart(document.getElementById('genderChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Male', 'Female'],
+                    datasets: [{
+                        data: [33, 14],
+                        backgroundColor: ['#3B82F6', '#EC4899'],
+                        borderWidth: 3,
+                        borderColor: '#FFFFFF',
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Children Gender Distribution',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 8: Children Age Profile - Radar Chart
+            new Chart(document.getElementById('ageProfileChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['0-6 years', '6-12 years', '12-18 years', '18-24 years'],
+                    datasets: [{
+                        label: 'Number of Children',
+                        data: [45, 78, 52, 8],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(75, 192, 192, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Children Age Profile',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: { display: false }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: { font: { size: 12 } }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 9: Educational Streams - Bar Chart
+            new Chart(document.getElementById('educationalStreamsChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Arts', 'Commerce', 'Science', 'PCM', 'PCB', 'Other'],
+                    datasets: [{
+                        label: 'Number of Students',
+                        data: [15, 8, 12, 6, 4, 25],
+                        backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444'],
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Educational Streams Distribution',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { 
+                            grid: { display: false },
+                            ticks: { font: { size: 11 } }
+                        },
+                        y: { 
+                            beginAtZero: true, 
+                            grid: { display: false },
+                            ticks: { stepSize: 5 }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 10: Medical Needs - Donut Chart
+            new Chart(document.getElementById('medicalNeedsChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['No Special Needs', 'Special Needs'],
+                    datasets: [{
+                        data: [271, 1],
+                        backgroundColor: colorPalettes.health,
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Children Medical Needs',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '60%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 11: Health Status Overview - Multi-level Donut
+            new Chart(document.getElementById('healthOverviewChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Healthy Families', 'Families with Medical Issues', 'Children with Special Needs'],
+                    datasets: [{
+                        data: [239, 30, 1],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Overall Health Status',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '50%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            window.__chartsReady = true;
+        }
+
+        // Navigation functionality
+        function switchSection(targetSection) {
+            // Hide all sections
+            document.querySelectorAll('.app-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show target section
+            const target = document.getElementById(targetSection);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+            
+            // Update navigation active state
+            document.querySelectorAll('.lp-nav li').forEach(li => {
+                li.classList.remove('active');
+            });
+            
+            const activeNav = document.querySelector(`.lp-nav li[data-target="${targetSection}"]`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+        }
+
+        // Initialize navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click listeners to navigation
+            document.querySelectorAll('.lp-nav li').forEach(li => {
+                li.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    switchSection(target);
+                    
+                    // Initialize charts when dashboard is shown
+                    if (target === 'section-dashboard') {
+                        setTimeout(initChartsOnce, 500);
+                    }
+                });
+            });
+            
+            // Initialize charts
+            setTimeout(initChartsOnce, 1000);
+        });
+
+        // Load user info when page loads
+        function loadUserInfo() {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            
+            if (userInfo.name) {
+                // Update welcome title
+                document.getElementById('welcomeTitle').textContent = `Welcome, ${userInfo.name}!`;
+                
+                // Update profile information
+                document.getElementById('profileName').textContent = userInfo.name;
+                document.getElementById('profileDesignation').textContent = userInfo.designation || 'User';
+                
+                // Update profile initials
+                const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                document.getElementById('profileInitials').textContent = initials;
+                
+                // Set profile image based on user
+                let profileImage = 'public/profile.png';
+                switch(userInfo.userId) {
+                    case 'tarunpreet singh':
+                        profileImage = 'public/Gemini_Generated_Image_4jitd24jitd24jit.png';
+                        break;
+                    case 'piyush sharma':
+                        profileImage = 'public/Gemini_Generated_Image_iy5po1iy5po1iy5p.png';
+                        break;
+                    case 'harish kumar':
+                        profileImage = 'public/Gemini_Generated_Image_kd3igrkd3igrkd3i%20%281%29.png';
+                        break;
+                    case 'rahul t more':
+                        profileImage = 'public/Col.jpg';
+                        break;
+                    case 'bt01':
+                        profileImage = 'public/profile.png';
+                        break;
+                    default:
+                        profileImage = 'public/profile.png';
+                }
+                
+                // Update profile images
+                const profileImages = document.querySelectorAll('.avatar-box-img, .lp-avatar-img');
+                profileImages.forEach(img => {
+                    img.src = profileImage;
+                });
+                
+                // Update user information panel
+                const userInfoBody = document.getElementById('userInfoBody');
+                userInfoBody.innerHTML = `
+                    <div class="info-row"><span class="label">User ID:</span><span class="value">${userInfo.userId}</span></div>
+                    <div class="info-row"><span class="label">Name:</span><span class="value">${userInfo.name}</span></div>
+                    <div class="info-row"><span class="label">Designation:</span><span class="value">${userInfo.designation || 'N/A'}</span></div>
+                    <div class="info-row"><span class="label">Contact Number:</span><span class="value">${userInfo.phone || 'N/A'}</span></div>
+                    <div class="info-row"><span class="label">User Type:</span><span class="value">${userInfo.userType || 'admin'}</span></div>
+                `;
+                
+                // Update left panel name
+                const leftPanelName = document.querySelector('.lp-name');
+                if (leftPanelName) {
+                    leftPanelName.textContent = userInfo.name;
+                }
+                
+                // Update left panel role
+                const leftPanelRole = document.querySelector('.lp-role');
+                if (leftPanelRole) {
+                    leftPanelRole.textContent = userInfo.designation || 'User';
+                }
+            }
+        }
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('userInfo');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Load user info when page loads
+        document.addEventListener('DOMContentLoaded', loadUserInfo);
+    </script>
+</body>
+</html>

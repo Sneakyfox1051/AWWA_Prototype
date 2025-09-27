@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWWA - Dashboard Home</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-header-inner">
+            <div class="app-brand">
+                <img src="public/Awwa2-logo.png" alt="AWWA Logo" class="app-logo" />
+                <div class="app-title-wrap">
+                    <h1 class="app-title">AWWA Family Management System</h1>
+                    <div class="app-subtitle">‘दीप’ 🪔 — ☼ जागरूकता से आत्मनिर्भरता ☼</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </header>
+    <div class="dash-layout">
+        <!-- Left Side Panel -->
+        <aside class="left-panel">
+            <div class="lp-header">
+                <img src="public/profile.png" alt="Profile" class="lp-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="lp-avatar" style="display:none;">SB</div>
+                <div class="lp-name">Sushma Bhatti</div>
+                <div class="lp-role">Battalion Command</div>
+            </div>
+            <nav class="lp-nav">
+                <ul>
+                    <li class="active" data-target="section-dashboard"><i class="fas fa-home"></i><span>Dashboard</span></li>
+                    <li data-target="section-families"><i class="fas fa-notes-medical"></i><span>Families</span></li>
+                    <li data-target="section-companies"><i class="fas fa-building"></i><span>FW Coy</span></li>
+                    <li data-target="section-Newsletter"><i class="fas fa-calendar"></i><span>Newsletter</span></li>
+                    <li data-target="section-Rankings"><i class="fas fa-chart-bar"></i><span>Admin Users</span></li>
+                    <li data-target="section-settings"><i class="fas fa-gear"></i><span>Settings</span></li>
+                </ul>
+            </nav>
+            
+            <!-- Logout Button in Sidebar -->
+            <div class="lp-footer">
+                <button class="sidebar-logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Area -->
+        <div class="main-area">
+    <div class="home-container app-section" id="section-dashboard">
+        <!-- Welcome Header Row -->
+        <section class="welcome-section-card">
+            <h1 class="welcome-title" id="welcomeTitle">Welcome!</h1>
+
+            <div class="user-grid">
+                <!-- User Information -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>User Information</h3>
+                    </div>
+                    <div class="panel-body" id="userInfoBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Additional Details (empty) -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <i class="fas fa-circle-info"></i>
+                        <h3>Additional Details</h3>
+                    </div>
+                    <div class="panel-body empty"></div>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="profile-side-card">
+                    <img src="public/profile.png" alt="Profile" class="avatar-box-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <div class="avatar-box" style="display:none;" id="profileInitials">SB</div>
+                    <i class="fas fa-check-circle verified"></i>
+                    <div class="profile-meta">
+                        <h4 id="profileName">Loading...</h4>
+                        <p id="profileDesignation">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+            <div class="stats-card-grid">
+                <div class="stat-mini-card">
+                    <div class="mini-icon"><i class="fas fa-people-group"></i><span class="mini-badge" id="badgeFamilies">0</span></div>
+                    <div class="mini-meta">
+                        <span class="mini-label">TOTAL FAMILIES</span>
+                        <div class="mini-value" id="totalFamiliesVal">274</div>
+                        <small>Registered families in the system</small>
+                    </div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="mini-icon"><i class="fas fa-child-reaching"></i><span class="mini-badge" id="badgeChildren">0</span></div>
+                    <div class="mini-meta">
+                        <span class="mini-label">TOTAL CHILDREN</span>
+                        <div class="mini-value" id="totalChildrenVal">509</div>
+                        <small>Children across all families</small>
+                    </div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="mini-icon"><i class="fas fa-square-check"></i><span class="mini-badge" id="badgeRegistered">0</span></div>
+                    <div class="mini-meta">
+                        <span class="mini-label">REGISTERED FAMILIES</span>
+                        <div class="mini-value" id="registeredFamiliesVal">274</div>
+                        <small>100% of total</small>
+                    </div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="mini-icon"><i class="fas fa-chart-column"></i><span class="mini-badge" id="badgeAvg">1</span></div>
+                    <div class="mini-meta">
+                        <span class="mini-label">AVG CHILDREN/FAMILY</span>
+                        <div class="mini-value" id="avgChildrenVal">1.9</div>
+                        <small>Average Children per Family</small>
+                    </div>
+                </div>
+            </div>
+            <!-- Enhanced Family Data Charts -->
+            <div class="enhanced-charts-section">
+                <h3 class="section-subtitle">Family-Related Analytics</h3>
+                <div class="charts-grid">
+                    <!-- Chart 1: Medical Status - Doughnut Chart -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="medicalStatusChart"></canvas>
+                </div>
+                </div>
+
+                    <!-- Chart 2: Parental Education - Horizontal Bar Chart -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="educationChart"></canvas>
+            </div>
+                </div>
+
+                    <!-- Chart 3: Marital Discord - Progress Ring -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="maritalDiscordChart"></canvas>
+                </div>
+            </div>
+
+                    <!-- Chart 4: Workshop Distribution - Bar Chart -->
+                    <div class="enhanced-chart-card large">
+                        <div class="large-chart-container">
+                            <canvas id="workshopChart"></canvas>
+                </div>
+                </div>
+
+                    <!-- Chart 5: Entrepreneurship - Gauge Chart -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="entrepreneurshipChart"></canvas>
+            </div>
+                </div>
+
+                    <!-- Chart 6: Family Size Distribution - Polar Area Chart -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="familySizeChart"></canvas>
+                </div>
+            </div>
+                </div>
+                </div>
+
+            <!-- Enhanced Children Data Charts -->
+            <div class="enhanced-charts-section">
+                <h3 class="section-subtitle">Children-Related Analytics</h3>
+                <div class="charts-grid">
+                    <!-- Chart 7: Gender Distribution - Pie Chart -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="genderChart"></canvas>
+            </div>
+                </div>
+
+                    <!-- Chart 8: Educational Streams - Bar Chart -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="educationalStreamsChart"></canvas>
+                </div>
+            </div>
+
+                    <!-- Chart 9: Medical Needs - Donut Chart -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="medicalNeedsChart"></canvas>
+                </div>
+                    </div>
+
+                    <!-- Chart 10: Health Status Overview - Multi-level Donut -->
+                    <div class="enhanced-chart-card">
+                        <div class="chart-container">
+                            <canvas id="healthOverviewChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom Summary Row -->
+        <section class="summary-row">
+            <div class="summary-card">
+                <h3>Data Summary</h3>
+                <div class="summary-item">
+                    <span class="s-label">Data Completeness:</span>
+                    <span class="s-value high">High</span>
+                </div>
+                <div class="summary-item">
+                    <span class="s-label">Total Records:</span>
+                    <span class="s-value">783</span>
+                </div>
+            </div>
+            <div class="summary-card">
+                <h3>Children Breakdown</h3>
+                <div class="summary-item">
+                    <span class="s-label">Special Needs:</span>
+                    <span class="s-value">0 children</span>
+                </div>
+                <div class="summary-item">
+                    <span class="s-label">With Medical Info:</span>
+                    <span class="s-value">0 children</span>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Placeholder sections for navigation (hidden by default) -->
+    <div class="families-section app-section hidden" id="section-families">
+        <div class="section-header-row">
+            <h2>Families <span class="count">(20)</span></h2>
+            <div class="families-actions">
+                <input type="text" class="fam-search" placeholder="Search families..." />
+                <button class="check-btn">Add Family</button>
+            </div>
+        </div>
+        <div class="families-grid" id="familiesGrid"></div>
+    </div>
+    <div class="coy-section app-section hidden" id="section-companies">
+        <div class="section-header-row">
+            <h2>Coy <span class="count">(24)</span></h2>
+            <div class="coy-actions">
+                <input type="text" class="fam-search" placeholder="Search Coy..." />
+                <button class="check-btn">Add Coy</button>
+            </div>
+        </div>
+        <div class="coy-grid" id="coyGrid"></div>
+    </div>
+    <div class="newsletter-section app-section hidden" id="section-Newsletter">
+        <div class="section-header-row">
+            <h2>Newsletter</h2>
+            <div class="families-actions">
+                <a href="#subscribe" class="check-btn">Go to Subscribe</a>
+            </div>
+        </div>
+        <div class="newsletter-grid">
+            <div class="newsletter-card">
+                <h3>Subscribe to AWWA Updates</h3>
+                <p class="subtext">Get monthly highlights, events, and community stories right in your inbox.</p>
+                <form id="newsletterForm" class="newsletter-form">
+                    <div class="form-row">
+                        <label for="nlName">Full name</label>
+                        <input type="text" id="nlName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="nlEmail">Email address</label>
+                        <input type="email" id="nlEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-row inline">
+                        <input type="checkbox" id="nlConsent" required>
+                        <label for="nlConsent">I agree to receive newsletters and understand I can unsubscribe anytime.</label>
+                    </div>
+                    <button type="submit" class="check-btn wide">Subscribe</button>
+                    <p id="nlMessage" class="nl-message" aria-live="polite"></p>
+                </form>
+            </div>
+
+            <div class="newsletter-side">
+                <div class="nl-info">
+                    <h4>What you'll get</h4>
+                    <ul>
+                        <li>Monthly digest of AWWA activities</li>
+                        <li>Upcoming events & workshops</li>
+                        <li>Success stories from our community</li>
+                        <li>Volunteer opportunities</li>
+                    </ul>
+                </div>
+                <div class="nl-share">
+                    <h4>Share subscription link</h4>
+                    <div class="share-row">
+                        <input type="text" id="nlShareLink" readonly value="https://awwa.example.com/newsletter/subscribe">
+                        <button class="copy-btn" id="copyLinkBtn" type="button"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <small>Copy this link to invite others to join the newsletter.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="powerbi-section app-section hidden" id="section-reports">
+        <div class="section-header-row">
+            <h2>Analytics (Power BI)</h2>
+            <div class="families-actions">
+                <a href="https://learn.microsoft.com/power-bi/collaborate-share/service-publish-to-web" target="_blank" class="check-btn">How to get embed link</a>
+            </div>
+        </div>
+        <div class="powerbi-grid">
+            <div class="powerbi-config">
+                <h3>Embed your report</h3>
+                <p class="subtext">Paste a Power BI "Publish to web" URL (starts with https://app.powerbi.com/view?...). We'll remember it for you.</p>
+                <div class="form-row">
+                    <label for="pbiUrl">Power BI public embed URL</label>
+                    <input id="pbiUrl" type="url" placeholder="https://app.powerbi.com/view?r=..." />
+                </div>
+                <div class="form-row inline">
+                    <button id="pbiLoadBtn" class="check-btn">Load report</button>
+                    <button id="pbiClearBtn" class="copy-btn" type="button">Clear</button>
+                </div>
+                <small>Note: For secure embeds (Embed for your organization) you'll need a backend to generate an access token. This UI supports public "Publish to web" links for quick demos.</small>
+            </div>
+            <div class="powerbi-view">
+                <div class="pbi-frame-wrap">
+                    <iframe id="pbiFrame" title="Power BI Report" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ranking-section app-section hidden" id="section-Rankings">
+        <div class="section-header-row">
+            <h2>Unit Rankings</h2>
+        </div>
+        <div class="ranking-grid">
+            <div class="rank-card">
+                <div class="rank-left">
+                    <div class="rank-badge">1</div>
+                    <img src="public/Gemini_Generated_Image_4jitd24jitd24jit.png" alt="Col Tarunpreet Singh" class="rank-avatar-img" />
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">Rank - Col</div>
+                    <h3 class="rank-name">Tarunpreet Singh</h3>
+                    <div class="rank-role">Commanding Officer</div>
+                    <a href="tel:9650300475" class="rank-phone">Mob No: 9650300475</a>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <div class="rank-left">
+                    <div class="rank-badge">2</div>
+                    <img src="public/piyush.jpeg" alt="Lt Col Piyush Sharma" class="rank-avatar-img" />
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">Rank - Lt Col</div>
+                    <h3 class="rank-name">Piyush Sharma</h3>
+                    <div class="rank-role">Second in Comd</div>
+                    <a href="tel:9797719357" class="rank-phone">Mobile No: 9797719357</a>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <div class="rank-left">
+                    <div class="rank-badge">3</div>
+                    <img src="public/harish.jpeg" alt="Maj Harish Kumar" class="rank-avatar-img" />
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">Rank - Maj</div>
+                    <h3 class="rank-name">Harish Kumar</h3>
+                    <div class="rank-role">Adjt</div>
+                    <a href="tel:9256172418" class="rank-phone">Mob No: 9256172418</a>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <div class="rank-left">
+                    <div class="rank-badge">4</div>
+                    <img src="public/Rahul.jpeg" alt="Lt Col Rahul T More" class="rank-avatar-img" />
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">Rank - Lt Col</div>
+                    <h3 class="rank-name">Rahul T More</h3>
+                    <div class="rank-role">OIC Tech Cell</div>
+                    <a href="tel:7006216984" class="rank-phone">Mobile No: 7006216984</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="placeholder-section app-section hidden" id="section-settings">
+        <h2>Settings</h2>
+        <p>Settings section coming soon.</p>
+    </div>
+        </div>
+    </div>
+</body>
+<script>
+// Simple client-side router for left panel
+document.querySelectorAll('.lp-nav li').forEach(item => {
+  item.addEventListener('click', () => {
+    // active state
+    document.querySelectorAll('.lp-nav li').forEach(li => li.classList.remove('active'));
+    item.classList.add('active');
+    
+    // show only the matching section
+    const target = item.getAttribute('data-target');
+    document.querySelectorAll('.app-section').forEach(sec => sec.classList.add('hidden'));
+    const toShow = document.getElementById(target);
+    if (toShow) toShow.classList.remove('hidden');
+  });
+});
+
+// Families: render 50 demo cards
+const familiesData = Array.from({ length: 50 }).map((_, i) => ({
+  name: [
+    'Anita Nirala','Anjali Devi','Archa A','Aruna Kumari','Babita Kumari','Barai Bhumeshwar D','Bulti Pradhan','Dipali Pawar','Divya Kumari','Goutami','Harsha Arvind','Haruli Devi','Hemlata Verma','Jayapriya S','Juhi Kumari','Jyoti Kuntal','Jyotsna Khatun','Kavita Sunil Shirke','Khushboo Verma','Meena Sharma'
+  ][i % 20] + (i >= 20 ? ' ' + (i+1) : ''),
+  husband: ['A K Nirala','C P Shukla','Akhil PA','K A Naidu','S K Singh','B Bhumeshwar D','Samir Pradhan','Pawar Sujit T','J P Kumar','A Suresh','Nithin Krishna R V','Vikram Singh','GP Verma','Velmurugan M','Sujit Kumar','Sunil Singh Kuntal','Hav Ismail Momin','Shirke S L','Mamta Saini','Rakesh Sharma'][i % 20],
+  contact: '9' + String(100000000 + i * 3571).slice(0,9),
+  education: ['12th','BA','BSC','10 + 2','MA'][i % 5],
+  children: (i % 4) + ' children',
+  joined: i % 3 === 0 ? 'Joined Apr ' + ((i % 28)+1) + ', 2024' : ''
+}));
+
+function renderFamilies() {
+  const grid = document.getElementById('familiesGrid');
+  if (!grid) return;
+  grid.innerHTML = familiesData.map(f => `
+    <div class="family-card">
+      <div class="fc-top">
+        <h4>${f.name}</h4>
+        <span class="badge success">AWWA REGISTERED</span>
+      </div>
+      <div class="fc-body">
+        <div class="row"><span class="label">Husband:</span><span class="val">${f.husband}</span></div>
+        <div class="row"><span class="label">Contact:</span><span class="val">${f.contact}</span></div>
+        <div class="row"><span class="label">Education:</span><span class="val">${f.education}</span></div>
+      </div>
+      <div class="fc-footer"><a href="#">${f.children}</a>${f.joined ? `<small>${f.joined}</small>` : ''}</div>
+    </div>
+  `).join('');
+}
+
+// Render when Families section becomes active once
+const familiesNav = document.querySelector('.lp-nav li[data-target="section-families"]');
+if (familiesNav) {
+  familiesNav.addEventListener('click', () => {
+    if (!document.getElementById('familiesGrid').dataset.rendered) {
+      renderFamilies();
+      document.getElementById('familiesGrid').dataset.rendered = 'true';
+    }
+  });
+}
+
+// Coy: render military company data
+const coyData = Array.from({ length: 24 }).map((_, i) => ({
+  id: 'Coy' + String(i + 1).padStart(3, '0'),
+  femaleName: ['Priya Sharma','Kavita Singh','Sunita Verma','Rekha Patel','Meera Gupta','Anita Kumar','Sushila Yadav','Geeta Tiwari','Poonam Joshi','Ritu Agarwal','Neha Saxena','Deepa Mishra','Shilpa Jain','Rashmi Reddy','Kiran Nair','Vidya Rao','Suman Das','Lata Iyer','Mala Krishnan','Uma Menon','Shanti Pillai','Kamala Nair','Indira Raman','Sarojini Iyer'][i],
+  spouseName: ['Rajesh Sharma','Vikram Singh','Amit Verma','Ravi Patel','Suresh Gupta','Raj Kumar','Vijay Yadav','Ramesh Tiwari','Sunil Joshi','Pradeep Agarwal','Anil Saxena','Manoj Mishra','Rakesh Jain','Kiran Reddy','Suresh Nair','Ravi Rao','Kumar Das','Rajan Iyer','Mohan Krishnan','Ravi Menon','Krishnan Pillai','Raman Nair','Suresh Raman','Ravi Iyer'][i],
+  education: ['B.Tech','MBA','B.Sc','M.A','B.Com','M.Tech','B.A','M.Sc','B.E','M.Com','B.Ed','M.Ed','BBA','MBA','BDS','MDS','B.Pharm','M.Pharm','B.Sc Nursing','M.Sc Nursing','B.A','M.A','B.Tech','M.Tech'][i],
+  phoneNumber: '+91-' + (9000000000 + i * 12345),
+  rank: ['Col','Lt Col','Maj','Capt','Lt','Sqn Ldr','Flt Lt','Fg Offr','Wg Cdr','Gp Capt','Air Cmde','Air Vice Marshal'][i % 12]
+}));
+
+function renderCoy() {
+  const grid = document.getElementById('coyGrid');
+  if (!grid) return;
+  grid.innerHTML = coyData.map(c => `
+    <div class="family-card">
+      <div class="fc-top">
+        <h4>${c.id}</h4>
+        <span class="badge success">${c.rank}</span>
+      </div>
+      <div class="fc-body">
+        <div class="row"><span class="label">Female Name:</span><span class="val">${c.femaleName}</span></div>
+        <div class="row"><span class="label">Spouse Name:</span><span class="val">${c.spouseName}</span></div>
+        <div class="row"><span class="label">Education:</span><span class="val">${c.education}</span></div>
+        <div class="row"><span class="label">Phone:</span><span class="val">${c.phoneNumber}</span></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+const coyNav = document.querySelector('.lp-nav li[data-target="section-companies"]');
+if (coyNav) {
+  coyNav.addEventListener('click', () => {
+    const grid = document.getElementById('coyGrid');
+    if (grid && !grid.dataset.rendered) {
+      renderCoy();
+      grid.dataset.rendered = 'true';
+    }
+  });
+}
+
+// Newsletter form submit and copy link
+const newsletterForm = document.getElementById('newsletterForm');
+if (newsletterForm) {
+  newsletterForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('nlName').value.trim();
+    const email = document.getElementById('nlEmail').value.trim();
+    const message = document.getElementById('nlMessage');
+    // Simulate successful subscription
+    message.textContent = `Thanks, ${name || 'friend'}! A confirmation email was sent to ${email}.`;
+    message.style.color = '#2ecc71';
+    newsletterForm.reset();
+  });
+}
+
+const copyBtn = document.getElementById('copyLinkBtn');
+if (copyBtn) {
+  copyBtn.addEventListener('click', async () => {
+    const input = document.getElementById('nlShareLink');
+    try {
+      await navigator.clipboard.writeText(input.value);
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => (copyBtn.innerHTML = '<i class="fas fa-copy"></i>'), 1200);
+    } catch (_) {
+      input.select();
+      document.execCommand('copy');
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => (copyBtn.innerHTML = '<i class="fas fa-copy"></i>'), 1200);
+    }
+  });
+}
+
+// Power BI embed logic (publish-to-web URL stored in localStorage)
+const pbiKey = 'awwa_pbi_embed_url';
+const pbiUrlInput = document.getElementById('pbiUrl');
+const pbiFrame = document.getElementById('pbiFrame');
+const pbiLoadBtn = document.getElementById('pbiLoadBtn');
+const pbiClearBtn = document.getElementById('pbiClearBtn');
+
+function loadStoredPbi() {
+  const url = localStorage.getItem(pbiKey);
+  if (pbiUrlInput && url) pbiUrlInput.value = url;
+  if (pbiFrame && url) pbiFrame.src = url;
+}
+loadStoredPbi();
+
+if (pbiLoadBtn) {
+  pbiLoadBtn.addEventListener('click', () => {
+    const url = (pbiUrlInput?.value || '').trim();
+    if (!url || !/^https:\/\/app\.powerbi\.com\/view/.test(url)) {
+      alert('Please paste a valid Power BI "Publish to web" URL.');
+      return;
+    }
+    localStorage.setItem(pbiKey, url);
+    if (pbiFrame) pbiFrame.src = url;
+  });
+}
+
+if (pbiClearBtn) {
+  pbiClearBtn.addEventListener('click', () => {
+    localStorage.removeItem(pbiKey);
+    if (pbiUrlInput) pbiUrlInput.value = '';
+    if (pbiFrame) pbiFrame.removeAttribute('src');
+  });
+}
+
+// Enhanced Charts: initialize on first view of dashboard
+async function initChartsOnce() {
+  if (window.__chartsReady) return;
+  
+  // Check if Chart.js is loaded
+  if (typeof Chart === 'undefined') {
+    console.error('Chart.js not loaded');
+    return;
+  }
+  
+  // Color palettes for different chart types
+  const colorPalettes = {
+    medical: ['#10B981', '#F59E0B', '#EF4444'],
+    education: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6'],
+    gender: ['#3B82F6', '#EC4899', '#6B7280'],
+    workshop: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444', '#84CC16'],
+    health: ['#10B981', '#EF4444']
+  };
+
+  // Chart 1: Family Medical Status - Doughnut Chart
+  new Chart(document.getElementById('medicalStatusChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['No Issues', 'Has Issues', 'Other'],
+      datasets: [{
+        data: [239, 30, 2],
+        backgroundColor: colorPalettes.medical,
+        borderWidth: 0,
+        hoverOffset: 20
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Family Medical Status',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12 } }
+        }
+      },
+      cutout: '60%',
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 2: Parental Education - Horizontal Bar Chart
+  new Chart(document.getElementById('educationChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Post Graduate', 'Graduation', '12th Grade', '10th Grade', 'Other'],
+      datasets: [{
+        label: 'Number of Families',
+        data: [23, 72, 97, 32, 15],
+        backgroundColor: colorPalettes.education,
+        borderRadius: 8,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Parental Education Level',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: { display: false }
+      },
+      scales: {
+        x: { beginAtZero: true, grid: { display: false } },
+        y: { grid: { display: false } }
+      },
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 3: Marital Discord - Progress Ring
+  new Chart(document.getElementById('maritalDiscordChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['No Discord', 'Discord Present'],
+      datasets: [{
+        data: [250, 24],
+        backgroundColor: ['#10B981', '#EF4444'],
+        borderWidth: 0,
+        hoverOffset: 20
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { 
+        title: {
+          display: true,
+          text: 'Marital Discord Status',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12 } }
+        }
+      },
+      cutout: '70%',
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 4: Workshop Distribution - Bar Chart
+  new Chart(document.getElementById('workshopChart'), {
+    type: 'bar',
+    data: {
+      labels: ['288 AW', '832 FWC', '831 FWC', '265 FWC', 'BHQ', '290 FWC', '286 FWC'],
+      datasets: [{
+        label: 'Number of Families',
+        data: [65, 60, 38, 36, 30, 23, 22],
+        backgroundColor: colorPalettes.workshop,
+        borderRadius: 8,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Workshop Distribution',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: { display: false }
+      },
+      scales: { 
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, grid: { display: false } }
+      },
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 5: Entrepreneurship - Gauge Chart
+  new Chart(document.getElementById('entrepreneurshipChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Not Involved', 'Involved'],
+      datasets: [{
+        data: [269, 5],
+        backgroundColor: ['#6B7280', '#10B981'],
+        borderWidth: 0,
+        hoverOffset: 20
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { 
+          title: {
+            display: true,
+          text: 'AWWA Entrepreneurship Program',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12 } }
+        }
+      },
+      cutout: '80%',
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 6: Family Size Distribution - Polar Area Chart
+  new Chart(document.getElementById('familySizeChart'), {
+    type: 'polarArea',
+    data: {
+      labels: ['1 Child', '2 Children', '3 Children', '4+ Children'],
+      datasets: [{
+        data: [45, 78, 32, 15],
+        backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
+        borderWidth: 2,
+        borderColor: '#FFFFFF'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+          title: {
+            display: true,
+          text: 'Family Size Distribution',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12 } }
+        }
+      },
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 7: Gender Distribution - Pie Chart
+  new Chart(document.getElementById('genderChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Male', 'Female'],
+      datasets: [{
+        data: [33, 14],
+        backgroundColor: ['#3B82F6', '#EC4899'],
+        borderWidth: 3,
+        borderColor: '#FFFFFF',
+        hoverOffset: 20
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+          title: {
+            display: true,
+          text: 'Children Gender Distribution',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12 } }
+        }
+      },
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 8: Educational Streams - Bar Chart
+  new Chart(document.getElementById('educationalStreamsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Arts', 'Commerce', 'Science', 'PCM', 'PCB', 'Other'],
+      datasets: [{
+        label: 'Number of Students',
+        data: [15, 8, 12, 6, 4, 25],
+        backgroundColor: [
+          '#8B5CF6', '#EC4899', '#10B981', 
+          '#F59E0B', '#3B82F6', '#EF4444'
+        ],
+        borderRadius: 8,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Educational Streams Distribution',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: { display: false }
+      },
+      scales: {
+        x: { 
+          grid: { display: false },
+          ticks: { font: { size: 11 } }
+        },
+        y: { 
+          beginAtZero: true, 
+          grid: { display: false },
+          ticks: { stepSize: 5 }
+        }
+      },
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 9: Medical Needs - Donut Chart
+  new Chart(document.getElementById('medicalNeedsChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['No Special Needs', 'Special Needs'],
+      datasets: [{
+        data: [271, 1],
+        backgroundColor: colorPalettes.health,
+        borderWidth: 0,
+        hoverOffset: 20
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+          title: {
+            display: true,
+          text: 'Children Medical Needs',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12 } }
+        }
+      },
+      cutout: '60%',
+      animation: { duration: 2000 }
+    }
+  });
+
+  // Chart 10: Health Status Overview - Multi-level Donut
+  new Chart(document.getElementById('healthOverviewChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Healthy Families', 'Families with Medical Issues', 'Children with Special Needs'],
+      datasets: [{
+        data: [239, 30, 1],
+        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+        borderWidth: 0,
+        hoverOffset: 20
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Overall Health Status',
+          font: { size: 18, weight: 'bold' },
+          color: '#1F2937'
+        },
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 12 } }
+        }
+      },
+      cutout: '50%',
+      animation: { duration: 2000 }
+    }
+  });
+
+  window.__chartsReady = true;
+}
+
+// Initialize charts when dashboard is shown
+const dashNav = document.querySelector('.lp-nav li[data-target="section-dashboard"]');
+if (dashNav) {
+  dashNav.addEventListener('click', initChartsOnce);
+}
+
+// Initialize charts after page load
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(initChartsOnce, 1000);
+});
+
+// Also try on window load
+window.addEventListener('load', function() {
+  setTimeout(initChartsOnce, 500);
+});
+
+// Load personalized user information
+function loadUserInfo() {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    
+    if (userInfo.name) {
+        // Update welcome title
+        document.getElementById('welcomeTitle').textContent = `Welcome, ${userInfo.name}!`;
+        
+        // Update profile information
+        document.getElementById('profileName').textContent = userInfo.name;
+        document.getElementById('profileDesignation').textContent = userInfo.designation || 'User';
+        
+        // Update profile initials
+        const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        document.getElementById('profileInitials').textContent = initials;
+        
+        // Set profile image based on user
+        let profileImage = 'public/profile.png'; // default
+        switch(userInfo.userId) {
+            case 'tarunpreet singh':
+                profileImage = 'public/Gemini_Generated_Image_4jitd24jitd24jit.png';
+                break;
+            case 'piyush sharma':
+                profileImage = 'public/Gemini_Generated_Image_iy5po1iy5po1iy5p.png';
+                break;
+            case 'harish kumar':
+                profileImage = 'public/Gemini_Generated_Image_kd3igrkd3igrkd3i%20%281%29.png';
+                break;
+            case 'rahul t more':
+                profileImage = 'public/Col.jpg';
+                break;
+            case 'bt01':
+                profileImage = 'public/profile.png';
+                break;
+            default:
+                profileImage = 'public/profile.png';
+        }
+        
+        // Update profile images
+        const profileImages = document.querySelectorAll('.avatar-box-img, .lp-avatar-img');
+        profileImages.forEach(img => {
+            img.src = profileImage;
+        });
+        
+        // Update user information panel
+        const userInfoBody = document.getElementById('userInfoBody');
+        userInfoBody.innerHTML = `
+            <div class="info-row"><span class="label">User ID:</span><span class="value">${userInfo.userId}</span></div>
+            <div class="info-row"><span class="label">Name:</span><span class="value">${userInfo.name}</span></div>
+            <div class="info-row"><span class="label">Designation:</span><span class="value">${userInfo.designation || 'N/A'}</span></div>
+            <div class="info-row"><span class="label">Contact Number:</span><span class="value">${userInfo.phone || 'N/A'}</span></div>
+            <div class="info-row"><span class="label">User Type:</span><span class="value">${userInfo.userType || 'admin'}</span></div>
+        `;
+        
+        // Update left panel name
+        const leftPanelName = document.querySelector('.lp-name');
+        if (leftPanelName) {
+            leftPanelName.textContent = userInfo.name;
+        }
+        
+        // Update left panel role
+        const leftPanelRole = document.querySelector('.lp-role');
+        if (leftPanelRole) {
+            leftPanelRole.textContent = userInfo.designation || 'User';
+        }
+    }
+}
+
+// Load user info when page loads
+document.addEventListener('DOMContentLoaded', loadUserInfo);
+
+// Logout function
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('userInfo');
+        window.location.href = 'index.html';
+    }
+}
+
+</script>
+
+<!-- D-ID Chatbot -->
+<script type="module"
+      src="https://agent.d-id.com/v2/index.js"
+      data-mode="fabio"
+      data-client-key="Z29vZ2xlLW9hdXRoMnwxMDA1MjIwMjc4MDA4MjIzNDk5MDE6aDEyZUd2MFNUa2gzWkRhWG0ybjA2"
+      data-agent-id="v2_agt_CKSD5djL"
+      data-name="did-agent"
+      data-monitor="true"
+      data-orientation="horizontal"
+      data-position="right">
+</script>
+
+<!-- Fallback chatbot if D-ID doesn't load -->
+<div id="chatbot-fallback" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;">
+    <button onclick="toggleFallbackChat()" style="background: #ff7a00; color: white; border: none; padding: 15px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer;">
+        <i class="fas fa-comments" style="font-size: 20px;"></i>
+    </button>
+</div>
+
+<script>
+    // Check if D-ID chatbot loads, show fallback if not
+    setTimeout(() => {
+        if (!document.querySelector('[data-name="did-agent"]')) {
+            document.getElementById('chatbot-fallback').style.display = 'block';
+        }
+    }, 3000);
+    
+    function toggleFallbackChat() {
+        alert('Chatbot is temporarily unavailable. Please contact support for assistance.');
+    }
+</script>
+
+</body>
+</html>
