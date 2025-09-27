@@ -186,13 +186,15 @@
                     </div>
                 </div>
 
-                <!-- Additional Details (empty) -->
+                <!-- Additional Details -->
                 <div class="panel-card">
                     <div class="panel-header">
                         <i class="fas fa-circle-info"></i>
-                        <h3>Additional Details</h3>
+                        <h3 id="additionalDetailsTitle">Additional Details</h3>
                     </div>
-                    <div class="panel-body empty"></div>
+                    <div class="panel-body" id="additionalDetailsBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </div>
                 </div>
 
                 <!-- Profile Card -->
@@ -1043,6 +1045,27 @@ function loadUserInfo() {
         
         userInfoBody.innerHTML = userInfoHTML;
         
+        // Update Additional Details section
+        const additionalDetailsTitle = document.getElementById('additionalDetailsTitle');
+        const additionalDetailsBody = document.getElementById('additionalDetailsBody');
+        
+        if (userInfo.userId === 'tarunpreet singh') {
+            // Change title to "Wife Details" for Tarunpreet Singh
+            additionalDetailsTitle.textContent = 'Wife Details';
+            
+            // Add spouse information
+            additionalDetailsBody.innerHTML = `
+                <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
+                <div class="info-row"><span class="label">Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
+                <div class="info-row"><span class="label">Contact:</span><span class="value">7052615743</span></div>
+                <div class="info-row"><span class="label">Relationship:</span><span class="value">Spouse</span></div>
+            `;
+        } else {
+            // Keep default title and show empty for other users
+            additionalDetailsTitle.textContent = 'Additional Details';
+            additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
+        }
+        
         // Update left panel name
         const leftPanelName = document.querySelector('.lp-name');
         if (leftPanelName) {
@@ -1083,6 +1106,23 @@ function loadUserInfo() {
                     }
                     
                     userInfoBody.innerHTML = defaultUserInfoHTML;
+                    
+                    // Update Additional Details for default user
+                    const additionalDetailsTitle = document.getElementById('additionalDetailsTitle');
+                    const additionalDetailsBody = document.getElementById('additionalDetailsBody');
+                    
+                    if (currentUserId === 'tarunpreet singh') {
+                        additionalDetailsTitle.textContent = 'Wife Details';
+                        additionalDetailsBody.innerHTML = `
+                            <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
+                            <div class="info-row"><span class="label">Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
+                            <div class="info-row"><span class="label">Contact:</span><span class="value">7052615743</span></div>
+                            <div class="info-row"><span class="label">Relationship:</span><span class="value">Spouse</span></div>
+                        `;
+                    } else {
+                        additionalDetailsTitle.textContent = 'Additional Details';
+                        additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
+                    }
                 }
                 
                 // Update welcome title
