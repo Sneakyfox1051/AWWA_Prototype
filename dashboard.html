@@ -973,7 +973,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Load user info when page loads
-function loadUserInfo() {
+        function loadUserInfo() {
             // Default user info for demonstration
             const defaultUserInfo = {
                 userId: 'admin001',
@@ -985,21 +985,21 @@ function loadUserInfo() {
             
             const userInfo = JSON.parse(localStorage.getItem('userInfo') || JSON.stringify(defaultUserInfo));
     
-    if (userInfo.name) {
-        // Update welcome title
-        document.getElementById('welcomeTitle').textContent = `Welcome, ${userInfo.name}!`;
-        
-        // Update profile information
-        document.getElementById('profileName').textContent = userInfo.name;
-        document.getElementById('profileDesignation').textContent = userInfo.designation || 'User';
-        
-        // Update profile initials
-        const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
-        document.getElementById('profileInitials').textContent = initials;
-        
-        // Set profile image based on user
+            if (userInfo.name) {
+                // Update welcome title
+                document.getElementById('welcomeTitle').textContent = `Welcome, ${userInfo.name}!`;
+                
+                // Update profile information
+                document.getElementById('profileName').textContent = userInfo.name;
+                document.getElementById('profileDesignation').textContent = userInfo.designation || 'User';
+                
+                // Update profile initials
+                const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                document.getElementById('profileInitials').textContent = initials;
+                
+                // Set profile image based on user
                 let profileImage = 'public/profile.png';
-        switch(userInfo.userId) {
+                switch(userInfo.userId) {
             case 'tarunpreet singh':
                 profileImage = 'public/Gemini_Generated_Image_4jitd24jitd24jit.png';
                 break;
@@ -1086,7 +1086,7 @@ function loadUserInfo() {
         if (leftPanelRole) {
             leftPanelRole.textContent = userInfo.designation || 'User';
         }
-            } else {
+    } else {
                 // Show default information if no user data
                 const userInfoBody = document.getElementById('userInfoBody');
                 if (userInfoBody) {
@@ -1165,6 +1165,7 @@ function loadUserInfo() {
                 if (leftPanelRole) leftPanelRole.textContent = 'Battalion Command';
             }
         }
+    }
 
 // Logout function
 function logout() {
