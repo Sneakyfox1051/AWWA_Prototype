@@ -1,0 +1,2726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    ===========================================
+    AWWA FAMILY MANAGEMENT SYSTEM - SUPER USER DASHBOARD
+    ===========================================
+    
+    PURPOSE: Enhanced dashboard with advanced features for super users and administrators
+    TARGET USERS: Super users (L1 level) and administrators with elevated privileges
+    FEATURES:
+    - All features from main dashboard PLUS:
+    - Advanced analytics and reporting capabilities
+    - Enhanced data visualization with additional chart types
+    - Super user specific navigation and controls
+    - Advanced user management features
+    - Enhanced Power BI integration
+    - Extended D-ID chatbot capabilities
+    
+    DIFFERENCES FROM MAIN DASHBOARD:
+    - Additional chart types and analytics
+    - Enhanced navigation with super user specific sections
+    - Advanced data processing capabilities
+    - Extended user profile management
+    - Enhanced security and access controls
+    
+    DATA SOURCE: Same as main dashboard (624 EME BN Excel file)
+    - 274 total families across 7 workshop units
+    - 183 total children with detailed records
+    - 5 women registered for AWWA entrepreneurship program
+    - Comprehensive health, education, and demographic data
+    
+    DEPENDENCIES:
+    - dashboard.css: Main stylesheet for dashboard styling
+    - Chart.js: Interactive charts and data visualization
+    - Font Awesome: Icons and UI elements
+    - Tailwind CSS: Responsive design framework
+    - XLSX library: Excel file processing
+    - D-ID Agent: AI chatbot integration
+    
+    NAVIGATION FLOW:
+    login.html → dashboard_super user.html (this file)
+    logout → login.html
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AWWA - Dashboard Home</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <!-- Tailwind CSS for enhanced charts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Inter font family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- D-ID Agent Script -->
+    <script type="module"
+          src="https://agent.d-id.com/v2/index.js"
+          data-mode="fabio"
+          data-client-key="Z29vZ2xlLW9hdXRoMnwxMDA1MjIwMjc4MDA4MjIzNDk5MDE6aDEyZUd2MFNUa2gzWkRhWG0ybjA2"
+          data-agent-id="v2_agt_CKSD5djL"
+          data-name="did-agent"
+          data-monitor="true"
+          data-orientation="horizontal"
+          data-position="right">
+    </script>
+    
+    <style>
+        /* Enhanced Charts Styles */
+        .enhanced-charts-section {
+            margin-bottom: 40px;
+        }
+
+        .section-subtitle {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1F2937;
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--brand-primary);
+            display: inline-block;
+            width: 100%;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .enhanced-chart-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enhanced-chart-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .enhanced-chart-card.large {
+            grid-column: span 2;
+        }
+
+        /* Children section specific grid layout */
+        .children-charts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .children-charts-grid .enhanced-chart-card:nth-child(4),
+        .children-charts-grid .enhanced-chart-card:nth-child(5) {
+            grid-column: span 1;
+        }
+
+        /* Mobile Navigation Toggle - TO BE FIXED BY JYOTI */
+        /* Current implementation has issues with visibility and functionality */
+        .nav-toggle {
+            display: none;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            color: #374151;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 8px;
+            width: 100%;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .nav-toggle:hover {
+            background: #e9ecef;
+            color: var(--brand-primary);
+        }
+
+        .nav-toggle i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-toggle.active i {
+            transform: rotate(180deg);
+        }
+
+        .lp-nav {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .lp-nav.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .lp-nav.expanded {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+
+        .large-chart-container {
+            position: relative;
+            height: 500px;
+            width: 100%;
+        }
+
+        .small-chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 16px;
+            }
+            
+            .children-charts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            
+            .enhanced-chart-card.large {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Main Layout */
+            .dash-layout {
+                flex-direction: column;
+            }
+            
+            .left-panel {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 16px;
+            }
+            
+            .main-area {
+                width: 100%;
+                padding: 16px;
+            }
+            
+            /* Header */
+            .app-header {
+                padding: 12px 16px;
+            }
+            
+            .app-title {
+                font-size: 16px;
+            }
+            
+            .logout-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+    /* Left Panel */
+    .lp-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+    }
+    
+    .lp-name {
+        font-size: 16px;
+        margin: 8px 0 4px 0;
+    }
+    
+    .lp-role {
+        font-size: 12px;
+    }
+    
+    /* Navigation Toggle */
+    .nav-toggle {
+        display: block !important;
+        width: 100%;
+        text-align: left;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        margin: 8px 0;
+        padding: 12px 16px;
+        font-size: 16px;
+        color: #374151;
+        cursor: pointer;
+    }
+    
+    .lp-nav {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.3s ease;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .lp-nav.expanded {
+        max-height: 500px;
+        opacity: 1;
+        margin: 8px 0;
+        padding: 8px 0;
+    }
+    
+    .lp-nav ul {
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px 0;
+    }
+    
+    .lp-nav li {
+        width: 100%;
+        text-align: left;
+        padding: 12px 16px;
+        border-radius: 8px;
+        background: #f8f9fa;
+        margin: 2px 0;
+    }
+    
+    .lp-nav li:hover {
+        background: #e9ecef;
+    }
+    
+    .lp-nav li i {
+        font-size: 16px;
+        margin-right: 12px;
+        width: 20px;
+    }
+    
+    .lp-nav li span {
+        font-size: 14px;
+    }
+            
+            /* Welcome Section */
+            .welcome-section-card {
+                padding: 16px;
+            }
+            
+            .welcome-title {
+                font-size: 24px;
+                margin-bottom: 16px;
+            }
+            
+            .user-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .panel-card {
+                padding: 16px;
+            }
+            
+            .panel-header h3 {
+                font-size: 16px;
+            }
+            
+            .profile-side-card {
+                padding: 16px;
+                text-align: center;
+            }
+            
+            /* Stats Cards */
+            .stats-card-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                margin: 16px 0;
+            }
+            
+            .stat-mini-card {
+                padding: 12px;
+            }
+            
+            .mini-value {
+                font-size: 20px;
+            }
+            
+            .mini-content small {
+                font-size: 11px;
+            }
+            
+            /* Charts */
+            .charts-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .children-charts-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .enhanced-chart-card.large {
+                grid-column: span 1;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            .large-chart-container {
+                height: 350px;
+            }
+            
+            .enhanced-chart-card {
+                padding: 16px;
+            }
+            
+            .section-subtitle {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+            
+            /* Families Section */
+            .families-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .families-actions .check-btn {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+        .families-actions .check-btn i {
+            font-size: 14px;
+        }
+
+        .workshop-filter {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            color: #374151;
+            min-width: 150px;
+        }
+
+        .workshop-filter:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Header Layout - TO BE FIXED BY JYOTI */
+        /* Current implementation not working - needs proper CSS for header positioning */
+        /*
+        .app-header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .app-brand {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .app-title-wrap {
+            margin-left: 12px;
+        }
+
+        .app-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1F2937;
+        }
+
+        .logout-btn {
+            margin-left: auto;
+        }
+        */
+
+            .no-data-message {
+                text-align: center;
+                padding: 40px 20px;
+                color: #6b7280;
+            }
+
+            .no-data-message i {
+                font-size: 48px;
+                margin-bottom: 16px;
+                color: #d1d5db;
+            }
+
+            .no-data-message p {
+                font-size: 16px;
+                margin: 0;
+            }
+            
+            .fam-search {
+                width: 100%;
+            }
+            
+            .families-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .family-card {
+                padding: 12px;
+            }
+            
+            /* Newsletter Section */
+            .newsletter-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .newsletter-form {
+                padding: 16px;
+            }
+            
+            /* Rankings Section */
+            .ranking-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .rank-card {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Extra Small Mobile */
+            .app-title {
+                font-size: 14px;
+            }
+            
+            .welcome-title {
+                font-size: 20px;
+            }
+            
+            .stats-card-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .stat-mini-card {
+                padding: 8px;
+            }
+            
+            .mini-value {
+                font-size: 18px;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .large-chart-container {
+                height: 300px;
+            }
+            
+            .enhanced-chart-card {
+                padding: 12px;
+            }
+            
+            .section-subtitle {
+                font-size: 16px;
+            }
+            
+            .lp-nav li {
+                min-width: 100px;
+                padding: 6px 2px;
+            }
+            
+            .lp-nav li span {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-header-inner">
+            <div class="app-brand">
+                <img src="public/Untitled design (27).png" alt="AWWA Logo" class="app-logo" />
+                <div class="app-title-wrap">
+                    <h1 class="app-title">Ranbankure Eagles : AWWA Centralised Information Hub</h1>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </header>
+    <div class="dash-layout">
+        <!-- Left Side Panel -->
+        <aside class="left-panel">
+
+            <div class="lp-header">
+                <img src="public/profile.png" alt="Profile" class="lp-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="lp-avatar" style="display:none;">SB</div>
+                <div class="lp-name">Sushma Bhatti</div>
+                <div class="lp-role">Battalion Command</div>
+            </div>
+            
+            <!-- Navigation Toggle Button - TO BE FIXED BY JYOTI -->
+            <!-- Current implementation has issues with visibility and functionality -->
+            <button class="nav-toggle" id="navToggle" onclick="toggleNavigation()">
+                <i class="fas fa-chevron-down"></i>
+                <span>Menu</span>
+            </button>
+            
+            <nav class="lp-nav" id="lpNav">
+                <ul>
+                    <li class="active" data-target="section-dashboard"><i class="fas fa-home"></i><span>Dashboard</span></li>
+                    <li data-target="section-families"><i class="fas fa-notes-medical"></i><span>Families</span></li>
+                    <li data-target="section-companies"><i class="fas fa-building"></i><span>FW Coy</span></li>
+                    <li data-target="section-Newsletter"><i class="fas fa-calendar"></i><span>Newsletter</span></li>
+                    <li data-target="section-Rankings"><i class="fas fa-chart-bar"></i><span>Unit Rankings</span></li>
+                    <li data-target="section-settings"><i class="fas fa-gear"></i><span>Settings</span></li>
+                </ul>
+            </nav>
+            
+            <!-- Logout Button in Sidebar -->
+            <div class="lp-footer">
+                <button class="sidebar-logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Area -->
+        <div class="main-area">
+    <div class="home-container app-section" id="section-dashboard">
+        <!-- Welcome Header Row -->
+        <section class="welcome-section-card">
+            <h1 class="welcome-title" id="welcomeTitle">Welcome!</h1>
+
+            <div class="user-grid">
+                <!-- User Information -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>User Information</h3>
+                    </div>
+                    <div class="panel-body" id="userInfoBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Additional Details -->
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <i class="fas fa-circle-info"></i>
+                        <h3 id="additionalDetailsTitle">Additional Details</h3>
+                        <div class="panel-header-image" id="additionalDetailsImage" style="display: none;">
+                            <img src="" alt="Wife Image" id="wifeImage" />
+                    </div>
+                    </div>
+                    <div class="panel-body" id="additionalDetailsBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="profile-side-card">
+                    <img src="public/profile.png" alt="Profile" class="avatar-box-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <div class="avatar-box" style="display:none;" id="profileInitials">SB</div>
+                    <i class="fas fa-check-circle verified"></i>
+                    <div class="profile-meta">
+                        <h4 id="profileName">Loading...</h4>
+                        <p id="profileDesignation">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+                <!-- Stats Cards -->
+                <div class="stats-card-grid">
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-users"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="totalFamiliesVal">274</div>
+                            <small>Total Families</small>
+                </div>
+            </div>
+            
+                 <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-child"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="totalChildrenVal">509</div>
+                            <small>Total Children</small>
+                            <div class="gender-breakdown">
+                                <div class="male-heading">Male: 356</div>
+                                <div class="female-heading">Female: 153</div>
+                    </div>
+                        </div>
+                        </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="registeredFamiliesVal">2</div>
+                            <small>IVF Cases</small>
+                        </div>
+                        </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-calculator"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="avgChildrenVal">1</div>
+                            <small>Special Child</small>
+                    </div>
+                </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-heart-broken"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="maritalDiscordVal">2</div>
+                            <small>Marital Discord Cases</small>
+                    </div>
+                        </div>
+                    <!-- 
+                    ===========================================
+                    REFRESH DATA FUNCTIONALITY - TEAM DISCUSSION REQUIRED
+                    ===========================================
+                    
+                    TODO: Discuss with team before implementing in production
+                    
+                    This refresh button allows users to manually update data from Google Sheets.
+                    Consider the following for team discussion:
+                    
+                    1. SECURITY CONCERNS:
+                       - CORS proxy usage (api.allorigins.win) - is this acceptable?
+                       - Data privacy when using third-party proxies
+                       - Rate limiting and abuse prevention
+                    
+                    2. PERFORMANCE IMPACT:
+                       - Manual refresh vs automatic refresh (currently 5 minutes)
+                       - Server load if many users refresh simultaneously
+                       - Caching strategy for frequently accessed data
+                    
+                    3. USER EXPERIENCE:
+                       - Should refresh be available to all user types?
+                       - Loading states and user feedback
+                       - Error handling and fallback messages
+                    
+                    4. ALTERNATIVE SOLUTIONS:
+                       - Server-side data fetching
+                       - WebSocket for real-time updates
+                       - API integration instead of CSV export
+                       - Database backend instead of Google Sheets
+                    
+                    5. PRODUCTION CONSIDERATIONS:
+                       - Remove or modify for production deployment
+                       - Implement proper authentication for data access
+                       - Add data validation and sanitization
+                       - Consider data backup and recovery
+                    
+                    CURRENT STATUS: Development/Testing Only
+                    -->
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-sync-alt"></i></div>
+                        <div class="mini-content">
+                            <button id="refreshDataBtn" class="refresh-btn" onclick="refreshDashboard()">
+                                <i class="fas fa-sync-alt"></i> Refresh Dashboard
+                            </button>
+                            <small id="dataStatus">Static Data</small>
+                        </div>
+                    </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-user-injured"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="otherMedicalVal">2</div>
+                            <small>Other Critical Medical Cases</small>
+                        </div>
+                        </div>
+                    <div class="stat-mini-card">
+                        <div class="mini-icon"><i class="fas fa-child"></i></div>
+                        <div class="mini-content">
+                            <div class="mini-value" id="childrenAgeVal">509</div>
+                            <small>Children Age Profile</small>
+                            <div class="age-breakdown-single">
+                                <div class="age-group">0-6: 122</div>
+                                <div class="age-group">6-12: 216</div>
+                                <div class="age-group">12-18: 150</div>
+                                <div class="age-group">18-24: 20</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                <!-- Enhanced Family Data Charts -->
+                <div class="enhanced-charts-section">
+                    <h3 class="section-subtitle">Family-Related Analytics</h3>
+                    <div class="charts-grid">
+                        <!-- Chart 1: Medical Status - Doughnut Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="medicalStatusChart"></canvas>
+                        </div>
+                            </div>
+                    
+                        <!-- Chart 2: Parental Education - Horizontal Bar Chart -->
+                        <div class="enhanced-chart-card large">
+                            <div class="large-chart-container">
+                                <canvas id="educationChart"></canvas>
+                        </div>
+                    </div>
+                    
+                        <!-- Chart 3: Marital Discord - Progress Ring -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="maritalDiscordChart"></canvas>
+                        </div>
+                            </div>
+                    
+                        <!-- Chart 4: Workshop Distribution - Bar Chart -->
+                        <div class="enhanced-chart-card large">
+                            <div class="large-chart-container">
+                                <canvas id="workshopChart"></canvas>
+                        </div>
+                    </div>
+                    
+                        <!-- Chart 5: Entrepreneurship - Gauge Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="entrepreneurshipChart"></canvas>
+                        </div>
+                    </div>
+                    
+                        <!-- Chart 6: Family Size Distribution - Polar Area Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="familySizeChart"></canvas>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                <!-- Enhanced Children Data Charts -->
+                <div class="enhanced-charts-section">
+                    <h3 class="section-subtitle">Children-Related Analytics</h3>
+                    <div class="children-charts-grid">
+                        <!-- Chart 7: Gender Distribution - Pie Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+
+                        <!-- Chart 8: Children Age Profile - Polar Area Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="ageProfileChart"></canvas>
+                            </div>
+                        </div>
+                    
+                        <!-- Chart 9: Educational Streams - Bar Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="educationalStreamsChart"></canvas>
+                            </div>
+                        </div>
+            
+                        <!-- Chart 10: Medical Needs - Donut Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="medicalNeedsChart"></canvas>
+                            </div>
+                        </div>
+            
+                        <!-- Chart 11: Health Status Overview - Multi-level Donut -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="healthOverviewChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    </div>
+    
+            <!-- Families Section - INTEGRATED WITH GOOGLE SHEETS - TO BE FIXED BY JYOTI AND ADAB -->
+            <!-- Data is fetched from: Family Details (Ranbankura Eagles) sheet -->
+            <!-- Current implementation has issues with CORS proxy reliability and data mapping -->
+    <div class="families-section app-section hidden" id="section-families">
+        <div class="section-header-row">
+                    <h2>Families <span class="count">(274)</span></h2>
+            <div class="families-actions">
+                <input type="text" class="fam-search" placeholder="Search families..." id="familySearchInput" />
+                <select class="workshop-filter" id="workshopFilter">
+                    <option value="">All WKSP</option>
+                </select>
+                <button class="check-btn" onclick="fetchFamiliesFromGoogleSheets()" id="refreshFamiliesBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+                <button class="check-btn">Add Family</button>
+            </div>
+        </div>
+        <div class="families-grid" id="familiesGrid"></div>
+    </div>
+
+            <!-- Companies Section -->
+    <div class="coy-section app-section hidden" id="section-companies">
+        <div class="section-header-row">
+            <h2>Coy <span class="count">(24)</span></h2>
+            <div class="coy-actions">
+                <input type="text" class="fam-search" placeholder="Search Coy..." />
+                <button class="check-btn">Add Coy</button>
+            </div>
+        </div>
+        <div class="coy-grid" id="coyGrid"></div>
+    </div>
+
+            <!-- Newsletter Section -->
+    <div class="newsletter-section app-section hidden" id="section-Newsletter">
+        <div class="section-header-row">
+            <h2>Newsletter</h2>
+            <div class="families-actions">
+                <a href="#subscribe" class="check-btn">Go to Subscribe</a>
+            </div>
+        </div>
+        <div class="newsletter-grid">
+            <div class="newsletter-card">
+                <h3>Subscribe to AWWA Updates</h3>
+                <p class="subtext">Get monthly highlights, events, and community stories right in your inbox.</p>
+                <form id="newsletterForm" class="newsletter-form">
+                    <div class="form-row">
+                        <label for="nlName">Full name</label>
+                        <input type="text" id="nlName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="nlEmail">Email address</label>
+                        <input type="email" id="nlEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-row inline">
+                        <input type="checkbox" id="nlConsent" required>
+                        <label for="nlConsent">I agree to receive newsletters and understand I can unsubscribe anytime.</label>
+                    </div>
+                    <button type="submit" class="check-btn wide">Subscribe</button>
+                    <p id="nlMessage" class="nl-message" aria-live="polite"></p>
+                </form>
+            </div>
+
+            <div class="newsletter-side">
+                <div class="nl-info">
+                    <h4>What you'll get</h4>
+                    <ul>
+                        <li>Monthly digest of AWWA activities</li>
+                        <li>Upcoming events & workshops</li>
+                        <li>Success stories from our community</li>
+                        <li>Volunteer opportunities</li>
+                    </ul>
+                </div>
+                <div class="nl-share">
+                    <h4>Share subscription link</h4>
+                    <div class="share-row">
+                        <input type="text" id="nlShareLink" readonly value="https://awwa.example.com/newsletter/subscribe">
+                        <button class="copy-btn" id="copyLinkBtn" type="button"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <small>Copy this link to invite others to join the newsletter.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Power BI Section -->
+    <div class="powerbi-section app-section hidden" id="section-reports">
+        <div class="section-header-row">
+            <h2>Analytics (Power BI)</h2>
+            <div class="families-actions">
+                <a href="https://learn.microsoft.com/power-bi/collaborate-share/service-publish-to-web" target="_blank" class="check-btn">How to get embed link</a>
+            </div>
+        </div>
+        <div class="powerbi-grid">
+            <div class="powerbi-config">
+                <h3>Embed your report</h3>
+                <p class="subtext">Paste a Power BI "Publish to web" URL (starts with https://app.powerbi.com/view?...). We'll remember it for you.</p>
+                <div class="form-row">
+                    <label for="pbiUrl">Power BI public embed URL</label>
+                    <input id="pbiUrl" type="url" placeholder="https://app.powerbi.com/view?r=..." />
+                </div>
+                <div class="form-row inline">
+                    <button id="pbiLoadBtn" class="check-btn">Load report</button>
+                    <button id="pbiClearBtn" class="copy-btn" type="button">Clear</button>
+                </div>
+                <small>Note: For secure embeds (Embed for your organization) you'll need a backend to generate an access token. This UI supports public "Publish to web" links for quick demos.</small>
+            </div>
+            <div class="powerbi-view">
+                <div class="pbi-frame-wrap">
+                    <iframe id="pbiFrame" title="Power BI Report" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Rankings Section -->
+    <div class="ranking-section app-section hidden" id="section-Rankings">
+        <div class="section-header-row">
+            <h2>Unit Rankings</h2>
+        </div>
+        <div class="ranking-grid">
+            <div class="rank-card">
+                <div class="rank-left">
+                    <div class="rank-badge">1</div>
+                    <img src="public/Gemini_Generated_Image_4jitd24jitd24jit.png" alt="Col Tarunpreet Singh" class="rank-avatar-img" />
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">Rank - Col</div>
+                    <h3 class="rank-name">Tarunpreet Singh</h3>
+                    <div class="rank-role">Commanding Officer</div>
+                    <a href="tel:9650300475" class="rank-phone">Mob No: 9650300475</a>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <div class="rank-left">
+                    <div class="rank-badge">2</div>
+                            <img src="public/piyush.jpeg" alt="Lt Col Piyush Sharma" class="rank-avatar-img" />
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">Rank - Lt Col</div>
+                    <h3 class="rank-name">Piyush Sharma</h3>
+                    <div class="rank-role">Second in Comd</div>
+                    <a href="tel:9797719357" class="rank-phone">Mobile No: 9797719357</a>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <div class="rank-left">
+                    <div class="rank-badge">3</div>
+                            <img src="public/harish.jpeg" alt="Maj Harish Kumar" class="rank-avatar-img" />
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">Rank - Maj</div>
+                    <h3 class="rank-name">Harish Kumar</h3>
+                    <div class="rank-role">Adjt</div>
+                    <a href="tel:9256172418" class="rank-phone">Mob No: 9256172418</a>
+                </div>
+            </div>
+
+            <div class="rank-card">
+                <div class="rank-left">
+                    <div class="rank-badge">4</div>
+                            <img src="public/Rahul.jpeg" alt="Lt Col Rahul T More" class="rank-avatar-img" />
+                </div>
+                <div class="rank-info">
+                    <div class="rank-title">Rank - Lt Col</div>
+                    <h3 class="rank-name">Rahul T More</h3>
+                    <div class="rank-role">OIC Tech Cell</div>
+                    <a href="tel:7006216984" class="rank-phone">Mobile No: 7006216984</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            <!-- Settings Section -->
+    <div class="placeholder-section app-section hidden" id="section-settings">
+        <h2>Settings</h2>
+        <p>Settings section coming soon.</p>
+    </div>
+        </div>
+    </div>
+
+    <script>
+        /*
+        ===========================================
+        GOOGLE SHEETS DATA INTEGRATION - SUPER USER
+        ===========================================
+        
+        This script integrates real family data from Google Sheets for super users:
+        https://docs.google.com/spreadsheets/d/1xc4yFUKCHt3_arojTCzc8lf3fGmaco8TzTTJ-HCwpFw/edit?usp=sharing
+        
+        SUPER USER FEATURES:
+        - Enhanced data visualization with additional analytics
+        - Advanced filtering and search capabilities
+        - Detailed family information display
+        - Export functionality for reports
+        - Real-time data synchronization
+        - Advanced chart interactions
+        */
+        
+        // Google Sheets integration configuration (same as main dashboard)
+        const GOOGLE_SHEETS_CONFIG = {
+            sheetId: '1xc4yFUKCHt3_arojTCzc8lf3fGmaco8TzTTJ-HCwpFw',
+            csvUrl: 'https://docs.google.com/spreadsheets/d/1xc4yFUKCHt3_arojTCzc8lf3fGmaco8TzTTJ-HCwpFw/export?format=csv&gid=0',
+            refreshInterval: 300000 // 5 minutes
+        };
+        
+        // Global data storage for super user
+        let realFamilyData = [];
+        let dataStats = {
+            totalFamilies: 0,
+            totalChildren: 0,
+            registeredFamilies: 0,
+            workshopDistribution: {},
+            bloodGroupDistribution: {},
+            religionDistribution: {},
+            ageDistribution: {},
+            medicalStatus: {},
+            educationLevels: {},
+            accommodationTypes: {},
+            // Super user specific stats
+            specialChildren: 0,
+            ivfCases: 0,
+            dependents: 0,
+            vehicleOwners: 0,
+            drivers: 0
+        };
+        
+        /*
+        ===========================================
+        GOOGLE SHEETS DATA FETCHING - TEAM DISCUSSION REQUIRED
+        ===========================================
+        
+        TODO: Discuss with team before implementing in production
+        
+        This function fetches data from Google Sheets using multiple methods:
+        1. CORS proxy (api.allorigins.win) - bypasses browser CORS restrictions
+        2. Direct fetch - may fail due to CORS
+        3. Fallback data - sample data if both methods fail
+        
+        SECURITY CONCERNS FOR TEAM DISCUSSION:
+        - Using third-party CORS proxy (api.allorigins.win)
+        - Data privacy and security implications
+        - Rate limiting and abuse prevention
+        - Alternative solutions for production
+        
+        CURRENT STATUS: Development/Testing Only
+        */
+        // Function to fetch data from Google Sheets (enhanced for super user)
+        async function fetchGoogleSheetsData() {
+            try {
+                console.log('Fetching data from Google Sheets (Super User)...');
+                updateDataStatus('Fetching data...', 'loading');
+                
+                // Try multiple methods to fetch the data
+                let csvText = '';
+                
+                // Method 1: Direct fetch with CORS proxy
+                // TODO: TEAM DISCUSSION - Using third-party CORS proxy
+                // SECURITY CONCERN: Data passes through api.allorigins.win
+                // ALTERNATIVE: Implement server-side data fetching
+                try {
+                    const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(GOOGLE_SHEETS_CONFIG.csvUrl);
+                    const response = await fetch(proxyUrl);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Proxy error: ${response.status}`);
+                    }
+                    
+                    csvText = await response.text();
+                    console.log('Data fetched via proxy successfully');
+                } catch (proxyError) {
+                    console.log('Proxy method failed, trying direct fetch...', proxyError);
+                    
+                    // Method 2: Direct fetch (might fail due to CORS)
+                    try {
+                        const response = await fetch(GOOGLE_SHEETS_CONFIG.csvUrl);
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        csvText = await response.text();
+                        console.log('Data fetched directly successfully');
+                    } catch (directError) {
+                        console.log('Direct fetch failed, using fallback data...', directError);
+                        throw new Error('Both proxy and direct fetch failed');
+                    }
+                }
+                
+                if (csvText && csvText.trim()) {
+                    const parsedData = parseCSVData(csvText);
+                    
+                    if (parsedData.length > 0) {
+                        realFamilyData = parsedData;
+                        updateDataStatistics();
+                        updateDashboardWithRealData();
+                        
+                        console.log('Data fetched successfully:', realFamilyData.length, 'families');
+                        updateDataStatus(`Last updated: ${new Date().toLocaleTimeString()}`, 'success');
+                        return true;
+                    } else {
+                        throw new Error('No data parsed from CSV');
+                    }
+                } else {
+                    throw new Error('Empty response from server');
+                }
+                
+            } catch (error) {
+                console.error('Error fetching Google Sheets data:', error);
+                updateDataStatus('Using fallback data', 'error');
+                useFallbackData();
+                return false;
+            }
+        }
+        
+        // Enhanced data statistics for super user
+        function updateDataStatistics() {
+            dataStats.totalFamilies = realFamilyData.length;
+            dataStats.totalChildren = 0;
+            dataStats.specialChildren = 0;
+            dataStats.ivfCases = 0;
+            dataStats.dependents = 0;
+            dataStats.vehicleOwners = 0;
+            dataStats.drivers = 0;
+            dataStats.workshopDistribution = {};
+            dataStats.bloodGroupDistribution = {};
+            dataStats.religionDistribution = {};
+            dataStats.ageDistribution = {};
+            dataStats.medicalStatus = { 'No Issues': 0, 'Has Issues': 0, 'Other': 0 };
+            dataStats.educationLevels = {};
+            dataStats.accommodationTypes = {};
+            
+            realFamilyData.forEach(family => {
+                // Count children and special cases
+                if (family['Child 1 Name'] && family['Child 1 Name'].trim()) {
+                    dataStats.totalChildren++;
+                    if (family['Special Child'] && family['Special Child'].toLowerCase() === 'yes') {
+                        dataStats.specialChildren++;
+                    }
+                }
+                if (family['Child 2 Name'] && family['Child 2 Name'].trim()) {
+                    dataStats.totalChildren++;
+                    if (family['Special Child'] && family['Special Child'].toLowerCase() === 'yes') {
+                        dataStats.specialChildren++;
+                    }
+                }
+                if (family['Child 3 Name'] && family['Child 3 Name'].trim()) {
+                    dataStats.totalChildren++;
+                    if (family['Special Child'] && family['Special Child'].toLowerCase() === 'yes') {
+                        dataStats.specialChildren++;
+                    }
+                }
+                
+                // Count IVF cases
+                if (family['IVF Case'] && family['IVF Case'].toLowerCase() === 'yes') {
+                    dataStats.ivfCases++;
+                }
+                
+                // Count dependents
+                if (family['Dependent 1 Name'] && family['Dependent 1 Name'].trim()) dataStats.dependents++;
+                if (family['Dependent 2 Name'] && family['Dependent 2 Name'].trim()) dataStats.dependents++;
+                
+                // Count vehicle owners and drivers
+                if (family['Owns Vehicle'] && family['Owns Vehicle'].toLowerCase() === 'yes') dataStats.vehicleOwners++;
+                if (family['Can Drive'] && family['Can Drive'].toLowerCase() === 'yes') dataStats.drivers++;
+                
+                // Workshop distribution
+                const workshop = family['WKSP'] || 'Unknown';
+                dataStats.workshopDistribution[workshop] = (dataStats.workshopDistribution[workshop] || 0) + 1;
+                
+                // Blood group distribution
+                const bloodGroup = family['Blood Group'] || 'Unknown';
+                dataStats.bloodGroupDistribution[bloodGroup] = (dataStats.bloodGroupDistribution[bloodGroup] || 0) + 1;
+                
+                // Religion distribution
+                const religion = family['Religion'] || 'Unknown';
+                dataStats.religionDistribution[religion] = (dataStats.religionDistribution[religion] || 0) + 1;
+                
+                // Age distribution
+                const age = parseInt(family['Age']) || 0;
+                if (age > 0) {
+                    const ageGroup = age < 30 ? 'Under 30' : age < 50 ? '30-50' : 'Over 50';
+                    dataStats.ageDistribution[ageGroup] = (dataStats.ageDistribution[ageGroup] || 0) + 1;
+                }
+                
+                // Medical status
+                const hasMedicalIssues = family['Disease'] && family['Disease'].trim() !== '-' && family['Disease'].trim() !== '';
+                if (hasMedicalIssues) {
+                    dataStats.medicalStatus['Has Issues']++;
+                } else {
+                    dataStats.medicalStatus['No Issues']++;
+                }
+                
+                // Education levels
+                const education = family['Highest Qualification'] || 'Unknown';
+                dataStats.educationLevels[education] = (dataStats.educationLevels[education] || 0) + 1;
+                
+                // Accommodation types
+                const accommodation = family['Type of Accommodation'] || 'Unknown';
+                dataStats.accommodationTypes[accommodation] = (dataStats.accommodationTypes[accommodation] || 0) + 1;
+            });
+            
+            dataStats.registeredFamilies = dataStats.totalFamilies;
+        }
+        
+        // Function to update data status indicator
+        function updateDataStatus(message, status) {
+            const statusElement = document.getElementById('dataStatus');
+            const refreshBtn = document.getElementById('refreshDataBtn');
+            
+            if (statusElement) {
+                statusElement.textContent = message;
+                statusElement.className = `data-status ${status}`;
+            }
+            
+            if (refreshBtn) {
+                if (status === 'loading') {
+                    refreshBtn.disabled = true;
+                    refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                } else {
+                    refreshBtn.disabled = false;
+                    refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Data';
+                }
+            }
+        }
+        
+        // CSV parsing functions (same as main dashboard)
+        function parseCSVData(csvText) {
+            const lines = csvText.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            const data = [];
+            
+            for (let i = 3; i < lines.length; i++) {
+                if (lines[i].trim()) {
+                    const values = parseCSVLine(lines[i]);
+                    if (values.length > 0) {
+                        const family = {};
+                        headers.forEach((header, index) => {
+                            family[header] = values[index] || '';
+                        });
+                        data.push(family);
+                    }
+                }
+            }
+            
+            return data;
+        }
+        
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim());
+            return result;
+        }
+        
+        // Function to update dashboard with real data
+        function updateDashboardWithRealData() {
+            // Keep all dashboard values as original static values
+            // No dynamic updates to statistics cards or charts
+            console.log('Dashboard maintaining original static values');
+        }
+        
+        // Function to update charts with real data
+        function updateChartsWithRealData() {
+            if (window.__chartsReady) {
+                // Keep original chart values - only update statistics cards
+                // Charts will maintain their original static values
+                console.log('Charts maintaining original values');
+            }
+        }
+        
+        // Simple refresh function for dashboard
+        function refreshDashboard() {
+            console.log('Refreshing dashboard with static values');
+            updateDataStatus('Dashboard refreshed', 'success');
+            
+            // Just refresh the page to show any visual updates
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
+        
+        // Charts will maintain their original static values as requested
+        // No dynamic data updates for chart values
+        
+        // Chart update functions - keeping original values
+        // Charts will maintain their original static values as requested
+        
+        // Fallback data function
+        function useFallbackData() {
+            console.log('Using fallback data...');
+            
+            // Sample data based on your Google Sheets structure
+            realFamilyData = [
+                {
+                    'WKSP': 'BHQ',
+                    'Ladies Name': 'Smt Rajni Devi',
+                    'Date of Birth': '1998-05-08',
+                    'Age': '32',
+                    'Blood Group': 'AB+',
+                    'Religion': 'Muslim',
+                    'Highest Qualification': 'MA Bed',
+                    'Can Drive': 'Yes',
+                    'Owns Vehicle': 'No',
+                    'Personal Mobile': '9465089669',
+                    'Husband\'s Name': 'Sub Manjit Singh',
+                    'Husband\'s Rank': 'SUB',
+                    'Child 1 Name': 'Kirti Thakur',
+                    'Child 1 Age': '23',
+                    'Child 1 Class': 'BSC 2nd',
+                    'Disease': '-',
+                    'Type of Accommodation': 'P4/10 Old Umrao',
+                    'Special Child': 'No',
+                    'IVF Case': 'No',
+                    'Dependent 1 Name': '',
+                    'Dependent 2 Name': ''
+                },
+                {
+                    'WKSP': '265 FWC',
+                    'Ladies Name': 'Smt P Keerthi',
+                    'Date of Birth': '1972-03-01',
+                    'Age': '58',
+                    'Blood Group': 'AB+',
+                    'Religion': 'Muslim',
+                    'Highest Qualification': 'BSc',
+                    'Can Drive': 'Yes',
+                    'Owns Vehicle': 'Yes',
+                    'Personal Mobile': '7903895195',
+                    'Husband\'s Name': 'Hav Praveen Kumar',
+                    'Husband\'s Rank': 'HAV',
+                    'Child 1 Name': 'Vaishnavi Mehta',
+                    'Child 1 Age': '10th',
+                    'Child 1 Class': '10th',
+                    'Child 2 Name': 'Shaurya Mehta',
+                    'Child 2 Age': '6th',
+                    'Child 2 Class': '6th',
+                    'Disease': '-',
+                    'Type of Accommodation': 'P-395/03, Karam Singh Enclave',
+                    'Special Child': 'No',
+                    'IVF Case': 'No',
+                    'Dependent 1 Name': '',
+                    'Dependent 2 Name': ''
+                },
+                {
+                    'WKSP': '265 FWC',
+                    'Ladies Name': 'Smt Reetika Devi',
+                    'Date of Birth': '1996-05-10',
+                    'Age': '24',
+                    'Blood Group': 'B+',
+                    'Religion': 'Sikh',
+                    'Highest Qualification': 'MA , BEd',
+                    'Can Drive': 'Yes',
+                    'Owns Vehicle': 'No',
+                    'Personal Mobile': '7668428667',
+                    'Husband\'s Name': 'HMT Akash Kumar',
+                    'Husband\'s Rank': 'HMT',
+                    'Child 1 Name': 'Kush',
+                    'Child 1 Age': '-',
+                    'Child 1 Class': '-',
+                    'Disease': '-',
+                    'Type of Accommodation': '15/03, Bana Singh Enclave',
+                    'Special Child': 'No',
+                    'IVF Case': 'No',
+                    'Dependent 1 Name': '',
+                    'Dependent 2 Name': ''
+                }
+            ];
+            
+            updateDataStatistics();
+            updateDashboardWithRealData();
+            updateDataStatus('Using sample data', 'error');
+        }
+        
+        // Chart responsiveness and resizing functions
+        function makeChartsResponsive() {
+            // Add resize event listener for charts
+            window.addEventListener('resize', function() {
+                Chart.helpers.each(Chart.instances, function(chart) {
+                    chart.resize();
+                });
+            });
+            
+            // Add chart hover effects
+            const chartCards = document.querySelectorAll('.enhanced-chart-card');
+            chartCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                    this.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
+                });
+            });
+        }
+        
+        // Function to update chart sizes based on container
+        function updateChartSizes() {
+            if (typeof Chart === 'undefined' || !Chart.instances) {
+                console.log('Chart.js not available or no instances');
+                return;
+            }
+            
+            // Chart.instances is an object, not an array
+            const chartInstances = Object.values(Chart.instances);
+            chartInstances.forEach(chart => {
+                if (chart && chart.canvas && chart.canvas.parentElement) {
+                    const container = chart.canvas.parentElement;
+                    const containerWidth = container.clientWidth;
+                    const containerHeight = container.clientHeight;
+                    
+                    // Set optimal chart size based on container
+                    if (containerWidth < 300) {
+                        if (chart.options && chart.options.plugins && chart.options.plugins.legend) {
+                            chart.options.plugins.legend.position = 'bottom';
+                        }
+                        if (chart.options && chart.options.plugins && chart.options.plugins.title) {
+                            chart.options.plugins.title.font.size = 14;
+                        }
+                    } else if (containerWidth < 500) {
+                        if (chart.options && chart.options.plugins && chart.options.plugins.legend) {
+                            chart.options.plugins.legend.position = 'bottom';
+                        }
+                        if (chart.options && chart.options.plugins && chart.options.plugins.title) {
+                            chart.options.plugins.title.font.size = 16;
+                        }
+                    } else {
+                        if (chart.options && chart.options.plugins && chart.options.plugins.legend) {
+                            chart.options.plugins.legend.position = 'right';
+                        }
+                        if (chart.options && chart.options.plugins && chart.options.plugins.title) {
+                            chart.options.plugins.title.font.size = 18;
+                        }
+                    }
+                    
+                    chart.update('none');
+                }
+            });
+        }
+        
+        // Initialize dashboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Keep all values static - no data fetching
+            console.log('Dashboard initialized with static values');
+            
+            // Initialize chart responsiveness
+            setTimeout(makeChartsResponsive, 1000);
+            setTimeout(updateChartSizes, 1500);
+        });
+        
+        // Enhanced Charts: initialize on first view of dashboard
+        async function initChartsOnce() {
+  if (window.__chartsReady) return;
+  
+  // Check if Chart.js is loaded
+  if (typeof Chart === 'undefined') {
+    console.error('Chart.js not loaded');
+    return;
+  }
+  
+            // Color palettes for different chart types
+            const colorPalettes = {
+                medical: ['#10B981', '#F59E0B', '#EF4444'],
+                education: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6'],
+                gender: ['#3B82F6', '#EC4899', '#6B7280'],
+                workshop: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444', '#84CC16'],
+                age: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
+                health: ['#10B981', '#EF4444']
+            };
+
+            // Chart 1: Family Medical Status - Doughnut Chart
+            new Chart(document.getElementById('medicalStatusChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['No Issues', 'Has Issues', 'Other'],
+                    datasets: [{
+                        data: [239, 30, 2],
+                        backgroundColor: colorPalettes.medical,
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 25,
+                        hoverBackgroundColor: ['#059669', '#D97706', '#DC2626']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: { 
+                        title: {
+                            display: true,
+                            text: 'Family Medical Status',
+                            font: { size: 16, weight: 'bold' },
+                            color: '#1F2937',
+                            padding: 20
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { 
+                                font: { size: 11, weight: '500' },
+                                padding: 15,
+                                usePointStyle: true,
+                                color: '#374151'
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            borderColor: '#e5e7eb',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return `${context.label}: ${context.parsed} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '65%',
+                    animation: { 
+                        duration: 1500,
+                        easing: 'easeInOutQuart',
+                        animateRotate: true
+                    }
+                }
+            });
+
+            // Chart 2: Parental Education - Horizontal Bar Chart
+            new Chart(document.getElementById('educationChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Post Graduate', 'Graduation', '12th Grade', '10th Grade', 'Other'],
+                    datasets: [{
+                        label: 'Number of Families',
+                        data: [23, 72, 97, 32, 15],
+                        backgroundColor: colorPalettes.education,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverBackgroundColor: colorPalettes.education.map(color => color + 'CC'),
+                        hoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Parental Education Level',
+                            font: { size: 16, weight: 'bold' },
+                            color: '#1F2937',
+                            padding: 20
+                        },
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            borderColor: '#e5e7eb',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.x} families`;
+                                }
+                            }
+                        }
+                    },
+                    scales: { 
+                        x: { 
+                            beginAtZero: true, 
+                            grid: { display: false },
+                            ticks: {
+                                font: { size: 11 },
+                                color: '#6B7280'
+                            }
+                        },
+                        y: { 
+                            grid: { display: false },
+                            ticks: {
+                                font: { size: 11 },
+                                color: '#6B7280'
+                            }
+                        }
+                    },
+                    animation: { 
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+
+            // Chart 3: Marital Discord - Progress Ring
+            new Chart(document.getElementById('maritalDiscordChart'), {
+                type: 'doughnut',
+    data: {
+                    labels: ['No Discord', 'Discord Present'],
+      datasets: [{
+                        data: [250, 24],
+                        backgroundColor: ['#10B981', '#EF4444'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+      }]
+    },
+    options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Marital Discord Status',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '70%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 4: Workshop Distribution - Bar Chart
+            new Chart(document.getElementById('workshopChart'), {
+    type: 'bar',
+    data: {
+                    labels: ['288 AW', '832 FWC', '831 FWC', '265 FWC', 'BHQ', '290 FWC', '286 FWC'],
+      datasets: [{
+                        label: 'Number of Families',
+                        data: [65, 60, 38, 36, 30, 23, 22],
+                        backgroundColor: colorPalettes.workshop,
+                        borderRadius: 8,
+                        borderSkipped: false
+      }]
+    },
+    options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+          title: {
+            display: true,
+                            text: 'Distribution of Family Members',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { beginAtZero: true, grid: { display: false } }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 5: Entrepreneurship - Gauge Chart
+            new Chart(document.getElementById('entrepreneurshipChart'), {
+    type: 'doughnut',
+    data: {
+                    labels: ['Not Involved', 'Involved'],
+      datasets: [{
+                        data: [269, 5],
+                        backgroundColor: ['#6B7280', '#10B981'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+      }]
+    },
+    options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+          title: {
+            display: true,
+                            text: 'AWWA Entrepreneurship Program',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '80%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 6: Family Size Distribution - Polar Area Chart
+            new Chart(document.getElementById('familySizeChart'), {
+                type: 'polarArea',
+    data: {
+                    labels: ['1 Child', '2 Children', '3 Children', '4+ Children'],
+      datasets: [{
+                        data: [45, 78, 32, 15],
+                        backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+      }]
+    },
+    options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+          title: {
+            display: true,
+                            text: 'Family Size Distribution',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 7: Gender Distribution - Pie Chart
+            new Chart(document.getElementById('genderChart'), {
+                type: 'pie',
+    data: {
+                    labels: ['Male', 'Female'],
+      datasets: [{
+                        data: [33, 14],
+                        backgroundColor: ['#3B82F6', '#EC4899'],
+                        borderWidth: 3,
+                        borderColor: '#FFFFFF',
+                        hoverOffset: 20
+      }]
+    },
+    options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+          title: {
+            display: true,
+                            text: 'Children Gender Distribution',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 8: Children Age Profile - Polar Area Chart
+            new Chart(document.getElementById('ageProfileChart'), {
+                type: 'polarArea',
+    data: {
+                    labels: ['0-6 years', '6-12 years', '12-18 years', '18-24 years'],
+      datasets: [{
+                        data: [45, 78, 52, 8],
+                        backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+      }]
+    },
+    options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+          title: {
+            display: true,
+                            text: 'Children Age Profile',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 9: Educational Streams - Bar Chart
+            new Chart(document.getElementById('educationalStreamsChart'), {
+    type: 'bar',
+    data: {
+                    labels: ['Arts', 'Commerce', 'Science', 'PCM', 'PCB', 'Other'],
+      datasets: [{
+                        label: 'Number of Students',
+                        data: [15, 8, 12, 6, 4, 25],
+                        backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444'],
+                        borderRadius: 8,
+                        borderSkipped: false
+      }]
+    },
+    options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+              title: {
+                display: true,
+                            text: 'Educational Streams Distribution',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: { display: false }
+                    },
+      scales: { 
+            x: { 
+              grid: { display: false },
+                            ticks: { font: { size: 11 } }
+                        },
+        y: { 
+          beginAtZero: true,
+                            grid: { display: false },
+                            ticks: { stepSize: 5 }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 10: Medical Needs - Donut Chart
+            new Chart(document.getElementById('medicalNeedsChart'), {
+    type: 'doughnut',
+    data: {
+                    labels: ['No Special Needs', 'Special Needs'],
+      datasets: [{
+                        data: [271, 1],
+                        backgroundColor: colorPalettes.health,
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Children Medical Needs',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '60%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 11: Health Status Overview - Multi-level Donut
+            new Chart(document.getElementById('healthOverviewChart'), {
+                type: 'doughnut',
+        data: {
+                    labels: ['Healthy Families', 'Families with Medical Issues', 'Children with Special Needs'],
+          datasets: [{
+                        data: [239, 30, 1],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                        borderWidth: 0,
+                        hoverOffset: 20
+          }]
+        },
+        options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { 
+              title: {
+                display: true,
+                            text: 'Overall Health Status',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 12 } }
+                        }
+                    },
+                    cutout: '50%',
+                    animation: { duration: 2000 }
+                }
+            });
+
+            window.__chartsReady = true;
+        }
+
+        // Navigation functionality
+        function switchSection(targetSection) {
+            // Hide all sections
+            document.querySelectorAll('.app-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show target section
+            const target = document.getElementById(targetSection);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+            
+            // Update navigation active state
+            document.querySelectorAll('.lp-nav li').forEach(li => {
+                li.classList.remove('active');
+            });
+            
+            const activeNav = document.querySelector(`.lp-nav li[data-target="${targetSection}"]`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+        }
+
+        // Google Sheets Configuration
+        const GOOGLE_SHEET_ID = '1xc4yFUKCHt3_arojTCzc8lf3fGmaco8TzTTJ-HCwpFw';
+        const GOOGLE_SHEET_NAME = 'Family Details (Ranbankura Eagles)';
+        const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+        
+        // Families data from Google Sheets
+        let familiesData = [];
+        let filteredFamiliesData = [];
+        let isLoadingFamilies = false;
+        let availableWorkshops = [];
+
+        // Fetch families data from Google Sheets - TO BE FIXED BY JYOTI AND ADAB
+        // Current implementation has issues with CORS proxy reliability and data mapping
+        async function fetchFamiliesFromGoogleSheets() {
+            if (isLoadingFamilies) return;
+            
+            isLoadingFamilies = true;
+            updateFamiliesStatus('loading');
+            
+            try {
+                // Construct the Google Sheets CSV export URL
+                const sheetUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(GOOGLE_SHEET_NAME)}`;
+                console.log('Fetching from:', sheetUrl);
+                
+                let response;
+                let csvText;
+                
+                // Try multiple CORS proxies
+                const proxies = [
+                    'https://api.allorigins.win/raw?url=',
+                    'https://cors-anywhere.herokuapp.com/',
+                    'https://api.codetabs.com/v1/proxy?quest=',
+                    'https://thingproxy.freeboard.io/fetch/'
+                ];
+                
+                let proxyIndex = 0;
+                let success = false;
+                
+                while (proxyIndex < proxies.length && !success) {
+                    try {
+                        const proxyUrl = proxies[proxyIndex] + encodeURIComponent(sheetUrl);
+                        console.log(`Trying proxy ${proxyIndex + 1}:`, proxyUrl);
+                        
+                        response = await fetch(proxyUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'text/csv,text/plain,*/*',
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            csvText = await response.text();
+                            console.log(`Proxy ${proxyIndex + 1} successful, got`, csvText.length, 'characters');
+                            success = true;
+                        } else {
+                            console.log(`Proxy ${proxyIndex + 1} failed:`, response.status);
+                            proxyIndex++;
+                        }
+                    } catch (proxyError) {
+                        console.log(`Proxy ${proxyIndex + 1} error:`, proxyError.message);
+                        proxyIndex++;
+                    }
+                }
+                
+                if (!success) {
+                    throw new Error('All CORS proxies failed. Please check your internet connection or try again later.');
+                }
+                
+                // Parse the CSV data
+                const families = parseFamiliesCSV(csvText);
+                console.log('Parsed families:', families.length);
+                
+                if (families.length === 0) {
+                    throw new Error('No families found in the data');
+                }
+                
+                familiesData = families;
+                filteredFamiliesData = [...families]; // Initialize filtered data
+                populateWorkshopFilter();
+                updateFamiliesStatus('success');
+                loadFamilies(); // Refresh the display
+                
+            } catch (error) {
+                console.error('Error fetching families data:', error);
+                updateFamiliesStatus('error');
+                
+                // Fallback to sample data
+                familiesData = getSampleFamiliesData();
+                loadFamilies();
+                
+                // Show error message to user
+                alert(`Failed to load data from Google Sheets: ${error.message}\n\nUsing sample data instead.`);
+            } finally {
+                isLoadingFamilies = false;
+            }
+        }
+
+        // Parse CSV data for families - TO BE FIXED BY JYOTI AND ADAB
+        // Current implementation has issues with column mapping and data parsing
+        function parseFamiliesCSV(csvText) {
+            try {
+                const lines = csvText.split('\n').filter(line => line.trim());
+                if (lines.length < 2) {
+                    console.warn('CSV has less than 2 lines');
+                    return [];
+                }
+                
+                // Parse CSV with proper handling of quoted fields
+                function parseCSVLine(line) {
+                    const result = [];
+                    let current = '';
+                    let inQuotes = false;
+                    
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                            result.push(current.trim());
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    result.push(current.trim());
+                    return result;
+                }
+                
+                const headers = parseCSVLine(lines[0]);
+                console.log('CSV Headers:', headers);
+                console.log('Total lines:', lines.length);
+                
+                // Log all column names that might contain husband information
+                const husbandColumns = headers.filter(h => 
+                    h.toLowerCase().includes('husband') || 
+                    h.toLowerCase().includes('spouse')
+                );
+                console.log('Husband-related columns:', husbandColumns);
+                
+                // Log all headers to see the exact format
+                console.log('All headers:', headers.map((h, i) => `${i}: "${h}"`));
+                
+                const families = [];
+                
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    
+                    const values = parseCSVLine(line);
+                    
+                    // Skip if we don't have enough values or if it's a header row
+                    if (values.length < headers.length || values[0] === 'WKSP') {
+                        continue;
+                    }
+                    
+                    const family = {};
+                    headers.forEach((header, index) => {
+                        family[header.toLowerCase().replace(/\s+/g, '_')] = values[index] || '';
+                    });
+                    
+                    // Map to our expected format using exact column names from the sheet
+                    const ladyName = family.personal_information_ladies_name || '';
+                    // Use the exact column name from the CSV headers
+                    const husbandName = family.husbands_details_husbands_name || '';
+                    const mobile = family.personal_mobile || '';
+                    const qualification = family.highest_qualification || '';
+                    const bloodGroup = family.blood_group || '';
+                    const religion = family.religion || '';
+                    const marriageDate = family.date_of_marriage || '';
+                    const yearsInMarriage = family.years_in_marriage || '';
+                    const email = family.personal_email || '';
+                    const languages = family.languages_known || '';
+                    const canDrive = family.can_drive || '';
+                    const ownsVehicle = family.owns_vehicle || '';
+                    const husbandRank = family.husbands_rank || '';
+                    const unit = family.unit || '';
+                    const subUnit = family.sub_unit || '';
+                    const postingStation = family.posting_station || '';
+                    const dateOfPosting = family.date_of_posting || '';
+                    const quarterNumber = family.quarter_number || '';
+                    const colonyName = family.colony_enclave_name || '';
+                    const accommodationType = family.type_of_accommodation || '';
+                    const accommodationAddress = family.family_accommodation_address || '';
+                    
+                    // Extract workshop information from WKSP column
+                    const workshop = family.wksp || '';
+                    
+                    // Debug logging for husband name
+                    if (ladyName && ladyName.trim()) {
+                        console.log('Family:', ladyName, 'Husband data:', {
+                            husbands_details_husbands_name: family.husbands_details_husbands_name,
+                            husbands_name: family.husbands_name,
+                            husband_name: family.husband_name,
+                            husband: family.husband,
+                            final: husbandName
+                        });
+                    }
+                    
+                    // Only add if we have at least a lady's name
+                    if (ladyName && ladyName.trim()) {
+                        const familyData = {
+                            id: families.length + 1,
+                            name: ladyName.trim(),
+                            husband: husbandName.trim() || 'N/A',
+                            contact: mobile.trim() || 'N/A',
+                            education: qualification.trim() || 'N/A',
+                            children: yearsInMarriage.trim() || 'N/A',
+                            joined: marriageDate.trim() || 'N/A',
+                            workshop: workshop.trim() || 'N/A',
+                            // Additional fields from the sheet
+                            email: email.trim() || 'N/A',
+                            bloodGroup: bloodGroup.trim() || 'N/A',
+                            religion: religion.trim() || 'N/A',
+                            languages: languages.trim() || 'N/A',
+                            canDrive: canDrive.trim() || 'N/A',
+                            ownsVehicle: ownsVehicle.trim() || 'N/A',
+                            husbandRank: husbandRank.trim() || 'N/A',
+                            unit: unit.trim() || 'N/A',
+                            subUnit: subUnit.trim() || 'N/A',
+                            postingStation: postingStation.trim() || 'N/A',
+                            dateOfPosting: dateOfPosting.trim() || 'N/A',
+                            quarterNumber: quarterNumber.trim() || 'N/A',
+                            colonyName: colonyName.trim() || 'N/A',
+                            accommodationType: accommodationType.trim() || 'N/A',
+                            accommodationAddress: accommodationAddress.trim() || 'N/A'
+                        };
+                        
+                        families.push(familyData);
+                        
+                        // Collect unique workshops for filter
+                        if (workshop && workshop.trim() && workshop.trim() !== 'N/A') {
+                            if (!availableWorkshops.includes(workshop.trim())) {
+                                availableWorkshops.push(workshop.trim());
+                            }
+                        }
+                    }
+                }
+                
+                console.log(`Parsed ${families.length} families from CSV`);
+                return families;
+                
+            } catch (error) {
+                console.error('Error parsing CSV:', error);
+                return [];
+            }
+        }
+
+        // Sample data fallback
+        function getSampleFamiliesData() {
+            return Array.from({ length: 10 }, (_, i) => {
+                const surnames = ['Sharma', 'Singh', 'Kumar', 'Gupta', 'Verma', 'Patel', 'Reddy', 'Joshi', 'Agarwal', 'Jain'];
+                const firstNames = ['Rajesh', 'Vikram', 'Amit', 'Suresh', 'Ravi', 'Raj', 'Kiran', 'Sunil', 'Pradeep', 'Anil'];
+                const educations = ['B.Tech', 'MBA', 'B.Sc', 'M.A', 'B.Com', 'M.Tech', 'B.A', 'M.Sc', 'B.E', 'M.Com'];
+                const childrenCounts = ['1 Child', '2 Children', '3 Children', '1 Child', '2 Children', '1 Child', '2 Children', '3 Children', '1 Child', '2 Children'];
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
+                
+                return {
+                    id: i + 1,
+                    name: `${surnames[i % surnames.length]} Family`,
+                    husband: `${firstNames[i % firstNames.length]} ${surnames[i % surnames.length]}`,
+                    contact: `+91-${9876500000 + i}`,
+                    education: educations[i % educations.length],
+                    children: childrenCounts[i % childrenCounts.length],
+                    joined: `${months[i % months.length]} 2024`
+                };
+            });
+        }
+
+        // Update families status indicator
+        function updateFamiliesStatus(status) {
+            const countElement = document.querySelector('#section-families .count');
+            const refreshBtn = document.getElementById('refreshFamiliesBtn');
+            
+            if (countElement) {
+                switch (status) {
+                    case 'loading':
+                        countElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                        break;
+                    case 'success':
+                        countElement.textContent = `(${familiesData.length})`;
+                        break;
+                    case 'error':
+                        countElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+                        break;
+                    default:
+                        countElement.textContent = `(${familiesData.length})`;
+                }
+            }
+            
+            if (refreshBtn) {
+                const icon = refreshBtn.querySelector('i');
+                const text = refreshBtn.querySelector('span') || refreshBtn.childNodes[refreshBtn.childNodes.length - 1];
+                
+                switch (status) {
+                    case 'loading':
+                        icon.className = 'fas fa-spinner fa-spin';
+                        refreshBtn.disabled = true;
+                        break;
+                    case 'success':
+                    case 'error':
+                        icon.className = 'fas fa-sync-alt';
+                        refreshBtn.disabled = false;
+                        break;
+                }
+            }
+        }
+
+        // Sample companies data (matching old dashboard style)
+        const companiesData = [
+            { id: "Coy001", femaleName: "Priya Sharma", spouseName: "Rajesh Sharma", education: "B.Tech", phoneNumber: "+91-9000000001", rank: "Col" },
+            { id: "Coy002", femaleName: "Kavita Singh", spouseName: "Vikram Singh", education: "MBA", phoneNumber: "+91-9000000002", rank: "Lt Col" },
+            { id: "Coy003", femaleName: "Sunita Verma", spouseName: "Amit Verma", education: "B.Sc", phoneNumber: "+91-9000000003", rank: "Maj" },
+            { id: "Coy004", femaleName: "Rekha Patel", spouseName: "Ravi Patel", education: "M.A", phoneNumber: "+91-9000000004", rank: "Capt" },
+            { id: "Coy005", femaleName: "Meera Gupta", spouseName: "Suresh Gupta", education: "B.Com", phoneNumber: "+91-9000000005", rank: "Lt" },
+            { id: "Coy006", femaleName: "Anita Kumar", spouseName: "Raj Kumar", education: "M.Tech", phoneNumber: "+91-9000000006", rank: "Sqn Ldr" },
+            { id: "Coy007", femaleName: "Sushila Yadav", spouseName: "Vijay Yadav", education: "B.A", phoneNumber: "+91-9000000007", rank: "Flt Lt" },
+            { id: "Coy008", femaleName: "Geeta Tiwari", spouseName: "Ramesh Tiwari", education: "M.Sc", phoneNumber: "+91-9000000008", rank: "Fg Offr" }
+        ];
+
+        // Populate WKSP filter dropdown
+        function populateWorkshopFilter() {
+            const workshopFilter = document.getElementById('workshopFilter');
+            if (!workshopFilter) return;
+            
+            // Clear existing options except "All WKSP"
+            workshopFilter.innerHTML = '<option value="">All WKSP</option>';
+            
+            // Sort WKSP alphabetically
+            const sortedWorkshops = availableWorkshops.sort();
+            
+            // Add WKSP options
+            sortedWorkshops.forEach(workshop => {
+                const option = document.createElement('option');
+                option.value = workshop;
+                option.textContent = workshop;
+                workshopFilter.appendChild(option);
+            });
+            
+            console.log('Available WKSP:', sortedWorkshops);
+        }
+
+        // Filter families based on search and WKSP
+        function filterFamilies() {
+            const searchTerm = document.getElementById('familySearchInput')?.value.toLowerCase() || '';
+            const workshopFilter = document.getElementById('workshopFilter')?.value || '';
+            
+            filteredFamiliesData = familiesData.filter(family => {
+                const matchesSearch = !searchTerm || 
+                    family.name.toLowerCase().includes(searchTerm) ||
+                    family.husband.toLowerCase().includes(searchTerm) ||
+                    family.contact.toLowerCase().includes(searchTerm) ||
+                    family.education.toLowerCase().includes(searchTerm);
+                
+                const matchesWKSP = !workshopFilter || 
+                    family.workshop === workshopFilter;
+                
+                return matchesSearch && matchesWKSP;
+            });
+            
+            loadFamilies();
+            updateFamiliesCount();
+        }
+
+        // Update families count display
+        function updateFamiliesCount() {
+            const countElement = document.querySelector('#section-families .count');
+            if (countElement) {
+                countElement.textContent = `(${filteredFamiliesData.length})`;
+            }
+        }
+
+        // Load families data from Google Sheets
+        function loadFamilies() {
+            const familiesGrid = document.getElementById('familiesGrid');
+            if (!familiesGrid) return;
+
+            if (filteredFamiliesData.length === 0) {
+                familiesGrid.innerHTML = `
+                    <div class="no-data-message">
+                        <i class="fas fa-info-circle"></i>
+                        <p>No families found matching your filters. Try adjusting your search or WKSP filter.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            familiesGrid.innerHTML = filteredFamiliesData.map(f => `
+                <div class="family-card">
+                    <div class="fc-top">
+                        <h4>${f.name}</h4>
+                        <span class="badge success">AWWA REGISTERED</span>
+                    </div>
+                    <div class="fc-body">
+                        <div class="row"><span class="label">Husband Name:</span><span class="val">${f.husband}</span></div>
+                        <div class="row"><span class="label">Contact:</span><span class="val">${f.contact}</span></div>
+                        <div class="row"><span class="label">Education:</span><span class="val">${f.education}</span></div>
+                        <div class="row"><span class="label">WKSP:</span><span class="val">${f.workshop}</span></div>
+                    </div>
+                    <div class="fc-footer"><a href="#">${f.children}</a>${f.joined ? `<small>${f.joined}</small>` : ''}</div>
+                </div>
+            `).join('');
+        }
+
+        // Load companies data (matching old dashboard style)
+        function loadCompanies() {
+            const coyGrid = document.getElementById('coyGrid');
+            if (!coyGrid) return;
+
+            coyGrid.innerHTML = companiesData.map(c => `
+                <div class="family-card">
+                    <div class="fc-top">
+                        <h4>${c.id}</h4>
+                        <span class="badge success">${c.rank}</span>
+                    </div>
+                    <div class="fc-body">
+                        <div class="row"><span class="label">Female Name:</span><span class="val">${c.femaleName}</span></div>
+                        <div class="row"><span class="label">Spouse Name:</span><span class="val">${c.spouseName}</span></div>
+                        <div class="row"><span class="label">Education:</span><span class="val">${c.education}</span></div>
+                        <div class="row"><span class="label">Phone:</span><span class="val">${c.phoneNumber}</span></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click listeners to navigation
+            document.querySelectorAll('.lp-nav li').forEach(li => {
+                li.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    switchSection(target);
+                    
+                    // Load data based on section
+                    if (target === 'section-families') {
+                        // Fetch fresh data from Google Sheets when families section is opened
+                        if (familiesData.length === 0) {
+                            fetchFamiliesFromGoogleSheets();
+                        } else {
+                            loadFamilies();
+                        }
+                    } else if (target === 'section-companies') {
+                        loadCompanies();
+                    }
+                    
+                    // Initialize charts when dashboard is shown
+                    if (target === 'section-dashboard') {
+  setTimeout(initChartsOnce, 500);
+                    }
+                    
+                    // Close navigation on mobile after clicking
+                    if (window.innerWidth <= 768) {
+                        const lpNav = document.getElementById('lpNav');
+                        const navToggle = document.getElementById('navToggle');
+                        const icon = navToggle.querySelector('i');
+                        const text = navToggle.querySelector('span');
+                        
+                        lpNav.classList.remove('expanded');
+                        lpNav.classList.add('collapsed');
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                        text.textContent = 'Menu';
+                        navToggle.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Add event listeners for family filtering
+            const familySearchInput = document.getElementById('familySearchInput');
+            const workshopFilter = document.getElementById('workshopFilter');
+            
+            if (familySearchInput) {
+                familySearchInput.addEventListener('input', filterFamilies);
+            }
+            
+            if (workshopFilter) {
+                workshopFilter.addEventListener('change', filterFamilies);
+            }
+            
+            // Initialize charts
+            setTimeout(initChartsOnce, 1000);
+        });
+
+        // Load user info when page loads
+        function loadUserInfo() {
+            // Default user info for demonstration
+            const defaultUserInfo = {
+                userId: 'admin001',
+                name: 'Sushma Bhatti',
+                designation: 'Battalion Command',
+                phone: '+91-9876543210',
+                userType: 'admin'
+            };
+            
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || JSON.stringify(defaultUserInfo));
+            
+            // Update user information panel
+            const userInfoBody = document.getElementById('userInfoBody');
+            if (userInfoBody) {
+                let userInfoHTML = `
+                    <div class="info-row"><span class="label">User ID:</span><span class="value">${userInfo.userId}</span></div>
+                    <div class="info-row"><span class="label">Name:</span><span class="value">${userInfo.name}</span></div>
+                    <div class="info-row"><span class="label">Designation:</span><span class="value">${userInfo.designation || 'N/A'}</span></div>
+                    <div class="info-row"><span class="label">Contact Number:</span><span class="value">${userInfo.phone || 'N/A'}</span></div>
+                    <div class="info-row"><span class="label">User Type:</span><span class="value">${userInfo.userType || 'admin'}</span></div>
+                `;
+                
+                
+                userInfoBody.innerHTML = userInfoHTML;
+            }
+            
+            // Update Additional Details section
+            const additionalDetailsTitle = document.getElementById('additionalDetailsTitle');
+            const additionalDetailsBody = document.getElementById('additionalDetailsBody');
+            
+            if (userInfo.userId === 'tarunpreet singh') {
+                // Change title to "Wife Details" for Tarunpreet Singh
+                additionalDetailsTitle.textContent =  'Spouse Profile';
+                
+                // Add wife image to the header
+                const additionalDetailsImage = document.getElementById('additionalDetailsImage');
+                const wifeImage = document.getElementById('wifeImage');
+                if (additionalDetailsImage && wifeImage) {
+                    wifeImage.src = 'public/Gemini_Generated_Image_rwk0q2rwk0q2rwk0.png';
+                    additionalDetailsImage.style.display = 'block';
+                }
+                
+                // Add orange theme data attribute
+                const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
+                if (additionalDetailsPanel) {
+                    additionalDetailsPanel.setAttribute('data-wife-details', 'true');
+                }
+                
+                // Add spouse information
+                additionalDetailsBody.innerHTML = `
+                    <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
+                    <div class="info-row"><span class="label">Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
+                    <div class="info-row"><span class="label">Contact:</span><span class="value">7052615743</span></div>
+                    <div class="info-row"><span class="label">Relationship:</span><span class="value">Spouse</span></div>
+                `;
+            } else {
+                // Keep default title and show empty for other users
+                additionalDetailsTitle.textContent = 'Additional Details';
+                
+                // Hide wife image for other users
+                const additionalDetailsImage = document.getElementById('additionalDetailsImage');
+                if (additionalDetailsImage) {
+                    additionalDetailsImage.style.display = 'none';
+                }
+                
+                // Remove orange theme data attribute
+                const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
+                if (additionalDetailsPanel) {
+                    additionalDetailsPanel.removeAttribute('data-wife-details');
+                }
+                
+                additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
+            }
+            
+        // Update welcome title
+            const welcomeTitle = document.getElementById('welcomeTitle');
+            if (welcomeTitle) {
+                welcomeTitle.textContent = `Welcome, ${userInfo.name}!`;
+            }
+        
+        // Update profile information
+            const profileName = document.getElementById('profileName');
+            const profileDesignation = document.getElementById('profileDesignation');
+            if (profileName) profileName.textContent = userInfo.name;
+            if (profileDesignation) profileDesignation.textContent = userInfo.designation || 'User';
+        
+        // Update profile initials
+            const profileInitials = document.getElementById('profileInitials');
+            if (profileInitials) {
+        const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                profileInitials.textContent = initials;
+            }
+            
+            // Update left panel name and role
+            const leftPanelName = document.querySelector('.lp-name');
+            const leftPanelRole = document.querySelector('.lp-role');
+            if (leftPanelName) leftPanelName.textContent = userInfo.name;
+            if (leftPanelRole) leftPanelRole.textContent = userInfo.designation || 'User';
+        
+        // Set profile image based on user
+            let profileImage = 'public/profile.png';
+        switch(userInfo.userId) {
+            case 'tarunpreet singh':
+                profileImage = 'public/Gemini_Generated_Image_4jitd24jitd24jit.png';
+                break;
+            case 'piyush sharma':
+                profileImage = 'public/Gemini_Generated_Image_iy5po1iy5po1iy5p.png';
+                break;
+            case 'harish kumar':
+                    profileImage = 'public/Gemini_Generated_Image_kd3igrkd3igrkd3i (1).png';
+                break;
+            case 'rahul t more':
+                profileImage = 'public/Col.jpg';
+                break;
+            case 'bt01':
+                profileImage = 'public/profile.png';
+                break;
+            default:
+                profileImage = 'public/profile.png';
+        }
+        
+        // Update profile images
+        const profileImages = document.querySelectorAll('.avatar-box-img, .lp-avatar-img');
+        profileImages.forEach(img => {
+            img.src = profileImage;
+        });
+        }
+
+// Logout function
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('userInfo');
+        window.location.href = 'login.html';
+    }
+}
+
+        // Load user info when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserInfo();
+            
+            // Initialize navigation state on page load
+            const lpNav = document.getElementById('lpNav');
+            const navToggle = document.getElementById('navToggle');
+            
+            if (window.innerWidth <= 768) {
+                // Mobile view - start with collapsed navigation
+                lpNav.classList.add('collapsed');
+                navToggle.style.display = 'block';
+            } else {
+                // Desktop view - always show navigation
+                lpNav.classList.remove('collapsed', 'expanded');
+                navToggle.style.display = 'none';
+            }
+        });
+
+        // Navigation toggle functionality - TO BE FIXED BY JYOTI
+        // Current implementation has issues with button visibility and functionality
+        function toggleNavigation() {
+            console.log('Toggle navigation clicked');
+            const navToggle = document.getElementById('navToggle');
+            const lpNav = document.getElementById('lpNav');
+            const icon = navToggle.querySelector('i');
+            const text = navToggle.querySelector('span');
+            
+            console.log('Current nav state:', lpNav.classList.contains('expanded') ? 'expanded' : 'collapsed');
+            
+            if (lpNav.classList.contains('expanded')) {
+                // Collapse navigation
+                lpNav.classList.remove('expanded');
+                lpNav.classList.add('collapsed');
+                icon.className = 'fas fa-chevron-down';
+                text.textContent = 'Menu';
+                navToggle.classList.remove('active');
+                console.log('Navigation collapsed');
+            } else {
+                // Expand navigation
+                lpNav.classList.remove('collapsed');
+                lpNav.classList.add('expanded');
+                icon.className = 'fas fa-chevron-up';
+                text.textContent = 'Close';
+                navToggle.classList.add('active');
+                console.log('Navigation expanded');
+            }
+        }
+
+        // Auto-collapse navigation on mobile when clicking outside
+        document.addEventListener('click', function(event) {
+            const navToggle = document.getElementById('navToggle');
+            const lpNav = document.getElementById('lpNav');
+            const leftPanel = document.querySelector('.left-panel');
+            
+            // Check if we're on mobile (screen width <= 768px)
+            if (window.innerWidth <= 768) {
+                // If click is outside the left panel and navigation is expanded
+                if (!leftPanel.contains(event.target) && lpNav.classList.contains('expanded')) {
+                    lpNav.classList.remove('expanded');
+                    lpNav.classList.add('collapsed');
+                    const icon = navToggle.querySelector('i');
+                    const text = navToggle.querySelector('span');
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                    text.textContent = 'Menu';
+                    navToggle.classList.remove('active');
+                }
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const lpNav = document.getElementById('lpNav');
+            const navToggle = document.getElementById('navToggle');
+            
+            if (window.innerWidth > 768) {
+                // Desktop view - always show navigation
+                lpNav.classList.remove('collapsed', 'expanded');
+                navToggle.style.display = 'none';
+            } else {
+                // Mobile view - show toggle button
+                navToggle.style.display = 'block';
+                if (!lpNav.classList.contains('expanded')) {
+                    lpNav.classList.add('collapsed');
+                }
+            }
+        });
+</script>
+</body>
+</html>

@@ -1,3 +1,35 @@
+/*
+===========================================
+AWWA FAMILY MANAGEMENT SYSTEM - STYLES
+===========================================
+
+PURPOSE: Main stylesheet for the login page and general UI components
+SCOPE: 
+- Login page styling (login.html)
+- General UI components and animations
+- Responsive design for all screen sizes
+- Hindi font support and typography
+- Color scheme and branding
+
+FEATURES:
+- Animated background with screenshot collages
+- Responsive design for mobile, tablet, and desktop
+- Custom Hindi font support (Ams Vedant)
+- Modern UI with gradients and animations
+- Form styling and validation states
+- Loading animations and transitions
+
+DEPENDENCIES:
+- public/Ams Vedant.ttf: Custom Hindi font
+- public/ folder: Background images and assets
+- Font Awesome: Icons
+- Google Fonts: Inter and Poppins
+
+USAGE:
+- login.html: Primary usage
+- Can be extended for other pages if needed
+*/
+
 /* Reset and Base Styles */
 * {
     margin: 0;

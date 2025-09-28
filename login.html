@@ -1,8 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!--
+    ===========================================
+    AWWA FAMILY MANAGEMENT SYSTEM - LOGIN PAGE
+    ===========================================
+    
+    PURPOSE: Main authentication portal for the AWWA Family Management System
+    TARGET USERS: Military personnel and family members of 624 EME BN
+    FEATURES: 
+    - Multi-role authentication (L1-L4, admin)
+    - Hindi branding with "दीप" (Deep) theme
+    - Responsive design for all devices
+    - Animated background with screenshot collages
+    - Pre-configured test credentials for different user types
+    
+    DEPENDENCIES:
+    - styles.css: Custom styling for login page
+    - Font Awesome: Icons
+    - Google Fonts: Inter and Poppins fonts
+    - public/ folder: Images and assets
+    
+    NAVIGATION FLOW:
+    login.html → dashboard_integrated.html (main dashboard)
+    login.html → dashboard_super user.html (enhanced dashboard)
+    -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AWWA - Sign In</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -80,7 +104,32 @@
         </div>
     </div>
     <script>
-        // Example credentials
+        /*
+        ===========================================
+        AUTHENTICATION SYSTEM
+        ===========================================
+        
+        This script handles user authentication for the AWWA Family Management System.
+        It validates user credentials and redirects to the appropriate dashboard.
+        
+        USER ROLES:
+        - admin: Full system access (Commanding Officers, Battalion Command)
+        - L1: Super User level access
+        - L2: Standard user access
+        - L3: Limited user access  
+        - L4: Basic user access
+        
+        CREDENTIALS STRUCTURE:
+        Each user object contains:
+        - userId: Unique identifier
+        - password: Authentication password
+        - userType: Role level (admin, L1-L4)
+        - name: Display name
+        - designation: Military rank/position
+        - phone: Contact number
+        */
+        
+        // Pre-configured user credentials for testing and production
         const validUsers = [
             // Admin users
             { userId: 'tarunpreet singh', password: 'admin123', userType: 'admin', name: 'Col Tarunpreet Singh', designation: 'Commanding Officer', phone: '9650300475' },
@@ -138,7 +187,9 @@
                 }));
                 console.log('Login successful, redirecting...');
                 alert('Login successful! Redirecting to dashboard...');
-                window.location.href = 'dashboard.html';
+                
+                // Redirect all users to super user dashboard
+                window.location.href = 'dashboard_super user.html';
             } else {
                 alert('Invalid credentials.\n\nTry one of these:\n- aditi / admin123 / L1\n- user1 / admin123 / L1\n- test / admin123 / L1\n- user2 / admin123 / L2\n- user3 / admin123 / L3\n- user4 / admin123 / L4\n- tarunpreet singh / admin123 / admin\n- piyush sharma / admin123 / admin\n- harish kumar / admin123 / admin\n- rahul t more / admin123 / admin\n- admin / admin123 / admin\n- bt01 / admin123 / admin');
             }
