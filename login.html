@@ -129,69 +129,176 @@
         - phone: Contact number
         */
         
-        // Pre-configured user credentials for testing and production
+        // ===========================================
+        // USER CREDENTIALS DATABASE
+        // ===========================================
+        // This array contains all valid user credentials for the AWWA system.
+        // Each user object includes authentication data and profile information.
+        // The system supports different user types (L1-L4, admin) with role-based access.
+        
         const validUsers = [
-            // Admin users
-            { userId: 'tarunpreet singh', password: 'admin123', userType: 'admin', name: 'Col Tarunpreet Singh', designation: 'Commanding Officer', phone: '9650300475' },
-            { userId: 'piyush sharma',     password: 'admin123', userType: 'admin', name: 'Lt Col Piyush Sharma', designation: 'Second in Comd', phone: '9797719357' },
-            { userId: 'harish kumar',     password: 'admin123', userType: 'admin', name: 'Maj Harish Kumar', designation: 'Adjt', phone: '9256172418' },
-            { userId: 'rahul t more',      password: 'admin123', userType: 'admin', name: 'Lt Col Rahul T More', designation: 'OIC Tech Cell', phone: '7006216984' },
-            { userId: 'admin',      password: 'admin123', userType: 'admin', name: 'Administrator', designation: 'System Admin', phone: '0000000000' },
-            { userId: 'bt01',       password: 'admin123', userType: 'admin', name: 'Sushma Bhatti', designation: 'Battalion Command', phone: '9087654321' },
+            // ===========================================
+            // UNIT RANKING USERS (4 MAIN USERS)
+            // ===========================================
+            // These are the primary users of the system with specific roles and responsibilities.
             
-            // L1 users
-            { userId: 'aditi', password: 'admin123', userType: 'L1', name: 'Aditi Mehra', designation: 'L1 User', phone: '9876543210' },
-            { userId: 'user1', password: 'admin123', userType: 'L1', name: 'User One', designation: 'L1 Officer', phone: '9876543211' },
-            { userId: 'test', password: 'admin123', userType: 'L1', name: 'Test User', designation: 'L1 Staff', phone: '9876543212' },
+            { 
+                // Commanding Officer - Highest authority in the unit
+                userId: 'tarunpreet singh', 
+                password: 'admin123', 
+                userType: 'L1', 
+                name: 'Col Tarunpreet Singh', 
+                designation: 'Commanding Officer', 
+                phone: '9650300475',
+                hasSpouse: true,  // Only user with spouse information
+                spouse: {
+                    name: 'Mrs. Deepkiran Kaur',
+                    email: 'deepkirankaur23@gmail.com',
+                    phone: '7052615743',
+                    relationship: 'Spouse'
+                }
+            },
+            { 
+                // Second in Command - Deputy to Commanding Officer
+                userId: 'piyush sharma', 
+                password: 'admin123', 
+                userType: 'L1', 
+                name: 'Lt Col Piyush Sharma', 
+                designation: 'Second in Command', 
+                phone: '9797719357',
+                hasSpouse: false  // No spouse information available
+            },
+            { 
+                // Adjutant - Administrative officer
+                userId: 'harish kumar', 
+                password: 'admin123', 
+                userType: 'L1', 
+                name: 'Maj Harish Kumar', 
+                designation: 'Adjutant', 
+                phone: '9256172418',
+                hasSpouse: false  // No spouse information available
+            },
+            { 
+                // OIC Tech Cell - Officer in Charge of Technical Cell
+                userId: 'rahul t more', 
+                password: 'admin123', 
+                userType: 'L1', 
+                name: 'Lt Col Rahul T More', 
+                designation: 'OIC Tech Cell', 
+                phone: '7006216984',
+                hasSpouse: false  // No spouse information available
+            },
             
-            // L2 users
-            { userId: 'user2', password: 'admin123', userType: 'L2', name: 'User Two', designation: 'L2 Officer', phone: '9876543213' },
+            // ===========================================
+            // ADDITIONAL SYSTEM USERS
+            // ===========================================
+            // These users provide additional access levels and testing capabilities.
             
-            // L3 users
-            { userId: 'user3', password: 'admin123', userType: 'L3', name: 'User Three', designation: 'L3 Officer', phone: '9876543214' },
+            // System Administrator - Full system access
+            { userId: 'admin', password: 'admin123', userType: 'admin', name: 'Administrator', designation: 'System Admin', phone: '0000000000', hasSpouse: false },
             
-            // L4 users
-            { userId: 'user4', password: 'admin123', userType: 'L4', name: 'User Four', designation: 'L4 Officer', phone: '9876543215' }
+            // Battalion Command - High-level administrative access
+            { userId: 'bt01', password: 'admin123', userType: 'admin', name: 'Sushma Bhatti', designation: 'Battalion Command', phone: '9087654321', hasSpouse: false },
+            
+            // ===========================================
+            // ROLE-BASED TEST USERS
+            // ===========================================
+            // These users represent different access levels for testing and development.
+            
+            // L1 Level Users - Super User access
+            { userId: 'aditi', password: 'admin123', userType: 'L1', name: 'Aditi Mehra', designation: 'L1 User', phone: '9876543210', hasSpouse: false },
+            { userId: 'user1', password: 'admin123', userType: 'L1', name: 'User One', designation: 'L1 Officer', phone: '9876543211', hasSpouse: false },
+            { userId: 'test', password: 'admin123', userType: 'L1', name: 'Test User', designation: 'L1 Staff', phone: '9876543212', hasSpouse: false },
+            
+            // L2 Level Users - Standard access
+            { userId: 'user2', password: 'admin123', userType: 'L2', name: 'User Two', designation: 'L2 Officer', phone: '9876543213', hasSpouse: false },
+            
+            // L3 Level Users - Limited access
+            { userId: 'user3', password: 'admin123', userType: 'L3', name: 'User Three', designation: 'L3 Officer', phone: '9876543214', hasSpouse: false },
+            
+            // L4 Level Users - Basic access
+            { userId: 'user4', password: 'admin123', userType: 'L4', name: 'User Four', designation: 'L4 Officer', phone: '9876543215', hasSpouse: false }
         ];
 
-        // Handle login
+        // ===========================================
+        // LOGIN FORM SUBMISSION HANDLER
+        // ===========================================
+        // This function handles the login form submission and validates user credentials.
+        // It implements a two-tier authentication system for flexibility.
+        
         document.querySelector('.login-form').addEventListener('submit', function (e) {
+            // Prevent default form submission behavior
             e.preventDefault();
+            
+            // ===========================================
+            // EXTRACT FORM DATA
+            // ===========================================
+            // Get user input from the login form fields
             const userId = document.getElementById('userId').value.trim();
             const password = document.getElementById('password').value;
             const userType = document.getElementById('userType').value;
 
+            // Log login attempt for debugging purposes
             console.log('Login attempt:', { userId, password, userType });
             
-            // First try exact match with userType
-            let match = validUsers.find(u => u.userId === userId && u.password === password && u.userType === userType);
+            // ===========================================
+            // AUTHENTICATION LOGIC
+            // ===========================================
+            // Two-tier authentication system:
+            // 1. First try exact match (userId + password + userType)
+            // 2. If no exact match, try flexible match (userId + password only)
             
-            // If no exact match, try with any valid user ID and password (flexible role)
+            // TIER 1: Exact match with userType
+            // This ensures strict role-based authentication
+            let match = validUsers.find(u => 
+                u.userId === userId && 
+                u.password === password && 
+                u.userType === userType
+            );
+            
+            // TIER 2: Flexible match (fallback)
+            // This allows users to login with any valid credentials and selected role
             if (!match) {
-                match = validUsers.find(u => u.userId === userId && u.password === password);
+                match = validUsers.find(u => 
+                    u.userId === userId && 
+                    u.password === password
+                );
+                
+                // If flexible match found, update userType to selected role
                 if (match) {
-                    // Update the userType to what was selected
                     match = { ...match, userType: userType };
                 }
             }
             
+            // ===========================================
+            // LOGIN SUCCESS HANDLING
+            // ===========================================
             console.log('Match found:', match);
             if (match) {
-                // Persist complete session info
+                // Store complete user session information in localStorage
+                // This data will be used by the dashboard to personalize the experience
                 localStorage.setItem('userInfo', JSON.stringify({ 
-                    userId: match.userId, 
-                    name: match.name, 
-                    userType: match.userType,
-                    designation: match.designation,
-                    phone: match.phone
+                    userId: match.userId,           // Unique user identifier
+                    name: match.name,               // Display name for welcome message
+                    userType: match.userType,       // User role/access level
+                    designation: match.designation, // Military rank/position
+                    phone: match.phone,             // Contact number
+                    hasSpouse: match.hasSpouse || false,  // Flag for spouse information display
+                    spouse: match.spouse || null    // Spouse data (only for certain users)
                 }));
+                
                 console.log('Login successful, redirecting...');
                 alert('Login successful! Redirecting to dashboard...');
                 
-                // Redirect all users to super user dashboard
+                // Redirect to the main dashboard
+                // All users go to the same dashboard but see personalized content
                 window.location.href = 'dashboard_super user.html';
             } else {
-                alert('Invalid credentials.\n\nTry one of these:\n- aditi / admin123 / L1\n- user1 / admin123 / L1\n- test / admin123 / L1\n- user2 / admin123 / L2\n- user3 / admin123 / L3\n- user4 / admin123 / L4\n- tarunpreet singh / admin123 / admin\n- piyush sharma / admin123 / admin\n- harish kumar / admin123 / admin\n- rahul t more / admin123 / admin\n- admin / admin123 / admin\n- bt01 / admin123 / admin');
+                // ===========================================
+                // LOGIN FAILURE HANDLING
+                // ===========================================
+                // Display helpful error message with valid credentials
+                alert('Invalid credentials.\n\nUnit Ranking Users:\n- tarunpreet singh / admin123 / L1\n- piyush sharma / admin123 / L1\n- harish kumar / admin123 / L1\n- rahul t more / admin123 / L1\n\nOther Users:\n- admin / admin123 / admin\n- aditi / admin123 / L1\n- user1 / admin123 / L1');
             }
         });
     </script>

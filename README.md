@@ -235,6 +235,11 @@ Awwa_prototype/
 - **Header Layout**: The header positioning (title to extreme left, logout to extreme right) needs to be fixed by **Jyoti**
   - **CSS Issues**: Current flexbox implementation not working properly
   - **Layout Problems**: Title and logout button positioning not as expected
+- **Add Family Modal**: The Add Family modal popup needs to be fixed by **Jyoti**
+  - **Desktop View Issue**: Modal works on mobile but shows as inline form on desktop/web view
+  - **Modal Positioning**: CSS positioning not working correctly for desktop browsers
+  - **Z-Index Problems**: Modal not appearing above other elements on desktop
+  - **Display Issues**: Form appears inline instead of as centered popup modal
 - **Google Sheets Integration**: The families section Google Sheets integration needs to be fixed by **Jyoti and Adab**
   - **CORS Proxy Reliability**: Multiple proxy fallbacks may fail intermittently
   - **Data Mapping Issues**: Column name mapping inconsistencies causing "N/A" values

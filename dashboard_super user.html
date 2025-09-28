@@ -409,6 +409,347 @@
                 align-items: center;
                 gap: 6px;
             }
+            
+            /* Modal Popup Styling - TO BE FIXED BY JYOTI */
+            /* ISSUE: Modal works on mobile but not on desktop/web view */
+            /* Current implementation shows form inline instead of as popup modal */
+            /*
+            .modal-overlay {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                background: rgba(0, 0, 0, 0.6) !important;
+                backdrop-filter: blur(5px);
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                z-index: 99999 !important;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .modal-overlay:not(.hidden) {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            .modal-overlay.hidden {
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            
+            .modal-container {
+                background: white !important;
+                border-radius: 20px !important;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+                max-width: 900px !important;
+                width: 90% !important;
+                max-height: 90vh !important;
+                overflow: hidden !important;
+                transform: scale(0.9) translateY(20px) !important;
+                transition: all 0.3s ease !important;
+                position: relative !important;
+                margin: 20px !important;
+            }
+            
+            .modal-overlay:not(.hidden) .modal-container {
+                transform: scale(1) translateY(0) !important;
+            }
+            */
+            
+            .modal-header {
+                background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+                color: white;
+                padding: 25px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .modal-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
+                pointer-events: none;
+            }
+            
+            .modal-title {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .modal-title i {
+                font-size: 24px;
+                background: rgba(255, 255, 255, 0.2);
+                padding: 12px;
+                border-radius: 12px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .modal-title h3 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 700;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            .modal-close-btn {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+                backdrop-filter: blur(10px);
+                position: relative;
+                z-index: 1;
+            }
+            
+            .modal-close-btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(1.1);
+            }
+            
+            .modal-body {
+                padding: 0;
+                max-height: calc(90vh - 100px);
+                overflow-y: auto;
+            }
+            
+            .add-family-form {
+                padding: 30px;
+            }
+            
+            .form-row {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .form-group {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .form-group.full-width {
+                grid-column: 1 / -1;
+            }
+            
+            .form-group label {
+                font-weight: 600;
+                color: #374151;
+                margin-bottom: 6px;
+                font-size: 14px;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 14px 16px;
+                border: 2px solid #e5e7eb;
+                border-radius: 12px;
+                font-size: 14px;
+                transition: all 0.3s ease;
+                background: #fafafa;
+                font-family: inherit;
+            }
+            
+            .form-group input:focus,
+            .form-group select:focus,
+            .form-group textarea:focus {
+                outline: none;
+                border-color: #ff8c00;
+                box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
+                background: white;
+                transform: translateY(-1px);
+            }
+            
+            .form-group input[required] {
+                border-color: #ff8c00;
+                background: linear-gradient(135deg, #fff5e6 0%, #ffffff 100%);
+            }
+            
+            .form-group input[required]:focus {
+                background: white;
+                box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.15);
+            }
+            
+            .form-section-header {
+                margin: 40px 0 25px 0;
+                padding: 20px 0 15px 0;
+                border-bottom: 3px solid #ff8c00;
+                background: linear-gradient(135deg, #fff5e6 0%, #ffffff 100%);
+                border-radius: 12px;
+                padding: 20px;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .form-section-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(45deg, rgba(255, 140, 0, 0.05) 0%, transparent 50%, rgba(255, 140, 0, 0.05) 100%);
+                pointer-events: none;
+            }
+            
+            .form-section-header h4 {
+                color: #ff8c00;
+                font-size: 20px;
+                font-weight: 700;
+                margin: 0;
+                position: relative;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .form-section-header h4::before {
+                content: '●';
+                color: #ff8c00;
+                font-size: 16px;
+            }
+            
+            .form-actions {
+                display: flex;
+                gap: 20px;
+                justify-content: flex-end;
+                margin-top: 40px;
+                padding: 25px 0 10px 0;
+                border-top: 2px solid #ff8c00;
+                background: linear-gradient(135deg, #fff5e6 0%, #ffffff 100%);
+                margin: 40px -30px 0 -30px;
+                padding: 25px 30px;
+            }
+            
+            .btn-primary,
+            .btn-secondary {
+                padding: 14px 28px;
+                border-radius: 12px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 16px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .btn-primary {
+                background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+                color: white;
+                border: none;
+                box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+            }
+            
+            .btn-primary:hover {
+                background: linear-gradient(135deg, #ff7f00 0%, #e67300 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(255, 140, 0, 0.4);
+            }
+            
+            .btn-primary:active {
+                transform: translateY(0);
+                box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+            }
+            
+            .btn-secondary {
+                background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+                color: #6b7280;
+                border: 2px solid #d1d5db;
+            }
+            
+            .btn-secondary:hover {
+                background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+                border-color: #9ca3af;
+                color: #374151;
+                transform: translateY(-1px);
+            }
+            
+            /* Desktop Modal Styling */
+            @media (min-width: 769px) {
+                .modal-overlay {
+                    z-index: 10000;
+                }
+                
+                .modal-container {
+                    max-width: 1000px;
+                    width: 85%;
+                    margin: 40px auto;
+                }
+                
+                .modal-body {
+                    max-height: calc(90vh - 120px);
+                }
+                
+                .form-row {
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 25px;
+                }
+            }
+            
+            /* Mobile Responsiveness for Modal */
+            @media (max-width: 768px) {
+                .modal-container {
+                    width: 95%;
+                    max-height: 95vh;
+                    margin: 20px;
+                }
+                
+                .modal-header {
+                    padding: 20px;
+                }
+                
+                .modal-title h3 {
+                    font-size: 20px;
+                }
+                
+                .add-family-form {
+                    padding: 20px;
+                }
+                
+                .form-row {
+                    grid-template-columns: 1fr;
+                    gap: 15px;
+                }
+                
+                .form-actions {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .btn-primary,
+                .btn-secondary {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
 
         .families-actions .check-btn i {
             font-size: 14px;
@@ -750,8 +1091,8 @@
                                 <i class="fas fa-sync-alt"></i> Refresh Dashboard
                             </button>
                             <small id="dataStatus">Static Data</small>
-                        </div>
                     </div>
+                        </div>
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-user-injured"></i></div>
                         <div class="mini-content">
@@ -837,29 +1178,29 @@
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="ageProfileChart"></canvas>
-                            </div>
-                        </div>
+                    </div>
+                    </div>
                     
                         <!-- Chart 9: Educational Streams - Bar Chart -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="educationalStreamsChart"></canvas>
-                            </div>
-                        </div>
+                </div>
+            </div>
             
                         <!-- Chart 10: Medical Needs - Donut Chart -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="medicalNeedsChart"></canvas>
-                            </div>
-                        </div>
+                    </div>
+                </div>
             
                         <!-- Chart 11: Health Status Overview - Multi-level Donut -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
                                 <canvas id="healthOverviewChart"></canvas>
-                            </div>
-                        </div>
+                    </div>
+                </div>
                     </div>
                 </div>
 
@@ -879,9 +1220,17 @@
                 <button class="check-btn" onclick="fetchFamiliesFromGoogleSheets()" id="refreshFamiliesBtn">
                     <i class="fas fa-sync-alt"></i> Refresh Data
                 </button>
-                <button class="check-btn">Add Family</button>
+                <button class="check-btn" onclick="alert('Add Family feature temporarily disabled - to be fixed by Jyoti')" id="addFamilyBtn" style="opacity: 0.6; cursor: not-allowed;">
+                    <i class="fas fa-plus"></i> Add Family (Disabled)
+                </button>
             </div>
         </div>
+        
+        <!-- Add Family Modal Popup - REMOVED - TO BE FIXED BY JYOTI -->
+        <!-- ISSUE: Modal works on mobile but not on desktop/web view -->
+        <!-- Current implementation shows form inline instead of as popup modal -->
+        <!-- Modal HTML completely removed to prevent form from showing -->
+        
         <div class="families-grid" id="familiesGrid"></div>
     </div>
 
@@ -1533,7 +1882,7 @@
         });
         
         // Enhanced Charts: initialize on first view of dashboard
-        async function initChartsOnce() {
+async function initChartsOnce() {
   if (window.__chartsReady) return;
   
   // Check if Chart.js is loaded
@@ -1555,27 +1904,27 @@
             // Chart 1: Family Medical Status - Doughnut Chart
             new Chart(document.getElementById('medicalStatusChart'), {
                 type: 'doughnut',
-                data: {
+    data: {
                     labels: ['No Issues', 'Has Issues', 'Other'],
-                    datasets: [{
+      datasets: [{
                         data: [239, 30, 2],
                         backgroundColor: colorPalettes.medical,
                         borderWidth: 2,
                         borderColor: '#ffffff',
                         hoverOffset: 25,
                         hoverBackgroundColor: ['#059669', '#D97706', '#DC2626']
-                    }]
-                },
-                options: {
-                    responsive: true,
+      }]
+    },
+    options: {
+      responsive: true,
                     maintainAspectRatio: false,
                     interaction: {
                         intersect: false,
                         mode: 'index'
                     },
-                    plugins: { 
-                        title: {
-                            display: true,
+      plugins: { 
+          title: {
+            display: true,
                             text: 'Family Medical Status',
                             font: { size: 16, weight: 'bold' },
                             color: '#1F2937',
@@ -1619,10 +1968,10 @@
 
             // Chart 2: Parental Education - Horizontal Bar Chart
             new Chart(document.getElementById('educationChart'), {
-                type: 'bar',
-                data: {
+    type: 'bar',
+    data: {
                     labels: ['Post Graduate', 'Graduation', '12th Grade', '10th Grade', 'Other'],
-                    datasets: [{
+      datasets: [{
                         label: 'Number of Families',
                         data: [23, 72, 97, 32, 15],
                         backgroundColor: colorPalettes.education,
@@ -1632,9 +1981,9 @@
                         borderColor: '#ffffff',
                         hoverBackgroundColor: colorPalettes.education.map(color => color + 'CC'),
                         hoverBorderWidth: 3
-                    }]
-                },
-                options: {
+      }]
+    },
+    options: {
                     indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
@@ -1667,7 +2016,7 @@
                             }
                         }
                     },
-                    scales: { 
+      scales: { 
                         x: { 
                             beginAtZero: true, 
                             grid: { display: false },
@@ -2266,19 +2615,19 @@
                 const surnames = ['Sharma', 'Singh', 'Kumar', 'Gupta', 'Verma', 'Patel', 'Reddy', 'Joshi', 'Agarwal', 'Jain'];
                 const firstNames = ['Rajesh', 'Vikram', 'Amit', 'Suresh', 'Ravi', 'Raj', 'Kiran', 'Sunil', 'Pradeep', 'Anil'];
                 const educations = ['B.Tech', 'MBA', 'B.Sc', 'M.A', 'B.Com', 'M.Tech', 'B.A', 'M.Sc', 'B.E', 'M.Com'];
-                const childrenCounts = ['1 Child', '2 Children', '3 Children', '1 Child', '2 Children', '1 Child', '2 Children', '3 Children', '1 Child', '2 Children'];
+            const childrenCounts = ['1 Child', '2 Children', '3 Children', '1 Child', '2 Children', '1 Child', '2 Children', '3 Children', '1 Child', '2 Children'];
                 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
-                
-                return {
-                    id: i + 1,
-                    name: `${surnames[i % surnames.length]} Family`,
-                    husband: `${firstNames[i % firstNames.length]} ${surnames[i % surnames.length]}`,
-                    contact: `+91-${9876500000 + i}`,
-                    education: educations[i % educations.length],
-                    children: childrenCounts[i % childrenCounts.length],
-                    joined: `${months[i % months.length]} 2024`
-                };
-            });
+            
+            return {
+                id: i + 1,
+                name: `${surnames[i % surnames.length]} Family`,
+                husband: `${firstNames[i % firstNames.length]} ${surnames[i % surnames.length]}`,
+                contact: `+91-${9876500000 + i}`,
+                education: educations[i % educations.length],
+                children: childrenCounts[i % childrenCounts.length],
+                joined: `${months[i % months.length]} 2024`
+            };
+        });
         }
 
         // Update families status indicator
@@ -2384,6 +2733,168 @@
             }
         }
 
+        // ===========================================
+        // FAMILY FORM MANAGEMENT FUNCTIONS - TO BE FIXED BY JYOTI
+        // ===========================================
+        // ISSUE: Modal works on mobile but not on desktop/web view
+        // Current implementation shows form inline instead of as popup modal
+        
+        /*
+        // Open Add Family Modal
+        function toggleAddFamilyForm() {
+            // Check if user has permission to add families (Super Users only)
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            const isSuperUser = userInfo.userType === 'L1' || userInfo.userType === 'admin';
+            
+            if (!isSuperUser) {
+                alert('Only Super Users can add family data. Please contact your administrator.');
+                return;
+            }
+            
+            const modal = document.getElementById('addFamilyModal');
+            console.log('Modal element:', modal); // Debug log
+            
+            if (modal) {
+                console.log('Opening modal...'); // Debug log
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                console.log('Modal classes after opening:', modal.className); // Debug log
+                console.log('Modal computed style display:', window.getComputedStyle(modal).display); // Debug log
+            } else {
+                console.error('Modal element not found!');
+            }
+        }
+        
+        // Close Add Family Modal
+        function closeAddFamilyModal() {
+            const modal = document.getElementById('addFamilyModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+                resetAddFamilyForm();
+                console.log('Modal closed'); // Debug log
+            }
+        }
+        */
+        
+        /*
+        // Reset Add Family Form
+        function resetAddFamilyForm() {
+            const form = document.getElementById('addFamilyForm');
+            if (form) {
+                form.reset();
+            }
+        }
+        
+        // Handle Add Family Form Submission
+        function handleAddFamilyForm(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const familyData = {};
+            
+            // Convert FormData to object
+            for (let [key, value] of formData.entries()) {
+                familyData[key] = value;
+            }
+            
+            // Validate required fields
+            if (!familyData.wksp || !familyData.ladiesName || !familyData.mobile) {
+                alert('Please fill in all required fields (WKSP, Ladies Name, and Personal Mobile)');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+            submitBtn.disabled = true;
+            
+            // Add family to Google Sheets
+            addFamilyToGoogleSheets(familyData)
+                .then(() => {
+                    alert('Family added successfully!');
+                    resetAddFamilyForm();
+                    closeAddFamilyModal();
+                    // Refresh families data
+                    fetchFamiliesFromGoogleSheets();
+                })
+                .catch((error) => {
+                    console.error('Error adding family:', error);
+                    alert('Error adding family. Please try again.');
+                })
+                .finally(() => {
+                    // Reset button state
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                });
+        }
+        */
+        
+        /*
+        // Check Add Family Permissions
+        function checkAddFamilyPermissions() {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            const isSuperUser = userInfo.userType === 'L1' || userInfo.userType === 'admin';
+            const addFamilyBtn = document.getElementById('addFamilyBtn');
+            
+            if (addFamilyBtn) {
+                if (isSuperUser) {
+                    // Show Add Family button for super users
+                    addFamilyBtn.style.display = 'flex';
+                } else {
+                    // Hide Add Family button for non-super users
+                    addFamilyBtn.style.display = 'none';
+                }
+            }
+        }
+        */
+
+        // Add Family to Google Sheets
+        async function addFamilyToGoogleSheets(familyData) {
+            // This is a placeholder function - in a real implementation, you would:
+            // 1. Use Google Sheets API to add a new row
+            // 2. Handle authentication and permissions
+            // 3. Map the form data to the correct column structure
+            
+            console.log('Adding family to Google Sheets:', familyData);
+            
+            // For now, we'll simulate the API call
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Simulate success
+                    console.log('Family data that would be sent to Google Sheets:', {
+                        'WKSP': familyData.wksp,
+                        'Personal Information Ladies Name': familyData.ladiesName,
+                        'Date of Birth': familyData.dateOfBirth || '',
+                        'Age': familyData.age || '',
+                        'Blood Group': familyData.bloodGroup || '',
+                        'Religion': familyData.religion || '',
+                        'Highest Qualification': familyData.qualification || '',
+                        'Languages Known': familyData.languages || '',
+                        'Can Drive': familyData.canDrive || '',
+                        'Owns Vehicle': familyData.ownsVehicle || '',
+                        'Personal Mobile': familyData.mobile,
+                        'Personal Email': familyData.email || '',
+                        'Date of Marriage': familyData.dateOfMarriage || '',
+                        'Years in Marriage': familyData.yearsInMarriage || '',
+                        'Husband\'s Details Husband\'s Name': familyData.husbandName || '',
+                        'Husband\'s Rank': familyData.husbandRank || '',
+                        'Unit': familyData.unit || '',
+                        'Sub Unit': familyData.subUnit || '',
+                        'Posting Station': familyData.postingStation || '',
+                        'Date of Posting': familyData.dateOfPosting || '',
+                        'Quarter Number': familyData.quarterNumber || '',
+                        'Colony/Enclave Name': familyData.colonyName || '',
+                        'Type of Accommodation': familyData.accommodationType || '',
+                        'Family Accommodation Address': familyData.accommodationAddress || ''
+                    });
+                    resolve();
+                }, 2000); // Simulate 2-second API call
+            });
+        }
+
         // Load families data from Google Sheets
         function loadFamilies() {
             const familiesGrid = document.getElementById('familiesGrid');
@@ -2438,7 +2949,7 @@
         }
 
         // Initialize navigation
-        document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
             // Add click listeners to navigation
             document.querySelectorAll('.lp-nav li').forEach(li => {
                 li.addEventListener('click', function() {
@@ -2451,7 +2962,7 @@
                         if (familiesData.length === 0) {
                             fetchFamiliesFromGoogleSheets();
                         } else {
-                            loadFamilies();
+                        loadFamilies();
                         }
                     } else if (target === 'section-companies') {
                         loadCompanies();
@@ -2493,24 +3004,106 @@
             
             // Initialize charts
             setTimeout(initChartsOnce, 1000);
+            
+            /*
+            // Add form event listener for Add Family form
+            const addFamilyForm = document.getElementById('addFamilyForm');
+            if (addFamilyForm) {
+                addFamilyForm.addEventListener('submit', handleAddFamilyForm);
+            }
+            
+            // Check user permissions for Add Family button
+            checkAddFamilyPermissions();
+            
+            // Add modal close functionality
+            const modal = document.getElementById('addFamilyModal');
+            if (modal) {
+                // Close modal when clicking outside
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeAddFamilyModal();
+                    }
+                });
+                
+                // Close modal with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                        closeAddFamilyModal();
+                    }
+                });
+            }
+            */
         });
 
-        // Load user info when page loads
+        // ===========================================
+        // USER INFORMATION LOADING FUNCTION
+        // ===========================================
+        // 
+        // PURPOSE: This function loads and displays user-specific information on the dashboard.
+        // It reads user data from localStorage (set during login) and personalizes the UI.
+        //
+        // FUNCTIONALITY:
+        // 1. Loads user data from localStorage or uses default fallback
+        // 2. Updates user information panel with personal details
+        // 3. Applies consistent orange theme styling to user info card
+        // 4. Conditionally displays spouse information (only for certain users)
+        // 5. Updates welcome message, profile info, and navigation panel
+        //
+        // USER TYPES SUPPORTED:
+        // - Unit Ranking Users (4 main users with different roles)
+        // - System Administrators (full access)
+        // - Role-based Test Users (L1-L4 access levels)
+        //
+        // SPOUSE INFORMATION:
+        // - Only Col Tarunpreet Singh has spouse information
+        // - Other users see generic "Additional Details" section
+        // - Spouse profile includes name, email, contact, and relationship
+        //
+        // STYLING:
+        // - All user information cards use orange theme for consistency
+        // - Spouse profile cards match user info card styling
+        // - Fallback styling for users without spouse information
+        //
+        // DEPENDENCIES:
+        // - localStorage: User data stored during login
+        // - CSS: Orange theme styling via data-wife-details attribute
+        // - HTML: Various elements with specific IDs for content updates
+        //
+        
         function loadUserInfo() {
-            // Default user info for demonstration
+            // ===========================================
+            // DEFAULT USER DATA (FALLBACK)
+            // ===========================================
+            // This serves as a fallback if no user data is found in localStorage.
+            // Used for demonstration purposes or when accessing dashboard directly.
+            
             const defaultUserInfo = {
                 userId: 'admin001',
                 name: 'Sushma Bhatti',
                 designation: 'Battalion Command',
                 phone: '+91-9876543210',
-                userType: 'admin'
+                userType: 'admin',
+                hasSpouse: false,  // No spouse information for default user
+                spouse: null       // No spouse data
             };
+            
+            // ===========================================
+            // LOAD USER DATA FROM SESSION STORAGE
+            // ===========================================
+            // Retrieve user information from localStorage (set during login).
+            // If no data found, use default user information.
             
             const userInfo = JSON.parse(localStorage.getItem('userInfo') || JSON.stringify(defaultUserInfo));
             
-            // Update user information panel
+            // ===========================================
+            // UPDATE USER INFORMATION PANEL
+            // ===========================================
+            // Display user-specific information in the main user info card.
+            // This includes personal details like name, designation, contact, etc.
+            
             const userInfoBody = document.getElementById('userInfoBody');
             if (userInfoBody) {
+                // Build HTML for user information display
                 let userInfoHTML = `
                     <div class="info-row"><span class="label">User ID:</span><span class="value">${userInfo.userId}</span></div>
                     <div class="info-row"><span class="label">Name:</span><span class="value">${userInfo.name}</span></div>
@@ -2519,19 +3112,48 @@
                     <div class="info-row"><span class="label">User Type:</span><span class="value">${userInfo.userType || 'admin'}</span></div>
                 `;
                 
-                
+                // Insert the HTML into the user information panel
                 userInfoBody.innerHTML = userInfoHTML;
             }
             
-            // Update Additional Details section
+            // ===========================================
+            // APPLY CONSISTENT STYLING TO USER INFO CARD
+            // ===========================================
+            // Apply the orange theme styling to the user information card for all users.
+            // This creates a consistent visual experience across different user types.
+            
+            const userInfoPanel = userInfoBody.closest('.panel-card');
+            if (userInfoPanel) {
+                // Apply the data attribute that triggers orange theme CSS styling
+                userInfoPanel.setAttribute('data-wife-details', 'true');
+            }
+            
+            // ===========================================
+            // SPOUSE INFORMATION DISPLAY LOGIC
+            // ===========================================
+            // This section handles the conditional display of spouse information.
+            // Only users with spouse data (like Col Tarunpreet Singh) will see spouse details.
+            // Other users will see a generic "Additional Details" section.
+            
             const additionalDetailsTitle = document.getElementById('additionalDetailsTitle');
             const additionalDetailsBody = document.getElementById('additionalDetailsBody');
             
-            if (userInfo.userId === 'tarunpreet singh') {
-                // Change title to "Wife Details" for Tarunpreet Singh
-                additionalDetailsTitle.textContent =  'Spouse Profile';
+            // ===========================================
+            // CHECK FOR SPOUSE INFORMATION
+            // ===========================================
+            // Only display spouse information if user has spouse data
+            // Currently only Col Tarunpreet Singh has spouse information
+            
+            if (userInfo.hasSpouse && userInfo.spouse) {
+                // ===========================================
+                // SPOUSE PROFILE DISPLAY
+                // ===========================================
+                // User has spouse information - display spouse profile
                 
-                // Add wife image to the header
+                // Update section title to indicate spouse information
+                additionalDetailsTitle.textContent = 'Spouse Profile';
+                
+                // Add spouse image to the header for visual appeal
                 const additionalDetailsImage = document.getElementById('additionalDetailsImage');
                 const wifeImage = document.getElementById('wifeImage');
                 if (additionalDetailsImage && wifeImage) {
@@ -2539,58 +3161,85 @@
                     additionalDetailsImage.style.display = 'block';
                 }
                 
-                // Add orange theme data attribute
+                // Apply orange theme styling to match user info card
                 const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
                 if (additionalDetailsPanel) {
                     additionalDetailsPanel.setAttribute('data-wife-details', 'true');
                 }
                 
-                // Add spouse information
+                // Display spouse information dynamically from user data
                 additionalDetailsBody.innerHTML = `
-                    <div class="info-row"><span class="label">Name:</span><span class="value">Mrs. Deepkiran Kaur</span></div>
-                    <div class="info-row"><span class="label">Email:</span><span class="value">deepkirankaur23@gmail.com</span></div>
-                    <div class="info-row"><span class="label">Contact:</span><span class="value">7052615743</span></div>
-                    <div class="info-row"><span class="label">Relationship:</span><span class="value">Spouse</span></div>
+                    <div class="info-row"><span class="label">Name:</span><span class="value">${userInfo.spouse.name}</span></div>
+                    <div class="info-row"><span class="label">Email:</span><span class="value">${userInfo.spouse.email}</span></div>
+                    <div class="info-row"><span class="label">Contact:</span><span class="value">${userInfo.spouse.phone}</span></div>
+                    <div class="info-row"><span class="label">Relationship:</span><span class="value">${userInfo.spouse.relationship}</span></div>
                 `;
             } else {
-                // Keep default title and show empty for other users
+                // ===========================================
+                // DEFAULT ADDITIONAL DETAILS DISPLAY
+                // ===========================================
+                // User has no spouse information - show generic additional details
+                
+                // Keep default title for users without spouse information
                 additionalDetailsTitle.textContent = 'Additional Details';
                 
-                // Hide wife image for other users
+                // Hide spouse image since no spouse information is available
                 const additionalDetailsImage = document.getElementById('additionalDetailsImage');
                 if (additionalDetailsImage) {
                     additionalDetailsImage.style.display = 'none';
                 }
                 
-                // Remove orange theme data attribute
+                // Remove orange theme styling for users without spouse information
                 const additionalDetailsPanel = additionalDetailsTitle.closest('.panel-card');
                 if (additionalDetailsPanel) {
                     additionalDetailsPanel.removeAttribute('data-wife-details');
                 }
                 
+                // Display generic message for users without additional details
                 additionalDetailsBody.innerHTML = '<div class="empty-message">No additional details available</div>';
             }
             
-        // Update welcome title
+            // ===========================================
+            // UPDATE WELCOME MESSAGE
+            // ===========================================
+            // Personalize the welcome message with the user's actual name
+            // This creates a more engaging and personalized user experience
+            
             const welcomeTitle = document.getElementById('welcomeTitle');
             if (welcomeTitle) {
                 welcomeTitle.textContent = `Welcome, ${userInfo.name}!`;
             }
         
-        // Update profile information
+            // ===========================================
+            // UPDATE PROFILE INFORMATION
+            // ===========================================
+            // Update the profile card with user-specific information
+            // This includes the user's name and designation for quick reference
+            
             const profileName = document.getElementById('profileName');
             const profileDesignation = document.getElementById('profileDesignation');
             if (profileName) profileName.textContent = userInfo.name;
             if (profileDesignation) profileDesignation.textContent = userInfo.designation || 'User';
         
-        // Update profile initials
+            // ===========================================
+            // UPDATE PROFILE INITIALS (FALLBACK)
+            // ===========================================
+            // Generate initials from the user's name as a fallback display
+            // This is shown when the profile image fails to load
+            // Format: First letter of each name part (e.g., "Col Tarunpreet Singh" → "CTS")
+            
             const profileInitials = document.getElementById('profileInitials');
             if (profileInitials) {
-        const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
                 profileInitials.textContent = initials;
             }
             
-            // Update left panel name and role
+            // ===========================================
+            // UPDATE LEFT PANEL INFORMATION
+            // ===========================================
+            // Update the left navigation panel with user-specific information
+            // This provides consistent user identification throughout the interface
+            
             const leftPanelName = document.querySelector('.lp-name');
             const leftPanelRole = document.querySelector('.lp-role');
             if (leftPanelName) leftPanelName.textContent = userInfo.name;
@@ -2724,3 +3373,4 @@ function logout() {
 </script>
 </body>
 </html>
+
