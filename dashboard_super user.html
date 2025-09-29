@@ -90,7 +90,7 @@
 
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
             margin-bottom: 32px;
         }
@@ -111,9 +111,7 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
-        .enhanced-chart-card.large {
-            grid-column: span 2;
-        }
+        /* Removed large class - all charts now equal width */
 
         /* Children section specific grid layout */
         .children-charts-grid {
@@ -315,10 +313,10 @@
                 padding: 30px;
             }
 
-        /* Mobile Responsive Design */
+        /* Tablet Responsive Design */
         @media (max-width: 1200px) {
             .charts-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
                 gap: 16px;
             }
             
@@ -327,9 +325,7 @@
                 gap: 16px;
             }
             
-            .enhanced-chart-card.large {
-                grid-column: span 1;
-            }
+            /* All charts now equal width */
         }
 
         @media (max-width: 768px) {
@@ -498,9 +494,7 @@
                 gap: 16px;
             }
             
-            .enhanced-chart-card.large {
-                grid-column: span 1;
-            }
+            /* All charts now equal width */
             
             .chart-container {
                 height: 300px;
@@ -1224,7 +1218,6 @@
                     <li data-target="section-companies"><i class="fas fa-building"></i><span>FW Coy</span></li>
                     <li data-target="section-Newsletter"><i class="fas fa-calendar"></i><span>Newsletter</span></li>
                     <li data-target="section-Rankings"><i class="fas fa-chart-bar"></i><span>Unit Rankings</span></li>
-                    <li data-target="section-settings"><i class="fas fa-gear"></i><span>Settings</span></li>
                 </ul>
             </nav>
             
@@ -1407,8 +1400,8 @@
                             </div>
                     
                         <!-- Chart 2: Parental Education - Horizontal Bar Chart -->
-                        <div class="enhanced-chart-card large">
-                            <div class="large-chart-container">
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
                                 <canvas id="educationChart"></canvas>
                         </div>
                     </div>
@@ -1421,8 +1414,8 @@
                             </div>
                     
                         <!-- Chart 4: Workshop Distribution - Bar Chart -->
-                        <div class="enhanced-chart-card large">
-                            <div class="large-chart-container">
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
                                 <canvas id="workshopChart"></canvas>
                         </div>
                     </div>
@@ -1851,11 +1844,6 @@
         </div>
     </div>
 
-            <!-- Settings Section -->
-    <div class="placeholder-section app-section hidden" id="section-settings">
-        <h2>Settings</h2>
-        <p>Settings section coming soon.</p>
-    </div>
         </div>
     </div>
 
@@ -3688,7 +3676,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const profileInitials = document.getElementById('profileInitials');
             if (profileInitials) {
-                const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
                 profileInitials.textContent = initials;
             }
             
