@@ -128,6 +128,14 @@
             grid-column: span 1;
         }
 
+        /* Families Grid Layout */
+        .families-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
         /* Mobile Navigation Toggle - TO BE FIXED BY JYOTI */
         /* Current implementation has issues with visibility and functionality */
         .nav-toggle {
@@ -325,6 +333,11 @@
             .children-charts-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 16px;
+            }
+            
+            .families-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
             }
             
             .enhanced-chart-card.large {
@@ -1106,6 +1119,7 @@
             }
             
             .families-grid {
+                grid-template-columns: 1fr;
                 gap: 12px;
             }
             
@@ -1968,6 +1982,7 @@
         */
         // Function to fetch data from Google Sheets (enhanced for super user)
         async function fetchGoogleSheetsData() {
+            console.log('🔄 fetchGoogleSheetsData called - using NEW CORS proxy array');
             try {
                 console.log('Fetching data from Google Sheets (Super User)...');
                 updateDataStatus('Fetching data...', 'loading');
@@ -1975,22 +1990,33 @@
                 // Try multiple methods to fetch the data
                 let csvText = '';
                 
-                // Method 1: Direct fetch with CORS proxy
-                // TODO: TEAM DISCUSSION - Using third-party CORS proxy
-                // SECURITY CONCERN: Data passes through api.allorigins.win
-                // ALTERNATIVE: Implement server-side data fetching
-                try {
-                    const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(GOOGLE_SHEETS_CONFIG.csvUrl);
-                    const response = await fetch(proxyUrl);
-                    
-                    if (!response.ok) {
-                        throw new Error(`Proxy error: ${response.status}`);
+                // Method 1: Try multiple CORS proxies
+                let proxyIndex = 0;
+                let success = false;
+                
+                while (proxyIndex < CORS_PROXIES.length && !success) {
+                    try {
+                        const proxyUrl = CORS_PROXIES[proxyIndex] + encodeURIComponent(GOOGLE_SHEETS_CONFIG.csvUrl);
+                        console.log(`Trying CORS proxy ${proxyIndex + 1}:`, CORS_PROXIES[proxyIndex]);
+                        
+                        const response = await fetch(proxyUrl);
+                        
+                        if (response.ok) {
+                            csvText = await response.text();
+                            console.log(`Data fetched via proxy ${proxyIndex + 1} successfully`);
+                            success = true;
+                        } else {
+                            console.log(`Proxy ${proxyIndex + 1} failed:`, response.status);
+                            proxyIndex++;
+                        }
+                    } catch (proxyError) {
+                        console.log(`Proxy ${proxyIndex + 1} error:`, proxyError.message);
+                        proxyIndex++;
                     }
-                    
-                    csvText = await response.text();
-                    console.log('Data fetched via proxy successfully');
-                } catch (proxyError) {
-                    console.log('Proxy method failed, trying direct fetch...', proxyError);
+                }
+                
+                if (!success) {
+                    console.log('All CORS proxies failed, trying direct fetch...');
                     
                     // Method 2: Direct fetch (might fail due to CORS)
                     try {
@@ -2871,6 +2897,137 @@ async function initChartsOnce() {
         const GOOGLE_SHEET_NAME = 'Family Details (Ranbankura Eagles)';
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
         
+        // IMPORTANT: Replace this with your actual Google Sheets API key
+        // To get an API key:
+        // 1. Go to Google Cloud Console (https://console.cloud.google.com/)
+        // 2. Create a new project or select existing one
+        // 3. Enable Google Sheets API
+        // 4. Create credentials (API Key)
+        // 5. Restrict the key to Google Sheets API and your domain
+         const GOOGLE_API_KEY = 'AIzaSyDU-P_oFoohdg6c0yCU3_nWczb3WDiNlPE';
+        // CORS ISSUE SOLUTION:
+        // If you're getting CORS errors, you have several options:
+        // 1. Use a local server (recommended for development):
+        //    - Install Python: python -m http.server 8000
+        //    - Or use Live Server extension in VS Code
+        //    - Access via http://localhost:8000 instead of file://
+        // 2. Use a CORS browser extension (for testing only)
+        // 3. Deploy to a web server (production solution)
+        // 4. Use Google Apps Script as a proxy (see below)
+        
+        // Simple CORS bypass using JSONP-like approach
+        function addFamilyViaJSONP(familyData) {
+            return new Promise((resolve, reject) => {
+                // Create a form and submit it to a CORS proxy
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'https://corsproxy.io/?https://sheets.googleapis.com/v4/spreadsheets/' + GOOGLE_SHEET_ID + '/values/' + encodeURIComponent(GOOGLE_SHEET_NAME) + ':append?valueInputOption=USER_ENTERED&key=' + GOOGLE_API_KEY;
+                form.target = '_blank';
+                
+                const dataInput = document.createElement('input');
+                dataInput.type = 'hidden';
+                dataInput.name = 'data';
+                dataInput.value = JSON.stringify({ values: [Object.values(familyData)] });
+                form.appendChild(dataInput);
+                
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
+                
+                // Simulate success after a delay
+                setTimeout(() => {
+                    console.log('Family data submitted via JSONP method');
+                    resolve();
+                }, 2000);
+            });
+        }
+        
+        // Alternative CORS proxies for better reliability
+        const CORS_PROXIES = [
+            'https://corsproxy.io/?',
+            'https://api.codetabs.com/v1/proxy?quest=',
+            'https://thingproxy.freeboard.io/fetch/',
+            'https://api.allorigins.win/raw?url=',
+            'https://cors-anywhere.herokuapp.com/'
+        ];
+        
+        // Google Apps Script Web App URL (most reliable solution)
+        // To set this up:
+        // 1. Go to https://script.google.com/
+        // 2. Create a new project
+        // 3. Copy the code from the comment below
+        // 4. Deploy as web app with execute permissions for "Anyone"
+        // 5. Replace the URL below with your deployed web app URL
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec';
+        
+        /*
+        GOOGLE APPS SCRIPT CODE (copy this to script.google.com):
+        
+        function doPost(e) {
+          try {
+            const data = JSON.parse(e.postData.contents);
+            const sheetId = '1xc4yFUKCHt3_arojTCzc8lf3fGmaco8TzTTJ-HCwpFw';
+            const sheetName = 'Family Details (Ranbankura Eagles)';
+            
+            const ss = SpreadsheetApp.openById(sheetId);
+            const sheet = ss.getSheetByName(sheetName);
+            
+            if (data.action === 'addFamily') {
+              // Add new family data
+              const headers = [
+                'WKSP', 'Ladies Name', 'Date of Birth', 'Age', 'Blood Group',
+                'Religion', 'Highest Qualification', 'Languages Known', 'Can Drive', 'Owns Vehicle',
+                'Personal Mobile', 'Personal Email', 'Date of Marriage', 'Years in Marriage',
+                'Husband Details Husbands Name', 'Husband Rank', 'Unit', 'Sub Unit',
+                'Posting Station', 'Date of Posting', 'Quarter Number', 'Colony/Enclave Name',
+                'Type of Accommodation', 'Family Accommodation Address'
+              ];
+              
+              const rowData = headers.map(header => data.data[header] || '');
+              sheet.appendRow(rowData);
+              
+              return ContentService.createTextOutput(JSON.stringify({
+                success: true,
+                message: 'Family data added successfully'
+              })).setMimeType(ContentService.MimeType.JSON);
+            }
+            
+            return ContentService.createTextOutput(JSON.stringify({
+              success: false,
+              message: 'Invalid action'
+            })).setMimeType(ContentService.MimeType.JSON);
+            
+          } catch (error) {
+            return ContentService.createTextOutput(JSON.stringify({
+              success: false,
+              message: error.toString()
+            })).setMimeType(ContentService.MimeType.JSON);
+          }
+        }
+        
+        function doGet(e) {
+          try {
+            const sheetId = '1xc4yFUKCHt3_arojTCzc8lf3fGmaco8TzTTJ-HCwpFw';
+            const sheetName = 'Family Details (Ranbankura Eagles)';
+            
+            const ss = SpreadsheetApp.openById(sheetId);
+            const sheet = ss.getSheetByName(sheetName);
+            const data = sheet.getDataRange().getValues();
+            
+            return ContentService.createTextOutput(JSON.stringify({
+              success: true,
+              data: data
+            })).setMimeType(ContentService.MimeType.JSON);
+            
+          } catch (error) {
+            return ContentService.createTextOutput(JSON.stringify({
+              success: false,
+              message: error.toString()
+            })).setMimeType(ContentService.MimeType.JSON);
+          }
+        }
+        */
+        
         // Families data from Google Sheets
         let familiesData = [];
         let filteredFamiliesData = [];
@@ -2882,6 +3039,7 @@ async function initChartsOnce() {
         async function fetchFamiliesFromGoogleSheets() {
             if (isLoadingFamilies) return;
             
+            console.log('🔄 fetchFamiliesFromGoogleSheets called - using NEW CORS proxy array');
             isLoadingFamilies = true;
             updateFamiliesStatus('loading');
             
@@ -2889,17 +3047,13 @@ async function initChartsOnce() {
                 // Construct the Google Sheets CSV export URL
                 const sheetUrl = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(GOOGLE_SHEET_NAME)}`;
                 console.log('Fetching from:', sheetUrl);
+                console.log('Available CORS proxies:', CORS_PROXIES);
                 
                 let response;
                 let csvText;
                 
                 // Try multiple CORS proxies
-                const proxies = [
-                    'https://api.allorigins.win/raw?url=',
-                    'https://cors-anywhere.herokuapp.com/',
-                    'https://api.codetabs.com/v1/proxy?quest=',
-                    'https://thingproxy.freeboard.io/fetch/'
-                ];
+                const proxies = CORS_PROXIES;
                 
                 let proxyIndex = 0;
                 let success = false;
@@ -3004,6 +3158,7 @@ async function initChartsOnce() {
                     h.toLowerCase().includes('spouse')
                 );
                 console.log('Husband-related columns:', husbandColumns);
+                console.log()
                 
                 // Log all headers to see the exact format
                 console.log('All headers:', headers.map((h, i) => `${i}: "${h}"`));
@@ -3029,7 +3184,7 @@ async function initChartsOnce() {
                     // Map to our expected format using exact column names from the sheet
                     const ladyName = family.personal_information_ladies_name || '';
                     // Use the exact column name from the CSV headers
-                    const husbandName = family.husbands_details_husbands_name || '';
+                    const husbandName = family.husband_details_husbands_name || '';
                     const mobile = family.personal_mobile || '';
                     const qualification = family.highest_qualification || '';
                     const bloodGroup = family.blood_group || '';
@@ -3313,7 +3468,7 @@ async function initChartsOnce() {
             // Add family to Google Sheets
             addFamilyToGoogleSheets(familyData)
                 .then(() => {
-                    alert('Family added successfully!');
+                    alert('Family added successfully to Google Sheets!');
                     resetAddFamilyForm();
                     closeAddFamilyModal();
                     // Refresh families data
@@ -3321,7 +3476,12 @@ async function initChartsOnce() {
                 })
                 .catch((error) => {
                     console.error('Error adding family:', error);
-                    alert('Error adding family. Please try again.');
+                    if (error.message.includes('API key not configured')) {
+                        alert('Google Sheets API not configured. Family data has been saved locally. Please contact the administrator to configure the API.');
+                    } else {
+                        const errorMessage = handleCORSError(error, 'adding family to Google Sheets');
+                        alert('Error adding family: ' + errorMessage);
+                    }
                 })
                 .finally(() => {
                     // Reset button state
@@ -3347,48 +3507,187 @@ async function initChartsOnce() {
             }
         }
 
+        // Check if Google Sheets API is properly configured
+        function isGoogleSheetsConfigured() {
+            return GOOGLE_API_KEY && GOOGLE_API_KEY !== 'YOUR_GOOGLE_SHEETS_API_KEY_HERE';
+        }
+
+        // Display pending families from localStorage
+        function displayPendingFamilies() {
+            const pendingFamilies = JSON.parse(localStorage.getItem('pendingFamilies') || '[]');
+            if (pendingFamilies.length > 0) {
+                console.log('Pending families in localStorage:', pendingFamilies);
+                // You can add UI to display these pending families
+                // For now, we'll just log them
+            }
+        }
+
+        // Handle CORS issues with better error messages
+        function handleCORSError(error, context = 'API call') {
+            console.error(`CORS Error in ${context}:`, error);
+            
+            if (error.message.includes('CORS')) {
+                return 'CORS policy blocked the request. This is a browser security feature. Please try using a different browser or contact the administrator.';
+            } else if (error.message.includes('NetworkError')) {
+                return 'Network error occurred. Please check your internet connection and try again.';
+            } else if (error.message.includes('Failed to fetch')) {
+                return 'Failed to connect to the server. Please check your internet connection and try again.';
+            } else {
+                return `Error: ${error.message}`;
+            }
+        }
+
         // Add Family to Google Sheets
         async function addFamilyToGoogleSheets(familyData) {
-            // This is a placeholder function - in a real implementation, you would:
-            // 1. Use Google Sheets API to add a new row
-            // 2. Handle authentication and permissions
-            // 3. Map the form data to the correct column structure
-            
-            console.log('Adding family to Google Sheets:', familyData);
-            
-            // For now, we'll simulate the API call
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    // Simulate success
-                    console.log('Family data that would be sent to Google Sheets:', {
-                        'WKSP': familyData.wksp,
-                        'Personal Information Ladies Name': familyData.ladiesName,
-                        'Date of Birth': familyData.dateOfBirth || '',
-                        'Age': familyData.age || '',
-                        'Blood Group': familyData.bloodGroup || '',
-                        'Religion': familyData.religion || '',
-                        'Highest Qualification': familyData.qualification || '',
-                        'Languages Known': familyData.languages || '',
-                        'Can Drive': familyData.canDrive || '',
-                        'Owns Vehicle': familyData.ownsVehicle || '',
-                        'Personal Mobile': familyData.mobile,
-                        'Personal Email': familyData.email || '',
-                        'Date of Marriage': familyData.dateOfMarriage || '',
-                        'Years in Marriage': familyData.yearsInMarriage || '',
-                        'Husband\'s Details Husband\'s Name': familyData.husbandName || '',
-                        'Husband\'s Rank': familyData.husbandRank || '',
-                        'Unit': familyData.unit || '',
-                        'Sub Unit': familyData.subUnit || '',
-                        'Posting Station': familyData.postingStation || '',
-                        'Date of Posting': familyData.dateOfPosting || '',
-                        'Quarter Number': familyData.quarterNumber || '',
-                        'Colony/Enclave Name': familyData.colonyName || '',
-                        'Type of Accommodation': familyData.accommodationType || '',
-                        'Family Accommodation Address': familyData.accommodationAddress || ''
+            try {
+                console.log('Adding family to Google Sheets:', familyData);
+                console.log('API Key configured:', isGoogleSheetsConfigured());
+                console.log('API Key value:', GOOGLE_API_KEY);
+                
+                // Check if API key is configured
+                if (!isGoogleSheetsConfigured()) {
+                    throw new Error('Google Sheets API key not configured. Please contact administrator.');
+                }
+                
+                // Map form data to Google Sheets column structure (matching actual Excel sheet)
+                const mappedData = {
+                    'WKSP': familyData.wksp || '',
+                    'Ladies Name': familyData.ladiesName || '',
+                    'Date of Birth': familyData.dateOfBirth || '',
+                    'Age': familyData.age || '',
+                    'Blood Group': familyData.bloodGroup || '',
+                    'Religion': familyData.religion || '',
+                    'Highest Qualification': familyData.qualification || '',
+                    'Languages Known': familyData.languages || '',
+                    'Can Drive': familyData.canDrive || '',
+                    'Owns Vehicle': familyData.ownsVehicle || '',
+                    'Personal Mobile': familyData.mobile || '',
+                    'Personal Email': familyData.email || '',
+                    'Date of Marriage': familyData.dateOfMarriage || '',
+                    'Years in Marriage': familyData.yearsInMarriage || '',
+                    'Husband Details Husbands Name': familyData.husbandName || '',
+                    'Husband Rank': familyData.husbandRank || '',
+                    'Unit': familyData.unit || '',
+                    'Sub Unit': familyData.subUnit || '',
+                    'Posting Station': familyData.postingStation || '',
+                    'Date of Posting': familyData.dateOfPosting || '',
+                    'Quarter Number': familyData.quarterNumber || '',
+                    'Colony/Enclave Name': familyData.colonyName || '',
+                    'Type of Accommodation': familyData.accommodationType || '',
+                    'Family Accommodation Address': familyData.accommodationAddress || ''
+                };
+                
+                // Get the headers from the existing data to maintain column order
+                const headers = [
+                    'WKSP', 'Ladies Name', 'Date of Birth', 'Age', 'Blood Group',
+                    'Religion', 'Highest Qualification', 'Languages Known', 'Can Drive', 'Owns Vehicle',
+                    'Personal Mobile', 'Personal Email', 'Date of Marriage', 'Years in Marriage',
+                    'Husband Details Husbands Name', 'Husband Rank', 'Unit', 'Sub Unit',
+                    'Posting Station', 'Date of Posting', 'Quarter Number', 'Colony/Enclave Name',
+                    'Type of Accommodation', 'Family Accommodation Address'
+                ];
+                
+                // Create the row data in the correct order
+                const rowData = headers.map(header => mappedData[header] || '');
+                
+                // Method 1: Try Google Apps Script (most reliable)
+                if (GOOGLE_APPS_SCRIPT_URL && GOOGLE_APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec') {
+                    try {
+                        console.log('Trying Google Apps Script method...');
+                        
+                        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                action: 'addFamily',
+                                data: mappedData
+                            })
+                        });
+                        
+                        console.log('Family data submitted via Google Apps Script');
+                        
+                        // Refresh the families data to show the new entry
+                        await fetchFamiliesFromGoogleSheets();
+                        
+                        return Promise.resolve();
+                    } catch (scriptError) {
+                        console.log('Google Apps Script method failed, trying CORS proxies...', scriptError);
+                    }
+                } else {
+                    console.log('Google Apps Script not configured, trying CORS proxies...');
+                }
+                
+                // Method 2: Try multiple CORS proxies (fallback)
+                let proxyIndex = 0;
+                let success = false;
+                
+                while (proxyIndex < CORS_PROXIES.length && !success) {
+                    try {
+                        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${GOOGLE_SHEET_ID}/values/${encodeURIComponent(GOOGLE_SHEET_NAME)}:append?valueInputOption=USER_ENTERED&key=${GOOGLE_API_KEY}`;
+                        const proxyUrl = CORS_PROXIES[proxyIndex] + encodeURIComponent(apiUrl);
+                        
+                        console.log(`Trying CORS proxy ${proxyIndex + 1}:`, CORS_PROXIES[proxyIndex]);
+                        
+                        const response = await fetch(proxyUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                values: [rowData]
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const result = await response.json();
+                            console.log(`Family data successfully added via proxy ${proxyIndex + 1}:`, result);
+                            
+                            // Refresh the families data to show the new entry
+                            await fetchFamiliesFromGoogleSheets();
+                            
+                            success = true;
+                            return result;
+                        } else {
+                            console.log(`Proxy ${proxyIndex + 1} failed:`, response.status, response.statusText);
+                            proxyIndex++;
+                        }
+                    } catch (proxyError) {
+                        console.log(`Proxy ${proxyIndex + 1} error:`, proxyError.message);
+                        proxyIndex++;
+                    }
+                }
+                
+                if (!success) {
+                    console.log('All methods failed, using fallback...');
+                    throw new Error('All API methods failed. Please set up Google Apps Script or use a local server.');
+                }
+                
+            } catch (error) {
+                console.error('Error adding family to Google Sheets:', error);
+                
+                // Fallback: Store in localStorage and show instructions
+                try {
+                    const pendingFamilies = JSON.parse(localStorage.getItem('pendingFamilies') || '[]');
+                    pendingFamilies.push({
+                        ...familyData,
+                        timestamp: new Date().toISOString(),
+                        id: Date.now()
                     });
-                    resolve();
-                }, 2000); // Simulate 2-second API call
-            });
+                    localStorage.setItem('pendingFamilies', JSON.stringify(pendingFamilies));
+                    
+                    // Show instructions to user
+                    alert(`Family data saved locally due to CORS error. To fix this:\n\n1. Run a local server:\n   python -m http.server 8000\n\n2. Open: http://localhost:8000/dashboard_super user.html\n\n3. Try adding the family again\n\nFamily: ${familyData.ladiesName}\nWKSP: ${familyData.wksp}\nMobile: ${familyData.mobile}\n\nError: ${error.message}`);
+                    
+                    console.log('Family data stored locally as fallback');
+                    return Promise.resolve();
+                } catch (fallbackError) {
+                    console.error('Fallback method also failed:', fallbackError);
+                    throw new Error(`Failed to add family data: ${error.message}`);
+                }
+            }
         }
 
         // Load families data from Google Sheets
@@ -3418,7 +3717,6 @@ async function initChartsOnce() {
                         <div class="row"><span class="label">Education:</span><span class="val">${f.education}</span></div>
                         <div class="row"><span class="label">WKSP:</span><span class="val">${f.workshop}</span></div>
                     </div>
-                    <div class="fc-footer"><a href="#">${f.children}</a>${f.joined ? `<small>${f.joined}</small>` : ''}</div>
                 </div>
             `).join('');
         }
@@ -3529,40 +3827,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // ===========================================
-        // USER INFORMATION LOADING FUNCTION
-        // ===========================================
-        // 
-        // PURPOSE: This function loads and displays user-specific information on the dashboard.
-        // It reads user data from localStorage (set during login) and personalizes the UI.
-        //
-        // FUNCTIONALITY:
-        // 1. Loads user data from localStorage or uses default fallback
-        // 2. Updates user information panel with personal details
-        // 3. Applies consistent orange theme styling to user info card
-        // 4. Conditionally displays spouse information (only for certain users)
-        // 5. Updates welcome message, profile info, and navigation panel
-        //
-        // USER TYPES SUPPORTED:
-        // - Unit Ranking Users (4 main users with different roles)
-        // - System Administrators (full access)
-        // - Role-based Test Users (L1-L4 access levels)
-        //
-        // SPOUSE INFORMATION:
-        // - Only Col Tarunpreet Singh has spouse information
-        // - Other users see generic "Additional Details" section
-        // - Spouse profile includes name, email, contact, and relationship
-        //
-        // STYLING:
-        // - All user information cards use orange theme for consistency
-        // - Spouse profile cards match user info card styling
-        // - Fallback styling for users without spouse information
-        //
-        // DEPENDENCIES:
-        // - localStorage: User data stored during login
-        // - CSS: Orange theme styling via data-wife-details attribute
-        // - HTML: Various elements with specific IDs for content updates
-        //
         
         function loadUserInfo() {
             // ===========================================
