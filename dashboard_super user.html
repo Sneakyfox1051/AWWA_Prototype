@@ -1190,7 +1190,7 @@
             <div class="app-brand">
                 <img src="public/Untitled design (27).png" alt="AWWA Logo" class="app-logo" />
                 <div class="app-title-wrap">
-                    <h1 class="app-title">Ranbankure Eagles : AWWA Centralised Information Hub</h1>
+                    <h1 class="app-title">Ranbankura Eagles : AWWA Centralised Information Hub</h1>
                 </div>
             </div>
             <button class="logout-btn" onclick="logout()">
@@ -1205,9 +1205,9 @@
 
             <div class="lp-header">
                 <img src="public/profile.png" alt="Profile" class="lp-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                <div class="lp-avatar" style="display:none;">SB</div>
-                <div class="lp-name">Sushma Bhatti</div>
-                <div class="lp-role">Battalion Command</div>
+                <div class="lp-avatar" style="display:none;">TS</div>
+                <div class="lp-name">Col Tarunpreet Singh</div>
+                <div class="lp-role">Commanding Officer</div>
             </div>
             
             <!-- Navigation Toggle Button - TO BE FIXED BY JYOTI -->
@@ -3531,13 +3531,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Used for demonstration purposes or when accessing dashboard directly.
             
             const defaultUserInfo = {
-                userId: 'admin001',
-                name: 'Sushma Bhatti',
-                designation: 'Battalion Command',
-                phone: '+91-9876543210',
-                userType: 'admin',
-                hasSpouse: false,  // No spouse information for default user
-                spouse: null       // No spouse data
+                userId: 'tarunpreet singh',
+                name: 'Col Tarunpreet Singh',
+                designation: 'Commanding Officer',
+                phone: '9650300475',
+                userType: 'L1',
+                hasSpouse: true,  // Default user has spouse information
+                spouse: {
+                    name: 'Mrs. Deepkiran Kaur',
+                    email: 'deepkirankaur23@gmail.com',
+                    phone: '7052615743',
+                    relationship: 'Spouse'
+                }
             };
             
             // ===========================================
