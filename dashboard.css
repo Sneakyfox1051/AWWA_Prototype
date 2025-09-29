@@ -868,7 +868,7 @@ body {
 .families-actions { display:flex; gap:10px; align-items:center; }
 .fam-search { padding:10px 12px; border:1px solid #e3e7ee; border-radius:8px; min-width:240px; }
 
-.families-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap:16px; }
+.families-grid { display:grid; gap:16px; }
 .family-card { background: var(--surface); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); padding:16px; display:flex; flex-direction:column; gap:10px; }
 .fc-top { display:flex; justify-content: space-between; align-items:center; }
 .fc-top h4 { font-size:16px; color: var(--brand-darker); }
