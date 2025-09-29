@@ -58,7 +58,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <!-- D-ID Agent Script -->
+    <!-- D-ID Agent Chatbot - Badi Didi -->
     <script type="module"
           src="https://agent.d-id.com/v2/index.js"
           data-mode="fabio"
@@ -90,7 +90,7 @@
 
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
             margin-bottom: 32px;
         }
@@ -111,9 +111,7 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
-        .enhanced-chart-card.large {
-            grid-column: span 2;
-        }
+        /* Removed large class - all charts now equal width */
 
         /* Children section specific grid layout */
         .children-charts-grid {
@@ -323,10 +321,10 @@
                 padding: 30px;
             }
 
-        /* Mobile Responsive Design */
+        /* Tablet Responsive Design */
         @media (max-width: 1200px) {
             .charts-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                grid-template-columns: repeat(2, 1fr);
                 gap: 16px;
             }
             
@@ -335,6 +333,7 @@
                 gap: 16px;
             }
             
+<<<<<<< HEAD
             .families-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
@@ -343,6 +342,9 @@
             .enhanced-chart-card.large {
                 grid-column: span 1;
             }
+=======
+            /* All charts now equal width */
+>>>>>>> d58fedb2fadcb22f6b8578dd35392a696ae8d4f1
         }
 
         @media (max-width: 768px) {
@@ -511,9 +513,7 @@
                 gap: 16px;
             }
             
-            .enhanced-chart-card.large {
-                grid-column: span 1;
-            }
+            /* All charts now equal width */
             
             .chart-container {
                 height: 300px;
@@ -1199,6 +1199,198 @@
                 display:none;
             }
         }
+
+        /* Family Detail Modal Styling */
+        .family-detail-modal {
+            max-width: 1000px !important;
+            width: 95% !important;
+        }
+        
+        .family-detail-body {
+            padding: 0 !important;
+            max-height: 80vh !important;
+            overflow-y: auto !important;
+        }
+        
+        .family-detail-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .family-detail-section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .family-detail-section h4 {
+            color: #1e293b;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #ff8c00;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .family-detail-section h4 i {
+            color: #ff8c00;
+            font-size: 20px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #64748b;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 120px;
+        }
+        
+        .detail-value {
+            color: #1e293b;
+            font-weight: 500;
+            font-size: 15px;
+            text-align: right;
+            flex: 1;
+            margin-left: 20px;
+        }
+        
+        .detail-value.highlight {
+            color: #ff8c00;
+            font-weight: 700;
+        }
+        
+        .family-photo {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .family-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .contact-info {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .contact-item i {
+            color: #ff8c00;
+        }
+        
+        /* Family Card Clickable Styling */
+        .family-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .family-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .family-card:active {
+            transform: translateY(-2px);
+        }
+        
+        /* Mobile Responsive for Family Detail Modal */
+        @media (max-width: 768px) {
+            .family-detail-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .family-detail-section {
+                padding: 20px;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .detail-value {
+                text-align: left;
+                margin-left: 0;
+            }
+            
+            .family-stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1286,7 +1478,6 @@
                     <li data-target="section-companies"><i class="fas fa-building"></i><span>FW Coy</span></li>
                     <li data-target="section-Newsletter"><i class="fas fa-calendar"></i><span>Newsletter</span></li>
                     <li data-target="section-Rankings"><i class="fas fa-chart-bar"></i><span>Unit Rankings</span></li>
-                    <li data-target="section-settings"><i class="fas fa-gear"></i><span>Settings</span></li>
                 </ul>
             </nav>
             
@@ -1462,8 +1653,8 @@
                             </div>
                     
                         <!-- Chart 2: Parental Education - Horizontal Bar Chart -->
-                        <div class="enhanced-chart-card large">
-                            <div class="large-chart-container">
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
                                 <canvas id="educationChart"></canvas>
                         </div>
                     </div>
@@ -1476,8 +1667,8 @@
                             </div>
                     
                         <!-- Chart 4: Workshop Distribution - Bar Chart -->
-                        <div class="enhanced-chart-card large">
-                            <div class="large-chart-container">
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
                                 <canvas id="workshopChart"></canvas>
                         </div>
                     </div>
@@ -1552,7 +1743,7 @@
                 <select class="workshop-filter" id="workshopFilter">
                     <option value="">All WKSP</option>
                 </select>
-                <button class="check-btn" onclick="fetchFamiliesFromGoogleSheets()" id="refreshFamiliesBtn">
+                <button class="check-btn" onclick="console.log('Refresh button clicked'); fetchFamiliesFromGoogleSheets();" id="refreshFamiliesBtn">
                     <i class="fas fa-sync-alt"></i> Refresh Data
                 </button>
                 <button class="check-btn" onclick="toggleAddFamilyForm()" id="addFamilyBtn">
@@ -1749,6 +1940,27 @@
             </div>
         </div>
         
+        <!-- Family Detail Modal -->
+        <div class="modal-overlay hidden" id="familyDetailModal">
+            <div class="modal-container family-detail-modal">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <i class="fas fa-user-circle"></i>
+                        <h3>Family Details</h3>
+                    </div>
+                    <button class="modal-close-btn" onclick="closeFamilyDetailModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="modal-body family-detail-body">
+                    <div class="family-detail-content" id="familyDetailContent">
+                        <!-- Family details will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <div class="families-grid" id="familiesGrid"></div>
     </div>
 
@@ -1906,11 +2118,6 @@
         </div>
     </div>
 
-            <!-- Settings Section -->
-    <div class="placeholder-section app-section hidden" id="section-settings">
-        <h2>Settings</h2>
-        <p>Settings section coming soon.</p>
-    </div>
         </div>
     </div>
 
@@ -3037,9 +3244,16 @@ async function initChartsOnce() {
         // Fetch families data from Google Sheets - TO BE FIXED BY JYOTI AND ADAB
         // Current implementation has issues with CORS proxy reliability and data mapping
         async function fetchFamiliesFromGoogleSheets() {
-            if (isLoadingFamilies) return;
+            if (isLoadingFamilies) {
+                console.log('Already loading families, skipping...');
+                return;
+            }
             
+<<<<<<< HEAD
             console.log('🔄 fetchFamiliesFromGoogleSheets called - using NEW CORS proxy array');
+=======
+            console.log('Starting to fetch families data...');
+>>>>>>> d58fedb2fadcb22f6b8578dd35392a696ae8d4f1
             isLoadingFamilies = true;
             updateFamiliesStatus('loading');
             
@@ -3102,18 +3316,24 @@ async function initChartsOnce() {
                 updateFamiliesStatus('success');
                 loadFamilies(); // Refresh the display
                 
+                // Show success message
+                console.log('Successfully loaded', families.length, 'families from Google Sheets');
+                
             } catch (error) {
                 console.error('Error fetching families data:', error);
                 updateFamiliesStatus('error');
                 
                 // Fallback to sample data
                 familiesData = getSampleFamiliesData();
+                filteredFamiliesData = [...familiesData];
+                populateWorkshopFilter();
                 loadFamilies();
                 
                 // Show error message to user
                 alert(`Failed to load data from Google Sheets: ${error.message}\n\nUsing sample data instead.`);
             } finally {
                 isLoadingFamilies = false;
+                console.log('Finished loading families data');
             }
         }
 
@@ -3318,11 +3538,20 @@ async function initChartsOnce() {
                     case 'loading':
                         icon.className = 'fas fa-spinner fa-spin';
                         refreshBtn.disabled = true;
+                        refreshBtn.style.opacity = '0.6';
+                        refreshBtn.title = 'Loading data...';
                         break;
                     case 'success':
+                        icon.className = 'fas fa-sync-alt';
+                        refreshBtn.disabled = false;
+                        refreshBtn.style.opacity = '1';
+                        refreshBtn.title = 'Refresh data from Google Sheets';
+                        break;
                     case 'error':
                         icon.className = 'fas fa-sync-alt';
                         refreshBtn.disabled = false;
+                        refreshBtn.style.opacity = '1';
+                        refreshBtn.title = 'Retry loading data';
                         break;
                 }
             }
@@ -3690,6 +3919,186 @@ async function initChartsOnce() {
             }
         }
 
+        // ===========================================
+        // FAMILY DETAIL MODAL FUNCTIONS
+        // ===========================================
+        
+        // Open Family Detail Modal
+        function openFamilyDetailModal(familyData) {
+            console.log('Opening family detail modal for:', familyData);
+            const modal = document.getElementById('familyDetailModal');
+            if (modal) {
+                populateFamilyDetailContent(familyData);
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+        }
+        
+        // Close Family Detail Modal
+        function closeFamilyDetailModal() {
+            const modal = document.getElementById('familyDetailModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+        }
+        
+        // Populate Family Detail Content
+        function populateFamilyDetailContent(family) {
+            const content = document.getElementById('familyDetailContent');
+            if (!content) return;
+            
+            // Create the detailed family information HTML
+            content.innerHTML = `
+                <div class="family-detail-section">
+                    <h4><i class="fas fa-user"></i> Personal Information</h4>
+                    <div class="family-photo">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Name</span>
+                        <span class="detail-value highlight">${family.name || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">WKSP</span>
+                        <span class="detail-value">${family.wksp || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Date of Birth</span>
+                        <span class="detail-value">${family.joined || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Blood Group</span>
+                        <span class="detail-value">${family.bloodGroup || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Religion</span>
+                        <span class="detail-value">${family.religion || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Education</span>
+                        <span class="detail-value">${family.education || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Languages</span>
+                        <span class="detail-value">${family.languages || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Can Drive</span>
+                        <span class="detail-value">${family.canDrive || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Owns Vehicle</span>
+                        <span class="detail-value">${family.ownsVehicle || 'N/A'}</span>
+                    </div>
+                </div>
+                
+                <div class="family-detail-section">
+                    <h4><i class="fas fa-heart"></i> Family Details</h4>
+                    <div class="detail-row">
+                        <span class="detail-label">Husband Name</span>
+                        <span class="detail-value highlight">${family.husband || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Husband Rank</span>
+                        <span class="detail-value">${family.husbandRank || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Unit</span>
+                        <span class="detail-value">${family.unit || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Sub Unit</span>
+                        <span class="detail-value">${family.subUnit || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Posting Station</span>
+                        <span class="detail-value">${family.postingStation || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Date of Posting</span>
+                        <span class="detail-value">${family.dateOfPosting || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Children</span>
+                        <span class="detail-value">${family.children || 'N/A'}</span>
+                    </div>
+                </div>
+                
+                <div class="family-detail-section">
+                    <h4><i class="fas fa-home"></i> Accommodation</h4>
+                    <div class="detail-row">
+                        <span class="detail-label">Quarter Number</span>
+                        <span class="detail-value">${family.quarterNumber || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Colony Name</span>
+                        <span class="detail-value">${family.colonyName || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Accommodation Type</span>
+                        <span class="detail-value">${family.accommodationType || 'N/A'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Address</span>
+                        <span class="detail-value">${family.accommodationAddress || 'N/A'}</span>
+                    </div>
+                </div>
+                
+                <div class="family-detail-section">
+                    <h4><i class="fas fa-phone"></i> Contact Information</h4>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>${family.contact || 'N/A'}</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>${family.email || 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="family-detail-section">
+                    <h4><i class="fas fa-chart-bar"></i> Family Statistics</h4>
+                    <div class="family-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">${family.wksp || 'N/A'}</div>
+                            <div class="stat-label">Workshop</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${family.education ? family.education.split(' ').length : '0'}</div>
+                            <div class="stat-label">Education Level</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${family.canDrive === 'Yes' ? '1' : '0'}</div>
+                            <div class="stat-label">Can Drive</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Add event listeners for family detail modal
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close modal when clicking outside
+            document.addEventListener('click', function(event) {
+                const modal = document.getElementById('familyDetailModal');
+                if (modal && !modal.classList.contains('hidden')) {
+                    if (event.target === modal) {
+                        closeFamilyDetailModal();
+                    }
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeFamilyDetailModal();
+                }
+            });
+        });
+
         // Load families data from Google Sheets
         function loadFamilies() {
             const familiesGrid = document.getElementById('familiesGrid');
@@ -3706,7 +4115,7 @@ async function initChartsOnce() {
             }
 
             familiesGrid.innerHTML = filteredFamiliesData.map(f => `
-                <div class="family-card">
+                <div class="family-card" onclick="openFamilyDetailModal(${JSON.stringify(f).replace(/"/g, '&quot;')})" style="cursor: pointer;">
                     <div class="fc-top">
                         <h4>${f.name}</h4>
                         <span class="badge success">AWWA REGISTERED</span>
@@ -3993,7 +4402,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const profileInitials = document.getElementById('profileInitials');
             if (profileInitials) {
-                const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        const initials = userInfo.name.split(' ').map(n => n[0]).join('').toUpperCase();
                 profileInitials.textContent = initials;
             }
             

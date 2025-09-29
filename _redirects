@@ -1,0 +1,11 @@
+# Netlify redirects for AWWA Family Management System
+# This file handles client-side routing for the SPA
+
+# Redirect root to login page
+/ /login.html 200
+
+# Handle direct dashboard access - redirect to login for security
+/dashboard* /login.html 200
+
+# Handle any other routes - redirect to login
+/* /login.html 200
