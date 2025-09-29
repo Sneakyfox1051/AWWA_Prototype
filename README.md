@@ -286,6 +286,12 @@ Only the 4 authorized unit ranking officers have access to the system.
 - `_redirects` - Handles routing and security redirects
 - `netlify.toml` - Build configuration and security headers
 
+### **New Features Added**
+- **Family Detail Modal**: Click any family card to view detailed information
+- **D-ID AI Chatbot**: "Badi Didi" assistant for family support
+- **Enhanced UI**: Modern popup modals with comprehensive family data
+- **Mobile Optimized**: Responsive design for all devices
+
 ### **Deployment Steps**
 1. **Prepare Files**: Ensure all files are in the project root
 2. **Upload to Netlify**: Use drag & drop or Git integration
