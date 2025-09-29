@@ -132,15 +132,16 @@
         // ===========================================
         // USER CREDENTIALS DATABASE
         // ===========================================
-        // This array contains all valid user credentials for the AWWA system.
+        // This array contains the 4 authorized unit ranking users for the AWWA system.
         // Each user object includes authentication data and profile information.
-        // The system supports different user types (L1-L4, admin) with role-based access.
+        // All users have L1 access level (Super User) with full system permissions.
         
         const validUsers = [
             // ===========================================
-            // UNIT RANKING USERS (4 MAIN USERS)
+            // UNIT RANKING USERS (4 MAIN USERS ONLY)
             // ===========================================
-            // These are the primary users of the system with specific roles and responsibilities.
+            // These are the only authorized users of the AWWA system.
+            // All other users have been removed for security and simplicity.
             
             { 
                 // Commanding Officer - Highest authority in the unit
@@ -187,37 +188,7 @@
                 designation: 'OIC Tech Cell', 
                 phone: '7006216984',
                 hasSpouse: false  // No spouse information available
-            },
-            
-            // ===========================================
-            // ADDITIONAL SYSTEM USERS
-            // ===========================================
-            // These users provide additional access levels and testing capabilities.
-            
-            // System Administrator - Full system access
-            { userId: 'admin', password: 'admin123', userType: 'admin', name: 'Administrator', designation: 'System Admin', phone: '0000000000', hasSpouse: false },
-            
-            // Battalion Command - High-level administrative access
-            { userId: 'bt01', password: 'admin123', userType: 'admin', name: 'Sushma Bhatti', designation: 'Battalion Command', phone: '9087654321', hasSpouse: false },
-            
-            // ===========================================
-            // ROLE-BASED TEST USERS
-            // ===========================================
-            // These users represent different access levels for testing and development.
-            
-            // L1 Level Users - Super User access
-            { userId: 'aditi', password: 'admin123', userType: 'L1', name: 'Aditi Mehra', designation: 'L1 User', phone: '9876543210', hasSpouse: false },
-            { userId: 'user1', password: 'admin123', userType: 'L1', name: 'User One', designation: 'L1 Officer', phone: '9876543211', hasSpouse: false },
-            { userId: 'test', password: 'admin123', userType: 'L1', name: 'Test User', designation: 'L1 Staff', phone: '9876543212', hasSpouse: false },
-            
-            // L2 Level Users - Standard access
-            { userId: 'user2', password: 'admin123', userType: 'L2', name: 'User Two', designation: 'L2 Officer', phone: '9876543213', hasSpouse: false },
-            
-            // L3 Level Users - Limited access
-            { userId: 'user3', password: 'admin123', userType: 'L3', name: 'User Three', designation: 'L3 Officer', phone: '9876543214', hasSpouse: false },
-            
-            // L4 Level Users - Basic access
-            { userId: 'user4', password: 'admin123', userType: 'L4', name: 'User Four', designation: 'L4 Officer', phone: '9876543215', hasSpouse: false }
+            }
         ];
 
         // ===========================================
@@ -298,7 +269,7 @@
                 // LOGIN FAILURE HANDLING
                 // ===========================================
                 // Display helpful error message with valid credentials
-                alert('Invalid credentials.\n\nUnit Ranking Users:\n- tarunpreet singh / admin123 / L1\n- piyush sharma / admin123 / L1\n- harish kumar / admin123 / L1\n- rahul t more / admin123 / L1\n\nOther Users:\n- admin / admin123 / admin\n- aditi / admin123 / L1\n- user1 / admin123 / L1');
+                alert('Invalid credentials.\n\nAuthorized Users (Unit Rankings):\n- tarunpreet singh / admin123 / L1\n- piyush sharma / admin123 / L1\n- harish kumar / admin123 / L1\n- rahul t more / admin123 / L1');
             }
         });
     </script>

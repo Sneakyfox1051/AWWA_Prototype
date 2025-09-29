@@ -1,6 +1,8 @@
 # AWWA Family Management System
 
-A modern, responsive web application for managing military families and personnel information, specifically designed for the **624 EME BN (Battalion)**. The system is called "दीप" (Deep) with the tagline "जागरूकता से आत्मनिर्भरता" (Awareness to Self-reliance).
+A secure, modern web application for managing military families and personnel information, specifically designed for the **624 EME BN (Battalion)**. The system is called "दीप" (Deep) with the tagline "जागरूकता से आत्मनिर्भरता" (Awareness to Self-reliance).
+
+**🔒 Security-First Design:** Access is restricted to only 4 authorized unit ranking officers for maximum security and data protection.
 
 > **⚠️ Note**: The mobile navigation toggle functionality needs to be fixed by **Jyoti**. The current implementation has issues with the toggle button visibility and functionality on mobile devices.
 
@@ -104,25 +106,40 @@ Awwa_prototype/
 ## 🔐 Authentication
 
 ### **User Roles**
-- **Admin** - Full system access
-- **L1** - Super user access
-- **L2** - Standard user access
-- **L3** - Limited user access
-- **L4** - Basic user access
+- **L1** - Super user access (Unit Ranking Officers only)
 
-### **Test Credentials**
-- **Admin**: `tarunpreet singh` / `admin123` / `admin`
-- **Admin**: `piyush sharma` / `admin123` / `admin`
-- **Admin**: `harish kumar` / `admin123` / `admin`
-- **Admin**: `rahul t more` / `admin123` / `admin`
-- **Admin**: `admin` / `admin123` / `admin`
-- **Admin**: `bt01` / `admin123` / `admin`
-- **L1**: `aditi` / `admin123` / `L1`
-- **L1**: `user1` / `admin123` / `L1`
-- **L1**: `test` / `admin123` / `L1`
-- **L2**: `user2` / `admin123` / `L2`
-- **L3**: `user3` / `admin123` / `L3`
-- **L4**: `user4` / `admin123` / `L4`
+### **Authorized User Credentials**
+- **Commanding Officer**: `tarunpreet singh` / `admin123` / `L1`
+- **Second in Command**: `piyush sharma` / `admin123` / `L1`
+- **Adjutant**: `harish kumar` / `admin123` / `L1`
+- **OIC Tech Cell**: `rahul t more` / `admin123` / `L1`
+
+**Security Note:** All non-unit ranking users have been completely removed from the system for enhanced security. This includes:
+- All admin users (admin, bt01, Sushma Bhatti)
+- All test users (aditi, user1, user2, user3, user4, test)
+- All L2, L3, L4 level users
+
+Only the 4 authorized unit ranking officers have access to the system.
+
+## 🔒 Security Features
+
+### **Access Control**
+- **Restricted Access:** Only 4 unit ranking officers can login
+- **No Admin Users:** All admin accounts removed for security
+- **No Test Accounts:** All test/demo accounts eliminated
+- **Single User Type:** All users have L1 (Super User) access level
+
+### **User Management**
+- **Default User:** Col Tarunpreet Singh (Commanding Officer)
+- **Spouse Information:** Only available for Commanding Officer
+- **Session Management:** User data stored securely in localStorage
+- **Role-Based Display:** Dynamic content based on user role
+
+### **Data Protection**
+- **Minimal User Base:** Reduced attack surface
+- **Authorized Personnel Only:** Military unit ranking officers
+- **No External Access:** No public or guest accounts
+- **Secure Authentication:** Password-protected access
 
 ## 📊 Dashboard Features
 
@@ -245,6 +262,12 @@ Awwa_prototype/
   - **Data Mapping Issues**: Column name mapping inconsistencies causing "N/A" values
   - **CSV Parsing Problems**: Some data fields not being parsed correctly
   - **Error Handling**: Better error messages and fallback mechanisms needed
+
+### **✅ Recently Resolved Issues**
+- **User Cleanup**: All non-unit ranking users have been successfully removed
+  - **Removed Users**: admin, bt01, Sushma Bhatti, aditi, user1, user2, user3, user4, test
+  - **Security Enhancement**: System now only allows 4 authorized unit ranking officers
+  - **Default User**: Updated to Col Tarunpreet Singh (Commanding Officer)
 
 ### **Minor Issues**
 - **Chart Responsiveness**: Some charts may need mobile optimization
