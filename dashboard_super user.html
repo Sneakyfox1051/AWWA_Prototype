@@ -193,6 +193,127 @@
             height: 300px;
             width: 100%;
         }
+        .modal-overlay {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                background: rgba(0, 0, 0, 0.6) !important;
+                backdrop-filter: blur(5px);
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                z-index: 99999 !important;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .modal-overlay:not(.hidden) {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            .modal-overlay.hidden {
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            
+            .modal-container {
+                background: white !important;
+                border-radius: 20px !important;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+                max-width: 900px !important;
+                width: 90% !important;
+                max-height: 90vh !important;
+                overflow: hidden !important;
+                transform: scale(0.9) translateY(20px) !important;
+                transition: all 0.3s ease !important;
+                position: relative !important;
+                margin: 20px !important;
+            }
+            
+            .modal-overlay:not(.hidden) .modal-container {
+                transform: scale(1) translateY(0) !important;
+            }
+            
+            .modal-header {
+                background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+                color: white;
+                padding: 25px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .modal-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
+                pointer-events: none;
+            }
+            
+            .modal-title {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .modal-title i {
+                font-size: 24px;
+                background: rgba(255, 255, 255, 0.2);
+                padding: 12px;
+                border-radius: 12px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .modal-title h3 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 700;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            .modal-close-btn {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+                backdrop-filter: blur(10px);
+                position: relative;
+                z-index: 1;
+            }
+            
+            .modal-close-btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(1.1);
+            }
+            
+            .modal-body {
+                padding: 0;
+                max-height: calc(90vh - 100px);
+                overflow-y: auto;
+            }
+            
+            .add-family-form {
+                padding: 30px;
+            }
 
         /* Mobile Responsive Design */
         @media (max-width: 1200px) {
@@ -409,11 +530,48 @@
                 align-items: center;
                 gap: 6px;
             }
+            .add-family-form {
+                    padding: 20px;
+                }
+                
+                .form-row {
+                    grid-template-columns: 1fr;
+                    gap: 15px;
+                }
+                
+                .form-actions {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+                
+                .btn-primary,
+                .btn-secondary {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+
+        .families-actions .check-btn i {
+            font-size: 14px;
+        }
+
+        .workshop-filter {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            color: #374151;
+            min-width: 150px;
+        }
+
+        .workshop-filter:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
             
-            /* Modal Popup Styling - TO BE FIXED BY JYOTI */
-            /* ISSUE: Modal works on mobile but not on desktop/web view */
-            /* Current implementation shows form inline instead of as popup modal */
-            /*
+            /* Modal Popup Styling */
             .modal-overlay {
                 position: fixed !important;
                 top: 0 !important;
@@ -458,7 +616,6 @@
             .modal-overlay:not(.hidden) .modal-container {
                 transform: scale(1) translateY(0) !important;
             }
-            */
             
             .modal-header {
                 background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
@@ -691,9 +848,133 @@
                 color: #374151;
                 transform: translateY(-1px);
             }
+
+            
             
             /* Desktop Modal Styling */
             @media (min-width: 769px) {
+
+                .modal-overlay {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                background: rgba(0, 0, 0, 0.6) !important;
+                backdrop-filter: blur(5px);
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                z-index: 99999 !important;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .modal-overlay:not(.hidden) {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            .modal-overlay.hidden {
+                opacity: 0 !important;
+                visibility: hidden !important;
+            }
+            
+            .modal-container {
+                background: white !important;
+                border-radius: 20px !important;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+                max-width: 900px !important;
+                width: 90% !important;
+                max-height: 90vh !important;
+                overflow: hidden !important;
+                transform: scale(0.9) translateY(20px) !important;
+                transition: all 0.3s ease !important;
+                position: relative !important;
+                margin: 20px !important;
+            }
+            
+            .modal-overlay:not(.hidden) .modal-container {
+                transform: scale(1) translateY(0) !important;
+            }
+            
+            .modal-header {
+                background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
+                color: white;
+                padding: 25px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .modal-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
+                pointer-events: none;
+            }
+            
+            .modal-title {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                position: relative;
+                z-index: 1;
+            }
+            
+            .modal-title i {
+                font-size: 24px;
+                background: rgba(255, 255, 255, 0.2);
+                padding: 12px;
+                border-radius: 12px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .modal-title h3 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 700;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            .modal-close-btn {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                color: white;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+                backdrop-filter: blur(10px);
+                position: relative;
+                z-index: 1;
+            }
+            
+            .modal-close-btn:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(1.1);
+            }
+            
+            .modal-body {
+                padding: 0;
+                max-height: calc(90vh - 100px);
+                overflow-y: auto;
+            }
+            
+            .add-family-form {
+                padding: 30px;
+            }
                 .modal-overlay {
                     z-index: 10000;
                 }
@@ -852,7 +1133,7 @@
             .rank-card {
                 padding: 12px;
             }
-        }
+        
 
         @media (max-width: 480px) {
             /* Extra Small Mobile */
@@ -1220,16 +1501,199 @@
                 <button class="check-btn" onclick="fetchFamiliesFromGoogleSheets()" id="refreshFamiliesBtn">
                     <i class="fas fa-sync-alt"></i> Refresh Data
                 </button>
-                <button class="check-btn" onclick="alert('Add Family feature temporarily disabled - to be fixed by Jyoti')" id="addFamilyBtn" style="opacity: 0.6; cursor: not-allowed;">
-                    <i class="fas fa-plus"></i> Add Family (Disabled)
+                <button class="check-btn" onclick="toggleAddFamilyForm()" id="addFamilyBtn">
+                    <i class="fas fa-plus"></i> Add Family
                 </button>
             </div>
         </div>
         
-        <!-- Add Family Modal Popup - REMOVED - TO BE FIXED BY JYOTI -->
-        <!-- ISSUE: Modal works on mobile but not on desktop/web view -->
-        <!-- Current implementation shows form inline instead of as popup modal -->
-        <!-- Modal HTML completely removed to prevent form from showing -->
+        <!-- Add Family Modal Popup -->
+        <div class="modal-overlay hidden" id="addFamilyModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <i class="fas fa-user-plus"></i>
+                        <h3>Add New Family Member</h3>
+                    </div>
+                    <button class="modal-close-btn" onclick="closeAddFamilyModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <form class="add-family-form" id="addFamilyForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyWksp">WKSP *</label>
+                                <input type="text" id="familyWksp" name="wksp" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="familyLadiesName">Ladies Name *</label>
+                                <input type="text" id="familyLadiesName" name="ladiesName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyDateOfBirth">Date of Birth</label>
+                                <input type="date" id="familyDateOfBirth" name="dateOfBirth">
+                            </div>
+                            <div class="form-group">
+                                <label for="familyAge">Age</label>
+                                <input type="number" id="familyAge" name="age" min="0" max="120">
+                            </div>
+                            <div class="form-group">
+                                <label for="familyBloodGroup">Blood Group</label>
+                                <select id="familyBloodGroup" name="bloodGroup">
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyReligion">Religion</label>
+                                <input type="text" id="familyReligion" name="religion">
+                            </div>
+                            <div class="form-group">
+                                <label for="familyQualification">Highest Qualification</label>
+                                <input type="text" id="familyQualification" name="qualification">
+                            </div>
+                            <div class="form-group">
+                                <label for="familyLanguages">Languages Known</label>
+                                <input type="text" id="familyLanguages" name="languages">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyCanDrive">Can Drive</label>
+                                <select id="familyCanDrive" name="canDrive">
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="familyOwnsVehicle">Owns Vehicle</label>
+                                <select id="familyOwnsVehicle" name="ownsVehicle">
+                                    <option value="">Select</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyMobile">Personal Mobile *</label>
+                                <input type="tel" id="familyMobile" name="mobile" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="familyEmail">Personal Email</label>
+                                <input type="email" id="familyEmail" name="email">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyDateOfMarriage">Date of Marriage</label>
+                                <input type="date" id="familyDateOfMarriage" name="dateOfMarriage">
+                            </div>
+                            <div class="form-group">
+                                <label for="familyYearsInMarriage">Years in Marriage</label>
+                                <input type="number" id="familyYearsInMarriage" name="yearsInMarriage" min="0" max="100">
+                            </div>
+                        </div>
+                        
+                        <!-- Husband's Details -->
+                        <div class="form-section-header">
+                            <h4>Husband's Details</h4>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyHusbandName">Husband's Name</label>
+                                <input type="text" id="familyHusbandName" name="husbandName">
+                            </div>
+                            <div class="form-group">
+                                <label for="familyHusbandRank">Husband's Rank</label>
+                                <input type="text" id="familyHusbandRank" name="husbandRank">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyUnit">Unit</label>
+                                <input type="text" id="familyUnit" name="unit">
+                            </div>
+                            <div class="form-group">
+                                <label for="familySubUnit">Sub Unit</label>
+                                <input type="text" id="familySubUnit" name="subUnit">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyPostingStation">Posting Station</label>
+                                <input type="text" id="familyPostingStation" name="postingStation">
+                            </div>
+                            <div class="form-group">
+                                <label for="familyDateOfPosting">Date of Posting</label>
+                                <input type="date" id="familyDateOfPosting" name="dateOfPosting">
+                            </div>
+                        </div>
+                        
+                        <!-- Accommodation Details -->
+                        <div class="form-section-header">
+                            <h4>Accommodation Details</h4>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyQuarterNumber">Quarter Number</label>
+                                <input type="text" id="familyQuarterNumber" name="quarterNumber">
+                            </div>
+                            <div class="form-group">
+                                <label for="familyColonyName">Colony/Enclave Name</label>
+                                <input type="text" id="familyColonyName" name="colonyName">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="familyAccommodationType">Type of Accommodation</label>
+                                <input type="text" id="familyAccommodationType" name="accommodationType">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="familyAccommodationAddress">Family Accommodation Address</label>
+                                <textarea id="familyAccommodationAddress" name="accommodationAddress" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="closeAddFamilyModal()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Family
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         
         <div class="families-grid" id="familiesGrid"></div>
     </div>
@@ -2734,12 +3198,9 @@ async function initChartsOnce() {
         }
 
         // ===========================================
-        // FAMILY FORM MANAGEMENT FUNCTIONS - TO BE FIXED BY JYOTI
+        // FAMILY FORM MANAGEMENT FUNCTIONS
         // ===========================================
-        // ISSUE: Modal works on mobile but not on desktop/web view
-        // Current implementation shows form inline instead of as popup modal
         
-        /*
         // Open Add Family Modal
         function toggleAddFamilyForm() {
             // Check if user has permission to add families (Super Users only)
@@ -2775,9 +3236,7 @@ async function initChartsOnce() {
                 console.log('Modal closed'); // Debug log
             }
         }
-        */
         
-        /*
         // Reset Add Family Form
         function resetAddFamilyForm() {
             const form = document.getElementById('addFamilyForm');
@@ -2830,9 +3289,7 @@ async function initChartsOnce() {
                     submitBtn.disabled = false;
                 });
         }
-        */
         
-        /*
         // Check Add Family Permissions
         function checkAddFamilyPermissions() {
             const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
@@ -2849,7 +3306,6 @@ async function initChartsOnce() {
                 }
             }
         }
-        */
 
         // Add Family to Google Sheets
         async function addFamilyToGoogleSheets(familyData) {
@@ -3005,7 +3461,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Initialize charts
             setTimeout(initChartsOnce, 1000);
             
-            /*
             // Add form event listener for Add Family form
             const addFamilyForm = document.getElementById('addFamilyForm');
             if (addFamilyForm) {
@@ -3032,7 +3487,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             }
-            */
         });
 
         // ===========================================
