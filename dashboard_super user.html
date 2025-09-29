@@ -1131,7 +1131,7 @@
             
             .rank-card {
                 padding: 12px;
-            }
+        }
         
 
         @media (max-width: 480px) {
@@ -1181,16 +1181,24 @@
             .lp-nav li span {
                 font-size: 10px;
             }
+            .profile-side-card{
+                display:none;
+            }
         }
     </style>
 </head>
 <body>
     <header class="app-header">
         <div class="app-header-inner">
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <div class="app-brand">
                 <img src="public/Untitled design (27).png" alt="AWWA Logo" class="app-logo" />
                 <div class="app-title-wrap">
-                    <h1 class="app-title">Ranbankure Eagles : AWWA Centralised Information Hub</h1>
+                    <h1 class="app-title">Ranbankura Eagles : AWWA Centralised Information Hub</h1>
                 </div>
             </div>
             <button class="logout-btn" onclick="logout()">
@@ -1199,11 +1207,55 @@
             </button>
         </div>
     </header>
+    
+    <!-- Mobile Navigation Popup -->
+    <div id="mobileNavPopup" class="mobile-nav-popup hidden">
+        <div class="mobile-nav-overlay" onclick="closeMobileMenu()"></div>
+        <div class="mobile-nav-content">
+            <div class="mobile-nav-header">
+                <h3>Navigation Menu</h3>
+                <button class="mobile-nav-close" onclick="closeMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav-menu">
+                <ul>
+                    <li class="mobile-nav-item active" data-target="section-dashboard" onclick="navigateToSection('section-dashboard')">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li class="mobile-nav-item" data-target="section-families" onclick="navigateToSection('section-families')">
+                        <i class="fas fa-notes-medical"></i>
+                        <span>Families</span>
+                    </li>
+                    <li class="mobile-nav-item" data-target="section-companies" onclick="navigateToSection('section-companies')">
+                        <i class="fas fa-building"></i>
+                        <span>FW Coy</span>
+                    </li>
+                    <li class="mobile-nav-item" data-target="section-Newsletter" onclick="navigateToSection('section-Newsletter')">
+                        <i class="fas fa-calendar"></i>
+                        <span>Newsletter</span>
+                    </li>
+                    <li class="mobile-nav-item" data-target="section-Rankings" onclick="navigateToSection('section-Rankings')">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Unit Rankings</span>
+                    </li>
+                    <li class="mobile-nav-item" data-target="section-settings" onclick="navigateToSection('section-settings')">
+                        <i class="fas fa-gear"></i>
+                        <span>Settings</span>
+                    </li>
+                </ul>
+        </div>
+    </div>
+    
     <div class="dash-layout">
         <!-- Left Side Panel -->
         <aside class="left-panel">
 
             <div class="lp-header">
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
                 <img src="public/profile.png" alt="Profile" class="lp-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
                 <div class="lp-avatar" style="display:none;">SB</div>
                 <div class="lp-name">Sushma Bhatti</div>
@@ -1212,10 +1264,6 @@
             
             <!-- Navigation Toggle Button - TO BE FIXED BY JYOTI -->
             <!-- Current implementation has issues with visibility and functionality -->
-            <button class="nav-toggle" id="navToggle" onclick="toggleNavigation()">
-                <i class="fas fa-chevron-down"></i>
-                <span>Menu</span>
-            </button>
             
             <nav class="lp-nav" id="lpNav">
                 <ul>
@@ -1228,13 +1276,6 @@
                 </ul>
             </nav>
             
-            <!-- Logout Button in Sidebar -->
-            <div class="lp-footer">
-                <button class="sidebar-logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </button>
-            </div>
         </aside>
 
         <!-- Main Area -->
@@ -3742,6 +3783,7 @@ function logout() {
             // Initialize navigation state on page load
             const lpNav = document.getElementById('lpNav');
             const navToggle = document.getElementById('navToggle');
+            const leftPanel = document.querySelector('.left-panel');
             
             if (window.innerWidth <= 768) {
                 // Mobile view - start with collapsed navigation
@@ -3752,7 +3794,124 @@ function logout() {
                 lpNav.classList.remove('collapsed', 'expanded');
                 navToggle.style.display = 'none';
             }
+            
+            // Handle window resize for responsive behavior
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 768) {
+                    // Mobile view
+                    navToggle.style.display = 'block';
+                } else {
+                    // Desktop view
+                    navToggle.style.display = 'none';
+                    lpNav.classList.remove('collapsed', 'expanded');
+                    // Close mobile menu if open
+                    closeMobileMenu();
+                }
+            });
+            
+            // Add keyboard support for mobile menu
+            document.addEventListener('keydown', function(e) {
+                const mobileNavPopup = document.getElementById('mobileNavPopup');
+                if (e.key === 'Escape' && !mobileNavPopup.classList.contains('hidden')) {
+                    closeMobileMenu();
+                }
+            });
+            
+            // Prevent body scroll when mobile menu is open
+            const mobileNavPopup = document.getElementById('mobileNavPopup');
+            mobileNavPopup.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+            }, { passive: false });
         });
+
+        // Mobile Menu Toggle Functionality
+        function toggleMobileMenu() {
+            const mobileNavPopup = document.getElementById('mobileNavPopup');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const icon = mobileMenuToggle.querySelector('i');
+            
+            if (mobileNavPopup.classList.contains('hidden')) {
+                // Open mobile menu
+                mobileNavPopup.classList.remove('hidden');
+                icon.className = 'fas fa-times';
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+                console.log('Mobile menu opened');
+            } else {
+                // Close mobile menu
+                mobileNavPopup.classList.add('hidden');
+                icon.className = 'fas fa-bars';
+                document.body.style.overflow = ''; // Restore scrolling
+                console.log('Mobile menu closed');
+            }
+        }
+        
+        // Close Mobile Menu
+        function closeMobileMenu() {
+            const mobileNavPopup = document.getElementById('mobileNavPopup');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const icon = mobileMenuToggle.querySelector('i');
+            
+            mobileNavPopup.classList.add('hidden');
+            icon.className = 'fas fa-bars';
+            document.body.style.overflow = ''; // Restore scrolling
+            console.log('Mobile menu closed');
+        }
+        
+        // Navigate to Section (Mobile)
+        function navigateToSection(sectionId) {
+            // Close mobile menu first
+            closeMobileMenu();
+            
+            // Update active states
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            mobileNavItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-target') === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Update desktop navigation active states
+            const desktopNavItems = document.querySelectorAll('.lp-nav li');
+            desktopNavItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-target') === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Show the target section
+            const sections = document.querySelectorAll('.app-section');
+            sections.forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+            
+            console.log('Navigated to:', sectionId);
+        }
+        
+        // Sidebar Toggle Functionality
+        function toggleSidebar() {
+            const leftPanel = document.querySelector('.left-panel');
+            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+            const icon = sidebarToggleBtn.querySelector('i');
+            
+            if (leftPanel.classList.contains('collapsed')) {
+                // Expand sidebar
+                leftPanel.classList.remove('collapsed');
+                icon.className = 'fas fa-arrow-right';
+                console.log('Sidebar expanded');
+            } else {
+                // Collapse sidebar
+                leftPanel.classList.add('collapsed');
+                icon.className = 'fas fa-arrow-left';
+                console.log('Sidebar collapsed');
+            }
+        }
 
         // Navigation toggle functionality - TO BE FIXED BY JYOTI
         // Current implementation has issues with button visibility and functionality
