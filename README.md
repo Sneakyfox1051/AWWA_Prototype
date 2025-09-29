@@ -15,6 +15,7 @@ A secure, modern web application for managing military families and personnel in
 - **Chart.js** for interactive data visualization
 - **Font Awesome** for icons
 - **Custom CSS Grid** and Flexbox layouts
+- **Netlify Ready** - Optimized for cloud deployment
 
 ### **Enhanced UI/UX**
 - **Responsive Design** - Works on all devices (desktop, tablet, mobile)
@@ -273,6 +274,26 @@ Only the 4 authorized unit ranking officers have access to the system.
 - **Chart Responsiveness**: Some charts may need mobile optimization
 - **Cross-browser Testing**: Needs testing across different browsers
 
+## 🌐 Netlify Deployment
+
+### **Quick Deploy**
+1. **Drag & Drop**: Go to [netlify.com](https://netlify.com) and drag the project folder
+2. **Git Integration**: Connect your GitHub repository for automatic deployments
+3. **Custom Domain**: Add your own domain in Netlify settings
+
+### **Configuration Files**
+- `index.html` - Main entry point with loading animation
+- `_redirects` - Handles routing and security redirects
+- `netlify.toml` - Build configuration and security headers
+
+### **Deployment Steps**
+1. **Prepare Files**: Ensure all files are in the project root
+2. **Upload to Netlify**: Use drag & drop or Git integration
+3. **Configure Domain**: Set up custom domain (optional)
+4. **Test Deployment**: Verify all functionality works
+
+> 📖 **Detailed deployment guide**: See `DEPLOYMENT.md` for complete instructions
+
 ## 📄 License
 
 This project is developed for the 624 EME BN and is proprietary software.
@@ -280,3 +301,5 @@ This project is developed for the 624 EME BN and is proprietary software.
 ---
 
 **Built with ❤️ using HTML5, CSS3, JavaScript, and Chart.js**
+
+**🚀 Ready for Netlify deployment!**
