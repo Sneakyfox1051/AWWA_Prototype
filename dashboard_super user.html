@@ -60,15 +60,15 @@
     
     <!-- D-ID Agent Chatbot - Badi Didi -->
     <script type="module"
-          src="https://agent.d-id.com/v2/index.js"
-          data-mode="fabio"
-          data-client-key="Z29vZ2xlLW9hdXRoMnwxMDA1MjIwMjc4MDA4MjIzNDk5MDE6aDEyZUd2MFNUa2gzWkRhWG0ybjA2"
-          data-agent-id="v2_agt_CKSD5djL"
-          data-name="did-agent"
-          data-monitor="true"
-          data-orientation="horizontal"
-          data-position="right">
-    </script>
+    src="https://agent.d-id.com/v2/index.js"
+    data-mode="fabio"
+    data-client-key="Z29vZ2xlLW9hdXRoMnwxMDQ1ODAxOTI0NzE1ODExNjczNzI6RjhQTHZmLTVLU3A2Tng1V2JVYjFt"
+    data-agent-id="v2_agt_G23N5m1h"
+    data-name="did-agent"
+    data-monitor="true"
+    data-orientation="horizontal"
+    data-position="right">
+</script>
     
     <style>
         /* Enhanced Charts Styles */
@@ -1115,7 +1115,6 @@
             }
             
             .families-grid {
-                grid-template-columns: 1fr;
                 gap: 12px;
             }
             
@@ -1274,6 +1273,51 @@
         .detail-value.highlight {
             color: #ff8c00;
             font-weight: 700;
+        }
+        
+        /* Children Information Styles */
+        .children-info {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .child-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .child-item:hover {
+            background: #f1f5f9;
+            border-color: #ff8c00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);
+        }
+        
+        .child-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .child-age {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .no-children {
+            text-align: center;
+            color: #94a3b8;
+            font-style: italic;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px dashed #e2e8f0;
         }
         
         .family-photo {
@@ -2134,6 +2178,8 @@
         - Real-time data synchronization
         - Advanced chart interactions
         */
+
+      
         
         // Google Sheets integration configuration (same as main dashboard)
         const GOOGLE_SHEETS_CONFIG = {
@@ -3407,7 +3453,7 @@ async function initChartsOnce() {
                     const languages = family.languages_known || '';
                     const canDrive = family.can_drive || '';
                     const ownsVehicle = family.owns_vehicle || '';
-                    const husbandRank = family.husbands_rank || '';
+                    const husbandRank = family.husband_rank || '';
                     const unit = family.unit || '';
                     const subUnit = family.sub_unit || '';
                     const postingStation = family.posting_station || '';
@@ -3416,6 +3462,14 @@ async function initChartsOnce() {
                     const colonyName = family.colony_enclave_name || '';
                     const accommodationType = family.type_of_accommodation || '';
                     const accommodationAddress = family.family_accommodation_address || '';
+                    
+                    // Extract children data
+                    const child1Name = family.child_1_name || '';
+                    const child1Class = family.child_1_class || '';
+                    const child2Name = family.child_2_name || '';
+                    const child2Class = family.child_2_class || '';
+                    const child3Name = family.child_3_name || '';
+                    const child3Class = family.child_3_class || '';
                     
                     // Extract workshop information from WKSP column
                     const workshop = family.wksp || '';
@@ -3457,7 +3511,14 @@ async function initChartsOnce() {
                             quarterNumber: quarterNumber.trim() || 'N/A',
                             colonyName: colonyName.trim() || 'N/A',
                             accommodationType: accommodationType.trim() || 'N/A',
-                            accommodationAddress: accommodationAddress.trim() || 'N/A'
+                            accommodationAddress: accommodationAddress.trim() || 'N/A',
+                            // Children data
+                            child1Name: child1Name.trim() || 'N/A',
+                            child1Class: child1Class.trim() || 'N/A',
+                            child2Name: child2Name.trim() || 'N/A',
+                            child2Class: child2Class.trim() || 'N/A',
+                            child3Name: child3Name.trim() || 'N/A',
+                            child3Class: child3Class.trim() || 'N/A'
                         };
                         
                         families.push(familyData);
@@ -3489,6 +3550,14 @@ async function initChartsOnce() {
             const childrenCounts = ['1 Child', '2 Children', '3 Children', '1 Child', '2 Children', '1 Child', '2 Children', '3 Children', '1 Child', '2 Children'];
                 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'];
             
+            // Generate children data
+            const childNames = ['Arjun', 'Priya', 'Rohan', 'Kavya', 'Aryan', 'Sneha', 'Vikram', 'Ananya', 'Rahul', 'Pooja'];
+            const childAges = ['5', '8', '12', '3', '15', '7', '10', '6', '9', '4'];
+            
+            const hasChild1 = Math.random() > 0.3; // 70% chance of having at least one child
+            const hasChild2 = hasChild1 && Math.random() > 0.5; // 50% chance of second child if first exists
+            const hasChild3 = hasChild2 && Math.random() > 0.7; // 30% chance of third child if second exists
+            
             return {
                 id: i + 1,
                 name: `${surnames[i % surnames.length]} Family`,
@@ -3496,7 +3565,14 @@ async function initChartsOnce() {
                 contact: `+91-${9876500000 + i}`,
                 education: educations[i % educations.length],
                 children: childrenCounts[i % childrenCounts.length],
-                joined: `${months[i % months.length]} 2024`
+                joined: `${months[i % months.length]} 2024`,
+                // Children data
+                child1Name: hasChild1 ? childNames[i % childNames.length] : 'N/A',
+                child1Age: hasChild1 ? childAges[i % childAges.length] : 'N/A',
+                child2Name: hasChild2 ? childNames[(i + 1) % childNames.length] : 'N/A',
+                child2Age: hasChild2 ? childAges[(i + 1) % childAges.length] : 'N/A',
+                child3Name: hasChild3 ? childNames[(i + 2) % childNames.length] : 'N/A',
+                child3Age: hasChild3 ? childAges[(i + 2) % childAges.length] : 'N/A'
             };
         });
         }
@@ -3705,7 +3781,7 @@ async function initChartsOnce() {
                     }
                 })
                 .finally(() => {
-                    // Reset button state
+                    // Reset button state         
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
                 });
@@ -3937,6 +4013,7 @@ async function initChartsOnce() {
         
         // Populate Family Detail Content
         function populateFamilyDetailContent(family) {
+            console.log("Family DATA:",family);
             const content = document.getElementById('familyDetailContent');
             if (!content) return;
             
@@ -3949,39 +4026,39 @@ async function initChartsOnce() {
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Name</span>
-                        <span class="detail-value highlight">${family.name || 'N/A'}</span>
+                        <span class="detail-value ">${family.name  || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">WKSP</span>
-                        <span class="detail-value">${family.wksp || 'N/A'}</span>
+                        <span class="detail-value">${family.workshop || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Date of Birth</span>
-                        <span class="detail-value">${family.joined || 'N/A'}</span>
+                        <span class="detail-value">${family.joined || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Blood Group</span>
-                        <span class="detail-value">${family.bloodGroup || 'N/A'}</span>
+                        <span class="detail-value">${family.bloodGroup || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Religion</span>
-                        <span class="detail-value">${family.religion || 'N/A'}</span>
+                        <span class="detail-value">${family.religion || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Education</span>
-                        <span class="detail-value">${family.education || 'N/A'}</span>
+                        <span class="detail-value">${family.education || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Languages</span>
-                        <span class="detail-value">${family.languages || 'N/A'}</span>
+                        <span class="detail-value">${family.languages || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Can Drive</span>
-                        <span class="detail-value">${family.canDrive || 'N/A'}</span>
+                        <span class="detail-value">${family.canDrive || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Owns Vehicle</span>
-                        <span class="detail-value">${family.ownsVehicle || 'N/A'}</span>
+                        <span class="detail-value">${family.ownsVehicle || 'Not Available'}</span>
                     </div>
                 </div>
                 
@@ -3989,31 +4066,35 @@ async function initChartsOnce() {
                     <h4><i class="fas fa-heart"></i> Family Details</h4>
                     <div class="detail-row">
                         <span class="detail-label">Husband Name</span>
-                        <span class="detail-value highlight">${family.husband || 'N/A'}</span>
+                        <span class="detail-value">${family.husband || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Husband Rank</span>
-                        <span class="detail-value">${family.husbandRank || 'N/A'}</span>
+                        <span class="detail-value">${family.husbandRank || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Unit</span>
-                        <span class="detail-value">${family.unit || 'N/A'}</span>
+                        <span class="detail-value">${family.unit || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Sub Unit</span>
-                        <span class="detail-value">${family.subUnit || 'N/A'}</span>
+                        <span class="detail-value">${family.subUnit || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Posting Station</span>
-                        <span class="detail-value">${family.postingStation || 'N/A'}</span>
+                        <span class="detail-value">${family.postingStation || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Date of Posting</span>
-                        <span class="detail-value">${family.dateOfPosting || 'N/A'}</span>
+                        <span class="detail-value">${family.dateOfPosting || 'Not Available'}</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Children</span>
-                        <span class="detail-value">${family.children || 'N/A'}</span>
+                        <span class="detail-label">Date of Joining</span>
+                        <span class="detail-value">${family.joined || 'Not Available'}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Years in Marriage</span>
+                        <span class="detail-value">${family.children || 'Not Available'}</span>
                     </div>
                 </div>
                 
@@ -4038,6 +4119,43 @@ async function initChartsOnce() {
                 </div>
                 
                 <div class="family-detail-section">
+                    <h4><i class="fas fa-child"></i> Children Information</h4>
+                    <div class="children-info">
+                        ${(() => {
+                            let childrenHtml = '';
+                            if (family.child1Name && family.child1Name !== 'N/A' && family.child1Name.trim()) {
+                                childrenHtml += `
+                                    <div class="child-item">
+                                        <div class="child-name">${family.child1Name}</div>
+                                        <div class="child-age">Class: ${family.child1Class !== 'N/A' ? family.child1Class : 'Not specified'}</div>
+                                    </div>
+                                `;
+                            }
+                            if (family.child2Name && family.child2Name !== 'N/A' && family.child2Name.trim()) {
+                                childrenHtml += `
+                                    <div class="child-item">
+                                        <div class="child-name">${family.child2Name}</div>
+                                        <div class="child-age">Class: ${family.child2Class !== 'N/A' ? family.child2Child : 'Not specified'}</div>
+                                    </div>
+                                `;
+                            }
+                            if (family.child3Name && family.child3Name !== 'N/A' && family.child3Name.trim()) {
+                                childrenHtml += `
+                                    <div class="child-item">
+                                        <div class="child-name">${family.child3Name}</div>
+                                        <div class="child-age">Class:${family.child3Child !== 'N/A' ? family.child3Child : 'Not specified'}</div>
+                                    </div>
+                                `;
+                            }
+                            if (!childrenHtml) {
+                                childrenHtml = '<div class="no-children">No children information available</div>';
+                            }
+                            return childrenHtml;
+                        })()}
+                    </div>
+                </div>
+                
+                <div class="family-detail-section">
                     <h4><i class="fas fa-phone"></i> Contact Information</h4>
                     <div class="contact-info">
                         <div class="contact-item">
@@ -4055,15 +4173,15 @@ async function initChartsOnce() {
                     <h4><i class="fas fa-chart-bar"></i> Family Statistics</h4>
                     <div class="family-stats">
                         <div class="stat-card">
-                            <div class="stat-number">${family.wksp || 'N/A'}</div>
+                            <div class="stat-number">${family.workshop || 'N/A'}</div>
                             <div class="stat-label">Workshop</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-number">${family.education ? family.education.split(' ').length : '0'}</div>
+                            <div class="stat-number">${family.education}</div>
                             <div class="stat-label">Education Level</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-number">${family.canDrive === 'Yes' ? '1' : '0'}</div>
+                            <div class="stat-number">${family.canDrive }</div>
                             <div class="stat-label">Can Drive</div>
                         </div>
                     </div>
@@ -4442,7 +4560,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
         localStorage.removeItem('userInfo');
-        window.location.href = 'login.html';
+        window.location.href = 'login2.html';
     }
 }
 

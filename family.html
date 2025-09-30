@@ -1,0 +1,2953 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--
+    ===========================================
+    AWWA FAMILY MANAGEMENT SYSTEM - NAVIGATION & PROFILE SHELL (V7.2 - Mobile Logout Icon)
+    ===========================================
+    PURPOSE: Provides a consolidated, fully functional, responsive application shell
+    with persistent navigation, dark sidebar, visually rich profile form, and integrated iframes. Includes functional mobile sidebar overlay with background blurring.
+    
+    FILE STRUCTURE:
+    - HEAD: Meta tags, external dependencies, custom CSS styles
+    - BODY: Header, sidebar navigation, main content areas, modals, JavaScript
+    
+    DEPENDENCIES:
+    - Font Awesome: Icons and UI elements
+    - Tailwind CSS: Responsive design framework
+    - Google Fonts: Helvetica Light alternatives (Inter, Source Sans Pro)
+    
+    MAIN SECTIONS:
+    1. AWWA Home (iframe)
+    2. My Profile (card-based data display)
+    3. AWWA Regional (iframe)
+    4. My Courses (empty state, ready for content)
+    -->
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>AWWA - Family Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts - Helvetica Light alternatives -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="module"
+    src="https://agent.d-id.com/v2/index.js"
+    data-mode="fabio"
+    data-client-key="Z29vZ2xlLW9hdXRoMnwxMDQ1ODAxOTI0NzE1ODExNjczNzI6RjhQTHZmLTVLU3A2Tng1V2JVYjFt"
+    data-agent-id="v2_agt_G23N5m1h"
+    data-name="did-agent"
+    data-monitor="true"
+    data-orientation="horizontal"
+    data-position="right">
+</script>
+
+    <style>
+      /* ===========================================
+        1. COLOR PALETTE & GLOBAL STYLES
+        =========================================== 
+        This section defines the color scheme and base typography for the entire application.
+        All colors are defined as CSS custom properties for easy maintenance and consistency.
+        */
+
+      :root {
+        --brand-primary: #ff7a00; /* Orange */
+        --brand-primary-600: #e86d00; /* Darker Orange */
+        --brand-sidebar-dark: #21252b; /* Deep Charcoal for Sidebar */
+        --brand-darker: #2c3e50; /* Dark Text/Accent */
+        --surface: #ffffff;
+        --background: #f5f6fa;
+        --light-gray: #f1f5f9;
+        --white: #ffffff;
+        --success-green: #10b981;
+        --warning-red: #ef4444;
+        --text-dark: #2c3e50;
+        --text-medium: #475569;
+        --border-color: #e2e8f0;
+        --shadow: rgba(0, 0, 0, 0.1);
+        /* New Logout Button Color Palette */
+        --logout-red: #ff6b6b;
+        --logout-red-dark: #e85c5c;
+        --logout-shadow: rgba(255, 107, 107, 0.4);
+        /* Profile UI Enhancements */
+        --profile-label-color: #3f516d; /* Dark blueish-gray label */
+      }
+
+      /* Base Typography */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      
+      }
+
+      body {
+        /* Using Helvetica Light for a more visually appealing look */
+        font-family: "Helvetica Light", "Helvetica Neue Light", "Helvetica Neue",
+          "Inter", "Source Sans Pro", "Arial", "sans-serif";
+        font-weight: 300;
+        background: var(--background);
+        color: var(--text-dark);
+        line-height: 1.6;
+        overflow-x: hidden;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ---------------------------------
+        2. HEADER & MAIN LAYOUT
+        --------------------------------- 
+        Defines the top navigation bar and main application layout structure.
+        The header is fixed at the top with the logo on the left and logout button on the right.
+        */
+      .dash-layout {
+        display: flex;
+        min-height: calc(100vh - 72px);
+        margin-top: 0;
+      }
+
+      .app-header-inner { max-width: 100%; margin: 10px auto; padding: 10px 20px; display:flex; align-items:center; justify-content: space-between; gap: 12px;  width: 100%;}
+
+      .app-header {
+        background: var(--white);
+        box-shadow: 0 2px 10px var(--shadow);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1001;
+        min-height: 72px;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+       .app-brand{
+         display: flex;
+         align-items: center;
+         gap: 12px;
+       }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        min-width: 120px;
+      }
+      .app-logo {
+        height: 40px;
+        width: auto;
+        max-width: 200px;
+        min-width: 80px;
+        transition: all 0.3s ease;
+      }
+
+      /* Header Right - Logout Button Only */
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      /* Desktop Logout Button Style */
+      .btn-logout-header {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--white);
+        background: linear-gradient(135deg, var(--logout-red), #ff8e8e);
+        box-shadow: 0 4px 12px var(--logout-shadow);
+      }
+      .btn-logout-header:hover {
+        background: linear-gradient(135deg, var(--logout-red-dark), #ff7a7a);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px var(--logout-shadow);
+      }
+      /* Mobile Logout Icon Styling (Square, icon-only) */
+      .btn-logout-mobile {
+        display: none; /* Hidden by default on desktop */
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+
+      /* Mobile Menu Toggle Button (New addition for small screens) */
+      .mobile-menu-toggle {
+        display: none; /* Hidden by default */
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: var(--brand-darker);
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+
+      /* ---------------------------------
+        3. SIDEBAR (Left Panel) - COMMAND STYLE
+        --------------------------------- 
+        Defines the left sidebar navigation panel with dark theme.
+        Includes profile header, navigation menu, and responsive behavior.
+        On desktop: Fixed sidebar with collapse/expand functionality
+        On mobile: Overlay sidebar with blur effect on background
+        */
+      .left-panel {
+        width: 280px;
+        flex-shrink: 0;
+        background-color: var(--brand-sidebar-dark);
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+        transition: width 0.3s ease, transform 0.3s ease;
+        height: calc(100vh - 72px);
+        top: 72px;
+        left: 0;
+        position: fixed;
+        overflow-y: auto;
+        padding: 24px 0;
+        z-index: 100;
+      }
+
+      .main-area {
+        flex-grow: 1;
+        padding: 24px;
+        transition: margin-left 0.3s ease, filter 0.3s ease; /* Added filter transition */
+        margin-left: 280px;
+        margin-top: 72px;
+        min-height: calc(100vh - 72px);
+      }
+
+      /* Blur Effect for Main Content when Mobile Menu is Open */
+      .main-area.blurred {
+        /* This effect only applies on mobile where the sidebar is an overlay (Z-index < sidebar) */
+        filter: blur(3px) brightness(0.8);
+        pointer-events: none; /* Prevent clicking blurred background content */
+      }
+
+      .left-panel.collapsed {
+        width: 70px;
+      }
+      .main-area.collapsed {
+        margin-left: 70px;
+      }
+
+      /* Sidebar Header & Profile Info */
+      .lp-header {
+        padding: 0 16px 20px 16px;
+        border-bottom: 1px solid #3d4653;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin-bottom: 10px;
+      }
+
+      .lp-avatar-img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        border: 3px solid var(--white);
+        object-fit: cover;
+        margin-bottom: 10px;
+      }
+
+      .lp-name {
+        color: var(--white);
+        font-size: 1.1rem;
+        font-weight: 400;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0 4px;
+        margin-top: 5px;
+      }
+
+      .lp-role {
+        color: #b5bdc6;
+        font-size: 0.9rem;
+        font-weight: 300;
+        margin-bottom: 15px;
+      }
+
+      /* Sidebar Toggle Button Styling (Matching Image) */
+      .sidebar-toggle-btn {
+        position: absolute;
+        top: -15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        background-color: #313641;
+        border: none;
+        border-radius: 8px;
+        color: var(--white);
+        cursor: pointer;
+        font-size: 16px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .sidebar-toggle-btn:hover {
+        background-color: #4a4f5c;
+      }
+      /* Hide content on desktop collapse */
+      .left-panel.collapsed .lp-name,
+      .left-panel.collapsed .lp-role,
+      .left-panel.collapsed .lp-avatar-img {
+        display: none !important;
+      }
+      .left-panel.collapsed .lp-header {
+        padding-bottom: 10px;
+      }
+      .left-panel.collapsed .sidebar-toggle-btn {
+        position: static;
+      } /* Button repositions */
+
+      /* Navigation Items (Command Style) */
+      .lp-nav ul {
+        padding: 0;
+      }
+
+      .lp-nav li {
+        color: #e5e7eb;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
+        padding: 12px 16px;
+        margin: 0;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 300;
+        border-left: 5px solid transparent;
+      }
+
+      .lp-nav li i {
+        font-size: 1.1rem;
+      }
+      .lp-nav li:hover {
+        background-color: #313641;
+      }
+      .lp-nav li:hover i,
+      .lp-nav li:hover span {
+        color: var(--white);
+      }
+
+      /* Active State Matching Image */
+      .lp-nav li.active {
+        background-color: #313641;
+        color: var(--white);
+        font-weight: 400;
+        border-left: 5px solid var(--brand-primary);
+      }
+      .lp-nav li.active i {
+        color: var(--brand-primary);
+      }
+
+      /* Collapsed Icon-Only View */
+      .left-panel.collapsed .lp-nav li {
+        justify-content: center;
+        margin: 0;
+        width: 100%;
+        padding: 12px 0;
+        border-left: none;
+      }
+      .left-panel.collapsed .lp-nav li span {
+        display: none;
+      }
+      .left-panel.collapsed .lp-nav li.active {
+        border-left: 5px solid var(--brand-primary);
+      }
+
+      /* ---------------------------------
+        4. PROFILE FORM STYLES (MODERN FORM LAYOUT)
+        --------------------------------- 
+        Defines the card-based profile display system with orange headers and light beige content areas.
+        Each profile section is displayed as a card with consistent styling and 3-column grid layout.
+        */
+      .profile-card {
+        background: var(--background);
+        border-radius: 16px;
+        padding: 0;
+        box-shadow: none;
+        border: none;
+        position: relative;
+      }
+
+      /* Profile Header Enhancements (Text Only) */
+      .profile-header-main {
+        margin-bottom: 2rem;
+        padding: 0 0 1.5rem 0;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+      .profile-avatar {
+        display: none;
+      }
+      .profile-header-main {
+        gap: 0;
+      }
+      .profile-info {
+        flex-grow: 1;
+      }
+      .profile-status {
+        flex-shrink: 0;
+      }
+
+      .profile-info h3 {
+        font-size: 1.8rem;
+        font-weight: 400;
+        color: var(--brand-darker);
+        margin-bottom: 0.25rem;
+      }
+      .profile-info p {
+        font-size: 1rem;
+        color: var(--text-medium);
+        line-height: 1.4;
+      }
+      .profile-role-detail {
+        font-size: 0.9rem;
+        color: var(--text-medium);
+      }
+      .status-badge {
+        background: var(--success-green);
+        color: var(--white);
+        padding: 0.4rem 1.2rem;
+        border-radius: 9999px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+      }
+
+      /* === CARD-BASED PROFILE SECTIONS (Image Style) === 
+          Main container for each profile section with orange header and light beige content area.
+          Each section follows the same visual pattern for consistency.
+      */
+      .profile-section-card {
+        background: var(--surface);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .profile-section-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      /* === CARD HEADERS (Orange Background) === */
+      .profile-section-header {
+        background: #ff7a00; /* Solid orange background */
+        color: white;
+        padding: 0.8rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 12px 12px 0 0;
+      }
+
+      .profile-section-header i {
+        font-size: 1.1rem;
+        color: white;
+      }
+
+      .profile-section-header h4 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: white;
+      }
+
+      /* === CARD CONTENT (Light Beige Background) === */
+      .profile-data-container {
+        background: #f5f5f0; /* Light beige background */
+        padding: 1rem;
+        border-radius: 0 0 12px 12px;
+      }
+
+      /* === INDIVIDUAL DATA FIELD CONTAINERS === */
+      .form-group {
+        background: #ffffff;
+        border-radius: 6px;
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e8e8e8;
+        transition: box-shadow 0.2s ease;
+      }
+
+      .form-group:hover {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+
+      .form-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .data-label {
+        display: block;
+        font-weight: 600;
+        color: #8b5a2b; /* Dark orange/brown for labels */
+        font-size: 0.8rem;
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+
+      .data-value {
+        color: #2c3e50; /* Dark gray for values */
+        font-weight: 400;
+        font-size: 0.9rem;
+        line-height: 1.3;
+      }
+
+      /* === FORM ROW LAYOUT (3 Cards Per Row) === 
+          Grid layout for displaying form fields in a 3-column layout on desktop.
+          Responsive breakpoints: 3 columns (desktop), 2 columns (tablet), 1 column (mobile).
+      */
+      .form-row {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .form-row:last-child {
+        margin-bottom: 0;
+      }
+
+      /* === RESPONSIVE CARD LAYOUT === */
+      @media (max-width: 1200px) {
+        .form-row {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          grid-template-columns: 1fr !important;
+        }
+      }
+
+      /* === FULL WIDTH FIELDS === */
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      /* === CARD RESPONSIVE DESIGN === */
+      @media (max-width: 1200px) {
+        .form-row {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          grid-template-columns: 1fr !important;
+        }
+
+        .profile-section-card {
+          margin-bottom: 1.5rem;
+        }
+
+        .profile-section-header {
+          padding: 0.8rem 1rem;
+        }
+
+        .profile-section-header h4 {
+          font-size: 1rem;
+        }
+
+        .profile-section-header i {
+          font-size: 1.1rem;
+        }
+
+        .profile-data-container {
+          padding: 1rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .profile-section-header {
+          padding: 0.6rem 0.8rem;
+        }
+
+        .profile-section-header h4 {
+          font-size: 0.9rem;
+        }
+
+        .profile-data-container {
+          padding: 0.8rem;
+        }
+
+        .form-group {
+          padding: 0.6rem;
+        }
+      }
+
+      /* === FORM LAYOUT (Updated for Card Design) === */
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      } /* For full width elements */
+
+      /* === DATA DISPLAY STYLING === */
+      .form-group .data-display {
+        background: transparent; /* Transparent background for card design */
+        border: none; /* No border for card design */
+        padding: 0; /* No padding for card design */
+
+        display: block;
+        width: 100%;
+      }
+
+      .data-value {
+        font-weight: 400;
+        color: #2c3e50;
+        font-size: 1rem;
+        line-height: 1.4;
+        word-break: break-word;
+      }
+
+      /* Styling for Checkboxes (Languages Known) */
+      .form-group .data-display.checkbox-list {
+        padding: 0;
+        justify-content: flex-start;
+        gap: 1.5rem;
+      }
+      .form-group .data-display.checkbox-list .checkbox-group {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      .form-group .data-display.checkbox-list .checkbox-group label {
+        font-weight: 300;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+        font-size: 1rem;
+        white-space: nowrap;
+      }
+      .form-group .data-display.checkbox-list input[type="checkbox"] {
+        accent-color: var(--brand-primary);
+        /* FIX: Remove any unwanted shadow/glow */
+        box-shadow: none;
+      }
+
+      /* Styling for Multi-line text/Notes (e.g., Remarks, Medical) */
+      .form-group.full-width .data-display {
+        display: block;
+        min-height: 100px;
+      }
+      .form-group.full-width .data-display .data-value {
+        font-weight: 300;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        text-align: left;
+      }
+
+      /* === EDIT MODE STYLING === */
+      .form-group .data-display.hidden-on-edit {
+        display: none !important;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        padding: 0.8rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 300;
+        background: var(--white); /* Editable background is white */
+        color: var(--text-dark);
+        cursor: text;
+        width: 100%;
+      }
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        border-color: var(--brand-primary);
+        box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
+      }
+
+      /* Child/Dependent Inner Sections - Retained styling on nested card */
+      .children-section {
+        background: var(--light-gray);
+        padding: 1.2rem;
+        border-radius: 10px;
+        margin-bottom: 1.2rem;
+        border: 1px dashed var(--border-color);
+      }
+      .children-section h4 {
+        color: var(--brand-darker);
+        font-size: 1.15rem;
+        font-weight: 400;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .children-section .form-row {
+        gap: 1rem;
+      }
+      /* Override default display for nested children fields to ensure consistency */
+      .children-section .form-group .data-display {
+        background: var(
+          --surface
+        ); /* White background inside light-gray container */
+      }
+
+      /* ---------------------------------
+        5. IFRAME & EXTERNAL CONTENT STYLES
+        --------------------------------- 
+        Styles for embedded iframes (AWWA Home and Regional pages).
+        Includes scaling logic for responsive display and fallback content for blocked iframes.
+        */
+      .iframe-container-full {
+        height: calc(100vh - 72px);
+        padding: 0;
+        margin: 0 -24px -24px -24px;
+        position: relative;
+        overflow: hidden;
+        background: var(--white);
+      }
+      .iframe-wrapper-full {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .app-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: var(--white);
+        transform: scale(1);
+        transform-origin: top left;
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+      }
+      .iframe-fallback {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-medium);
+        background: var(--light-gray);
+        border: 1px dashed var(--border-color);
+        z-index: 5;
+      }
+
+      /* ---------------------------------
+        6. RESPONSIVE DESIGN & MEDIA QUERIES (Mobile Sidebar Implementation)
+        --------------------------------- 
+        Responsive breakpoints and mobile-specific styles.
+        Handles sidebar behavior, header adjustments, and content scaling for different screen sizes.
+        */
+
+      /* Desktop base styles */
+      .left-panel {
+        transform: translateX(0);
+      } /* Always visible on desktop */
+
+      /* Tablet & Desktop (Above 768px) */
+      @media (min-width: 769px) {
+        .main-area {
+          padding: 24px;
+          margin-top: 72px;
+          margin-left: 280px;
+        }
+        .left-panel {
+          display: block;
+          height: calc(100vh - 72px);
+          top: 72px;
+        }
+        .mobile-menu-toggle {
+          display: none;
+        }
+        /* Desktop logout button default (full text) */
+        .btn-logout-header {
+          display: flex;
+        }
+        .btn-logout-mobile {
+          display: none;
+        }
+        .app-header {
+          padding: 0 2rem;
+        }
+      }
+
+      /* Mobile (Below 768px) */
+      @media (max-width: 768px) {
+        .dash-layout {
+          flex-direction: column;
+          margin-top: 0;
+          min-height: calc(100vh - 60px);
+        }
+        .app-header {
+          min-height: 60px;
+          padding: 0.75rem 1rem;
+        }
+
+        /* Main Area positioning and BLUR effect for background */
+        .main-area {
+          margin-left: 0;
+          padding: 0.75rem;
+          margin-top: 60px;
+          position: relative;
+          z-index: 100;
+          transform: translate(0,100px);
+          transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .app-header {
+          position: fixed; /* Must be fixed on mobile */
+          z-index: 1001; /* Must be above content and below sidebar overlay */
+        }
+        .dash-layout {
+          position: relative;
+        }
+
+        /* Show Mobile Toggle */
+        .mobile-menu-toggle {
+          display: block;
+        }
+
+        /* Switch Logout Button to Icon-Only */
+        .btn-logout-header {
+          display: none;
+        }
+        .btn-logout-mobile {
+          display: flex;
+          width: 40px;
+          height: 40px;
+          padding: 0;
+          justify-content: center;
+          font-size: 1.2rem;
+        }
+
+        /* Make Sidebar a Full-Screen Overlay */
+        .left-panel {
+          transform: translateX(-100%);
+          width: 280px;
+          height: 100vh;
+          top: 0;
+          z-index: 1002;
+          display: block;
+          padding: 0;
+          position: fixed;
+          overflow-y: auto;
+          transition: transform 0.3s ease-out;
+        }
+        .left-panel.open {
+          transform: translateX(0);
+        }
+
+        /* Blur Effect when Mobile Menu is Open */
+        .main-area.blurred,
+        .app-header.blurred {
+          filter: blur(3px) brightness(0.8);
+          pointer-events: none;
+          transform: scale(1);
+        }
+
+        /* Hide desktop sidebar elements on mobile */
+        .lp-header,
+        .sidebar-toggle-btn {
+          display: none !important;
+        }
+
+        /* New Mobile Sidebar Header (Matching Image) */
+        .mobile-sidebar-header {
+          background-color: #313641;
+          color: var(--white);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1.5rem 1rem;
+          font-size: 1.15rem;
+          font-weight: 700;
+          flex-shrink: 0;
+        }
+        .mobile-sidebar-header .close-btn {
+          background: none;
+          border: none;
+          color: var(--white);
+          font-size: 1.5rem;
+          cursor: pointer;
+        }
+
+        /* Content below mobile header (the actual list) */
+        .lp-nav {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+        }
+        .lp-nav ul {
+          padding-top: 0;
+        }
+
+        .mobile-nav-menu {
+    flex: 1;
+    padding: 20px 0;
+    transform :translatey(90PX)
+}
+
+        /* Profile Responsiveness (rest of sections unchanged) */
+          
+
+
+
+        .profile-header-main {
+          padding-bottom: 1rem;
+        }
+        .profile-card {
+          padding: 0;
+        }
+        .profile-section-header {
+          font-size: 1.1rem;
+          padding: 0.8rem 1rem;
+          border-radius: 8px 8px 0 0;
+        }
+        .profile-data-container {
+          padding: 1rem;
+          border-radius: 8px;
+          margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr !important;
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+        .form-group .data-display {
+          padding: 0.6rem 0.8rem;
+        }
+        .data-value {
+          font-size: 0.9rem;
+        }
+        .data-list-item .checkbox-group {
+          flex-wrap: wrap;
+        }
+
+        .children-section {
+          padding: 0.8rem;
+        }
+
+        /* Iframe Responsiveness */
+        .app-iframe {
+          transform: scale(0.7);
+          width: 142.86%;
+          height: 142.86%;
+        }
+        .iframe-container-full {
+          height: calc(100vh - 60px);
+          margin: 0 -0.75rem -0.75rem -0.75rem;
+        }
+      }
+
+      /* Prevent scrolling on body when mobile menu is open */
+      body.no-scroll {
+        overflow: hidden;
+      }
+
+      /* ===========================================
+         7. MODAL & TOAST STYLES
+         =========================================== 
+         Custom modal and notification system to replace browser alerts.
+         Includes logout confirmation modal and toast notifications for user feedback.
+         */
+
+      /* Modal Container */
+      .modal-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999 !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .modal-container.open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-container.hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      /* Modal Content */
+      .modal-content {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+      }
+
+      .modal-container.open .modal-content {
+        transform: scale(1);
+      }
+
+      .modal-title {
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+      }
+
+      .modal-body {
+        font-size: 1rem;
+        color: var(--text-medium);
+        line-height: 1.5;
+        margin-bottom: 2rem;
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+      }
+
+      /* Toast Notifications */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1500;
+      }
+
+      .toast {
+        background: var(--white);
+        border-radius: 8px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-width: 300px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+      }
+
+      .toast.success {
+        border-left: 4px solid var(--success-green);
+      }
+
+      .toast.error {
+        border-left: 4px solid var(--warning-red);
+      }
+
+      .toast.info {
+        border-left: 4px solid var(--brand-primary);
+      }
+
+      .toast i {
+        font-size: 1.2rem;
+      }
+
+      .toast.success i {
+        color: var(--success-green);
+      }
+
+      .toast.error i {
+        color: var(--warning-red);
+      }
+
+      .toast.info i {
+        color: var(--brand-primary);
+      }
+
+      .toast-message {
+        font-weight: 300;
+        color: var(--text-dark);
+      }
+
+      /* Button Styles */
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 400;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+      }
+
+      .btn-primary {
+        background: var(--brand-primary);
+        color: var(--white);
+      }
+
+      .btn-primary:hover {
+        background: var(--brand-primary-600);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+      }
+
+      .btn-secondary {
+        background: var(--text-medium);
+        color: var(--white);
+      }
+
+      .btn-secondary:hover {
+        background: var(--text-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(71, 85, 105, 0.3);
+      }
+
+      .btn-danger {
+        background: var(--warning-red);
+        color: var(--white);
+      }
+
+      .btn-danger:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      }
+
+       /* ===========================================
+         8. COURSE VIDEO STYLES
+         =========================================== 
+         Styles for the course video section in My Courses.
+         Includes video container, responsive iframe, and action buttons.
+         */
+       
+       .course-video-container {
+         background: var(--surface);
+         border-radius: 12px;
+         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+         margin-bottom: 2rem;
+         overflow: hidden;
+         border: 1px solid #e2e8f0;
+         transition: transform 0.3s ease, box-shadow 0.3s ease;
+       }
+
+       .course-video-container:hover {
+         transform: translateY(-2px);
+         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+       }
+
+       .course-video-header {
+         background: #ff7a00;
+         color: white;
+         padding: 1rem 1.5rem;
+         display: flex;
+         flex-direction: column;
+         gap: 0.5rem;
+       }
+
+       .course-video-header h4 {
+         margin: 0;
+         font-size: 1.2rem;
+         font-weight: 600;
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+       }
+
+       .course-video-header h4 i {
+         font-size: 1.3rem;
+       }
+
+       .course-video-header p {
+         margin: 0;
+         font-size: 0.9rem;
+         opacity: 0.9;
+         font-weight: 300;
+       }
+
+       .video-wrapper {
+         position: relative;
+         width: 100%;
+         height: 400px;
+         background: #000;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+       }
+
+       .course-video-iframe {
+         width: 100%;
+         height: 100%;
+         border: none;
+         border-radius: 0;
+       }
+
+       .course-video-info {
+         background: #f5f5f0;
+         padding: 1.5rem;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         flex-wrap: wrap;
+         gap: 1rem;
+       }
+
+       .video-details {
+         display: flex;
+         gap: 1.5rem;
+         flex-wrap: wrap;
+       }
+
+       .video-details span {
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+         font-size: 0.9rem;
+         color: var(--text-medium);
+         font-weight: 400;
+       }
+
+       .video-details i {
+         color: var(--brand-primary);
+         font-size: 0.8rem;
+       }
+
+       .video-actions {
+         display: flex;
+         gap: 0.75rem;
+         flex-wrap: wrap;
+       }
+
+       .video-actions .btn {
+         padding: 0.5rem 1rem;
+         font-size: 0.9rem;
+         border-radius: 8px;
+         transition: all 0.3s ease;
+       }
+
+       .video-actions .btn:hover {
+         transform: translateY(-1px);
+       }
+
+       /* Responsive Video Styles */
+       @media (max-width: 768px) {
+         .video-wrapper {
+           height: 250px;
+         }
+
+         .course-video-info {
+           flex-direction: column;
+           align-items: flex-start;
+           gap: 1rem;
+         }
+
+         .video-details {
+           flex-direction: column;
+           gap: 0.75rem;
+           width: 100%;
+         }
+
+         .video-actions {
+           width: 100%;
+           justify-content: center;
+         }
+
+         .video-actions .btn {
+           flex: 1;
+           min-width: 120px;
+         }
+       }
+
+       @media (max-width: 480px) {
+         .video-wrapper {
+           height: 200px;
+         }
+
+         .course-video-header {
+           padding: 0.8rem 1rem;
+         }
+
+         .course-video-header h4 {
+           font-size: 1.1rem;
+         }
+
+         .course-video-info {
+           padding: 1rem;
+         }
+
+         .video-actions .btn {
+           padding: 0.6rem 0.8rem;
+           font-size: 0.8rem;
+         }
+       }
+
+       /* Print Styles */
+       @media print {
+         .app-header,
+         .left-panel,
+         .toast-container,
+         .modal-container {
+           display: none;
+         }
+         .main-area {
+           margin-top: 0 !important;
+           padding: 0 !important;
+           margin-left: 0 !important;
+         }
+         .profile-card {
+           box-shadow: none;
+           border: 1px solid #000;
+         }
+         .course-video-container {
+           box-shadow: none;
+           border: 1px solid #000;
+         }
+         .video-wrapper {
+           display: none;
+         }
+       }
+    </style>
+  </head>
+  <body>
+    <!-- ===========================================
+         MAIN APPLICATION LAYOUT
+         =========================================== -->
+
+    <header class="app-header">
+        <div class="app-header-inner">
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="app-brand">
+                <img src="public/Untitled design (27).png" alt="AWWA Logo" class="app-logo" />
+                <div class="app-title-wrap">
+                    <h1 class="app-title">Ranbankura Eagles : AWWA Centralised Information Hub</h1>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </header>
+    
+    <!-- Mobile Navigation Popup -->
+    <div id="mobileNavPopup" class="mobile-nav-popup hidden">
+        <div class="mobile-nav-overlay" onclick="closeMobileMenu()"></div>
+        <div class="mobile-nav-content">
+            <div class="mobile-nav-header">
+                <h3>Navigation Menu</h3>
+                <button class="mobile-nav-close" onclick="closeMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="mobile-nav-menu">
+                <ul>
+                    <li class="mobile-nav-item active" data-target="section-home" onclick="navigateToSection('section-home')">
+                        <i class="fas fa-home"></i>
+                        <span>AWWA Home</span>
+                    </li>
+                    <li class="mobile-nav-item" data-target="section-profile" onclick="navigateToSection('section-profile')">
+                        <i class="fas fa-user-circle"></i>
+                        <span>My Profile</span>
+                    </li>
+                    <li class="mobile-nav-item" data-target="section-regional" onclick="navigateToSection('section-regional')">
+                        <i class="fas fa-globe-americas"></i>
+                        <span>AWWA Regional (SWC)</span>
+                    </li>
+                    <li class="mobile-nav-item" data-target="section-courses" onclick="navigateToSection('section-courses')">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>My Courses</span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ===========================================
+         MAIN DASHBOARD LAYOUT
+         =========================================== -->
+    <div class="dash-layout">
+        <!-- Left Side Panel -->
+        <aside class="left-panel">
+
+            <div class="lp-header">
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" onclick="toggleSidebar()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <img src="public/profile.png" alt="Profile" class="lp-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="lp-avatar" style="display:none;"></div>
+                <div class="lp-name"></div>
+                <div class="lp-role"></div>
+            </div>
+            
+            <!-- Navigation Toggle Button - TO BE FIXED BY JYOTI -->
+            <!-- Current implementation has issues with visibility and functionality -->
+            
+            <nav class="lp-nav" id="lpNav">
+                <ul>
+                    <li class="active" data-target="section-home" onclick="navigateToSection('section-home')"><i class="fas fa-home"></i><span>AWWA Home</span></li>
+                    <li data-target="section-profile" onclick="navigateToSection('section-profile')"><i class="fas fa-user-circle"></i><span>My Profile</span></li>
+                    <li data-target="section-regional" onclick="navigateToSection('section-regional')"><i class="fas fa-globe-americas"></i><span>AWWA Regional (SWC)</span></li>
+                    <li data-target="section-courses" onclick="navigateToSection('section-courses')"><i class="fas fa-graduation-cap"></i><span>My Courses</span></li>
+                </ul>
+            </nav>
+            
+        </aside>
+
+      <!-- Main Content Area -->
+      <div class="main-area" id="mainArea">
+        <!-- ===========================================
+             MAIN CONTENT SECTIONS
+             =========================================== -->
+
+        <!-- 1. AWWA Home Section (Iframe View) -->
+        <div class="app-section" id="section-home">
+          <div class="iframe-container-full">
+            <div class="iframe-wrapper-full">
+              <iframe
+                id="awwaHomeIframe"
+                src="https://awwa.org.in/"
+                title="AWWA Official Website"
+                frameborder="0"
+                allowfullscreen
+                class="app-iframe"
+                onload="adjustIframeScale('awwaHomeIframe')"
+              >
+                <!-- Fallback content if the iframe is blocked or fails to load -->
+                <div class="iframe-fallback">
+                  <h3>AWWA Website Blocked</h3>
+                  <p>
+                    The main AWWA website could not be displayed directly due to
+                    security or network restrictions.
+                  </p>
+                  <p>
+                    Please open the site directly:
+                    <a
+                      href="https://awwa.org.in/"
+                      target="_blank"
+                      class="text-blue-600 font-bold"
+                      >Open AWWA Main Site in New Tab</a
+                    >
+                  </p>
+                </div>
+              </iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. My Profile Section (Data Card View) 
+             Contains all family profile information displayed in card format.
+             Each section has an orange header and light beige content area.
+        -->
+        <div class="app-section hidden" id="section-profile">
+          <div class="profile-section">
+            <!-- ENHANCED PROFILE CARD START -->
+            <div class="profile-card">
+              <!-- Profile Summary Header -->
+              <div class="profile-header-main">
+                <div class="profile-info">
+                  <h3 class="text-brand-darker"> Welcome! Smt Akansha Devi </h3>
+                  <p class="text-text-medium">
+                    UID / Family ID:
+                    <span class="font-bold text-brand-darker">AF-0001</span>
+                  </p>
+                  <span class="profile-role-detail">AWWA Family Dashboard</span>
+                </div>
+                <div class="profile-status">
+                  <span class="status-badge active">Active Profile</span>
+                </div>
+              </div>
+
+              <!-- === Lady's Personal Details === 
+                   Personal information of the family member including name, DOB, age, etc.
+              -->
+              <div class="profile-section-card">
+                <div class="profile-section-header">
+                  <i class="fas fa-user-tag"></i>
+                  <h4>Lady's Personal Details</h4>
+                </div>
+                <div class="profile-data-container">
+                  <!-- Row 1: Name, DOB, Age - Basic personal information -->
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Lady Name</label>
+                      <!-- Read-only Display -->
+                      <div class="data-display" data-field="ladiesName">
+                        <span class="data-value">Smt Akansha Devi</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Date of Birth</label>
+                      <div class="data-display" data-field="dob">
+                        <span class="data-value">14/09/2003</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Age</label>
+                      <div class="data-display" data-field="age">
+                        <span class="data-value">21</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Row 2: Blood Group, Religion, Highest Qualification - Personal attributes -->
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Blood Group</label>
+                      <div class="data-display" data-field="bloodGroup">
+                        <span class="data-value">B+</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Religion</label>
+                      <div class="data-display" data-field="religion">
+                        <span class="data-value">Hinduism</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Highest Qualification</label>
+                      <div class="data-display" data-field="qualification">
+                        <span class="data-value">BSc</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Row 3: Languages Known, Can Drive, Owns Vehicle - Skills and capabilities -->
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Languages Known</label>
+                      <div
+                        class="data-display checkbox-list"
+                        data-field="languages"
+                      >
+                        <div class="checkbox-group">
+                          <label
+                            ><input type="checkbox" checked readonly />
+                            English</label
+                          >
+                          <label
+                            ><input type="checkbox" checked readonly />
+                            Hindi</label
+                          >
+                          <label
+                            ><input type="checkbox" checked readonly />
+                            Punjabi</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Can Drive</label>
+                      <div class="data-display" data-field="canDrive">
+                        <span class="data-value">2 Wheeler</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Owns Vehicle</label>
+                      <div class="data-display" data-field="ownsVehicle">
+                        <span class="data-value">Yes</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Row 4: Personal Mobile, Personal Email, Date of Marriage - Contact and marital info -->
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Personal Mobile</label>
+                      <div class="data-display" data-field="personalMobile">
+                        <span class="data-value">90xxxxxx44</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Personal Email</label>
+                      <div class="data-display" data-field="personalEmail">
+                        <span class="data-value">aditi.mehra@email.com</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Date of Marriage</label>
+                      <div class="data-display" data-field="dom">
+                        <span class="data-value">15/06/2023</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Row 5: Years in Marriage (Full Width) - Single field spanning full width -->
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Years in Marriage</label>
+                      <div class="data-display" data-field="yearsMarried">
+                        <span class="data-value">2</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- === Husband's Details Section === 
+                   Service and personal information of the husband including rank, unit, etc.
+              -->
+              <div class="profile-section-card">
+                <div class="profile-section-header">
+                  <i class="fas fa-id-badge"></i>
+                  <h4>Husband's Service & Personal Details</h4>
+                </div>
+                <div class="profile-data-container">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Husband's Name</label>
+                      <div class="data-display">
+                        <span class="data-value">Shubham Arora</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Husband's Rank</label>
+                      <div class="data-display">
+                        <span class="data-value">JCO</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Service in Years</label>
+                      <div class="data-display">
+                        <span class="data-value">8</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Unit</label>
+                      <div class="data-display">
+                        <span class="data-value">52 WKSP</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Sub Unit</label>
+                      <div class="data-display">
+                        <span class="data-value">Alpha Company</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Posting Station</label>
+                      <div class="data-display">
+                        <span class="data-value">Ambala Cantt</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Date of Posting</label>
+                      <div class="data-display">
+                        <span class="data-value">2023-01-15</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Husband's DOB</label>
+                      <div class="data-display">
+                        <span class="data-value">1995-03-20</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label"
+                        >Husband's Medical Category</label
+                      >
+                      <div class="data-display">
+                        <span class="data-value">A1</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Husband's Qualification</label>
+                      <div class="data-display">
+                        <span class="data-value">BSc</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Husband's Blood Group</label>
+                      <div class="data-display">
+                        <span class="data-value">A+</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Husband's Religion</label>
+                      <div class="data-display">
+                        <span class="data-value">Hinduism</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Languages Known</label>
+                      <div class="data-display checkbox-list">
+                        <div class="checkbox-group">
+                          <label
+                            ><input type="checkbox" checked readonly />
+                            English</label
+                          >
+                          <label
+                            ><input type="checkbox" checked readonly />
+                            Hindi</label
+                          >
+                          <label
+                            ><input type="checkbox" checked readonly />
+                            Punjabi</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Husband's Can Drive</label>
+                      <div class="data-display">
+                        <span class="data-value">4 Wheeler</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Owns Vehicle at Station</label>
+                      <div class="data-display">
+                        <span class="data-value">Yes</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Husband's Mobile</label>
+                      <div class="data-display">
+                        <span class="data-value">98xxxxxx40</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Husband's Email</label>
+                      <div class="data-display">
+                        <span class="data-value">shubham.arora@email.com</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Home Address</label>
+                      <div class="data-display">
+                        <span class="data-value">Village Address, State</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Village Name</label>
+                      <div class="data-display">
+                        <span class="data-value">Sample Village</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">State</label>
+                      <div class="data-display">
+                        <span class="data-value">Punjab</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- === Residence & Station Details === 
+                   Family accommodation information including quarter details, station info, etc.
+              -->
+              <div class="profile-section-card">
+                <div class="profile-section-header">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <h4>Family Accommodation Details</h4>
+                </div>
+                <div class="profile-data-container">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Military Station</label>
+                      <div class="data-display">
+                        <span class="data-value">Ambala Cantt</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Workshop (WKSP)</label>
+                      <div class="data-display">
+                        <span class="data-value">52 WKSP</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Quarter Number</label>
+                      <div class="data-display">
+                        <span class="data-value">Q-123</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Date of Allotment</label>
+                      <div class="data-display">
+                        <span class="data-value">2023-02-01</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Colony/Enclave Name</label>
+                      <div class="data-display">
+                        <span class="data-value">Military Colony</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Block ID (Block Didi)</label>
+                      <div class="data-display">
+                        <span class="data-value">B-07</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Type of Accommodation</label>
+                      <div class="data-display">
+                        <span class="data-value">Military</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Floor</label>
+                      <div class="data-display">
+                        <span class="data-value">1st</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group full-width">
+                      <label class="data-label"
+                        >Full Accommodation Address</label
+                      >
+                      <div class="data-display full-width">
+                        <span class="data-value"
+                          >#526/1, Old Oswal Street Miller, Nirankari Mohalla,
+                          Kucha No.1, Millerganj, Ludhiana</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- === Children Details Section === 
+                   Information about dependent children including their personal and educational details.
+              -->
+              <div class="profile-section-card">
+                <div class="profile-section-header">
+                  <i class="fas fa-child"></i>
+                  <h4>Dependent Children Details</h4>
+                </div>
+                <div class="profile-data-container">
+                  <!-- Child 1 -->
+                  <div class="children-section">
+                    <h4>Child 1</h4>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label">Child Name</label>
+                        <div class="data-display">
+                          <span class="data-value">Akash</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Child DOB</label>
+                        <div class="data-display">
+                          <span class="data-value">12-8-2024</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Child Age</label>
+                        <div class="data-display">
+                          <span class="data-value">1</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Gender</label>
+                        <div class="data-display">
+                          <span class="data-value">Boy</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label">Date of Marriage</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Child Class</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Child Subject</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label">School Name</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">School Location</label>
+                        <div class="data-display">
+                          <span class="data-value">Inside Cantt.</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Blood Group</label>
+                        <div class="data-display">
+                          <span class="data-value">A+</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group full-width">
+                        <label class="data-label">Medical Details</label>
+                        <div class="data-display full-width">
+                          <span class="data-value"
+                            >No medical issues reported</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Child 2 -->
+                  <!-- <div class="children-section">
+                    <h4>Child 2</h4>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label">Child Name</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Child DOB</label>
+                        <div class="data-display">
+                          <span class="data-value"></span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Child Age</label>
+                        <div class="data-display">
+                          <span class="data-value"></span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Gender</label>
+                        <div class="data-display">
+                          <span class="data-value">Select Gender</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label">Date of Marriage</label>
+                        <div class="data-display">
+                          <span class="data-value"></span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Child Class</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Child Subject</label>
+                        <div class="data-display">
+                          <span class="data-value">NA</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label">School Name</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">School Location</label>
+                        <div class="data-display">
+                          <span class="data-value">Inside Cantt.</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Blood Group</label>
+                        <div class="data-display">
+                          <span class="data-value">A+</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group full-width">
+                        <label class="data-label">Medical Details</label>
+                        <div class="data-display full-width">
+                          <span class="data-value"
+                            >No medical issues reported</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+                </div>
+              </div>
+
+              <!-- === Medical Details Section === 
+                   Medical and ECHS information for the family including medical categories, cards, etc.
+              -->
+              <div class="profile-section-card">
+                <div class="profile-section-header">
+                  <i class="fas fa-medkit"></i>
+                  <h4>Medical & ECHS Details</h4>
+                </div>
+                <div class="profile-data-container">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Husband Medical Category</label>
+                      <div class="data-display">
+                        <span class="data-value">A1</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">MEC Card Number</label>
+                      <div class="data-display">
+                        <span class="data-value">MEC-00001</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label"
+                        >Joint Canteen Card Number</label
+                      >
+                      <div class="data-display">
+                        <span class="data-value">JC-00001</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">IVF Case (If applicable)</label>
+                      <div class="data-display">
+                        <span class="data-value">No</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label"
+                        >Current Treatment Details</label
+                      >
+                      <div class="data-display">
+                        <span class="data-value">None</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group full-width">
+                      <label class="data-label">Family Medical Details</label>
+                      <div class="data-display full-width">
+                        <span class="data-value"
+                          >No major medical issues reported. All family members
+                          are in good health.</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group full-width">
+                      <label class="data-label">Children Medical Summary</label>
+                      <div class="data-display full-width">
+                        <span class="data-value"
+                          >No medical issues reported for children. Regular
+                          health checkups are up to date.</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- === Dependents Section === 
+                   Information about other dependents like parents, siblings, etc.
+              -->
+              <div class="profile-section-card">
+                <div class="profile-section-header">
+                  <i class="fas fa-users"></i>
+                  <h4>Other Dependents (Parents, Siblings, etc.)</h4>
+                </div>
+                <div class="profile-data-container">
+                  <div class="children-section">
+                    <h4>Dependent 1</h4>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label">Dependent Name</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Relationship to Family</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Dependent Age</label>
+                        <div class="data-display">
+                          <span class="data-value"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label"
+                          >Residing in Family Accommodation</label
+                        >
+                        <div class="data-display">
+                          <span class="data-value">No</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group full-width">
+                        <label class="data-label"
+                          >Dependent Medical Condition</label
+                        >
+                        <div class="data-display full-width">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="children-section">
+                    <h4>Dependent 2</h4>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label">Dependent Name</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Relationship to Family</label>
+                        <div class="data-display">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Dependent Age</label>
+                        <div class="data-display">
+                          <span class="data-value"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label class="data-label"
+                          >Residing in Family Accommodation</label
+                        >
+                        <div class="data-display">
+                          <span class="data-value">No</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group full-width">
+                        <label class="data-label"
+                          >Dependent Medical Condition</label
+                        >
+                        <div class="data-display full-width">
+                          <span class="data-value">Not Applicable</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- === General Profile Attributes === 
+                   General profile information including UID, status, joining date, etc.
+              -->
+              <div class="profile-section-card">
+                <div class="profile-section-header">
+                  <i class="fas fa-info-circle"></i>
+                  <h4>General Profile Attributes</h4>
+                </div>
+                <div class="profile-data-container">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">UID / Family ID</label>
+                      <div class="data-display">
+                        <span class="data-value">AF-0001</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Caste/System</label>
+                      <div class="data-display">
+                        <span class="data-value">General</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Religion</label>
+                      <div class="data-display">
+                        <span class="data-value">Hinduism</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Status</label>
+                      <div class="data-display">
+                        <span class="data-value">Active</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Date of Joining Station</label>
+                      <div class="data-display">
+                        <span class="data-value">15/01/2023</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group full-width">
+                      <label class="data-label">Remarks</label>
+                      <div class="data-display full-width">
+                        <span class="data-value"
+                          >Family profile is complete and up to date. All
+                          required documents have been submitted and verified.
+                          Family is actively participating in AWWA activities
+                          and welfare programs.</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- === Army Family Welfare & Support === 
+                   Welfare and support program information including AWWA entrepreneur status, etc.
+              -->
+              <div class="profile-section-card">
+                <div class="profile-section-header">
+                  <i class="fas fa-hand-holding-heart"></i>
+                  <h4>Welfare & Support Programs</h4>
+                </div>
+                <div class="profile-data-container">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">AWWA Entrepreneur Status</label>
+                      <div class="data-display">
+                        <span class="data-value">Not Registered</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Expertise Area</label>
+                      <div class="data-display">
+                        <span class="data-value">Not Applicable</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label"
+                        >Badi Didi / Perform Duty Status</label
+                      >
+                      <div class="data-display">
+                        <span class="data-value">Not Active</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="data-label">Block Didi (IC)</label>
+                      <div class="data-display">
+                        <span class="data-value">Mrs. Sharma - B-07</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="data-label">Block ID</label>
+                      <div class="data-display">
+                        <span class="data-value">B-07</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ENHANCED PROFILE CARD END -->
+          </div>
+        </div>
+
+        <!-- 3. AWWA Regional (SWC) Section (Iframe View) 
+             Embedded iframe displaying the AWWA Regional South Western Command website.
+        -->
+        <div class="app-section hidden" id="section-regional">
+          <div class="iframe-container-full">
+            <div class="iframe-wrapper-full">
+              <iframe
+                id="regionalIframe"
+                src="https://awwa.org.in/regional-awwa/swcawwa/index.html"
+                title="AWWA Regional South Western Command Website"
+                frameborder="0"
+                allowfullscreen
+                class="app-iframe"
+                onload="adjustIframeScale('regionalIframe')"
+              >
+                <!-- Fallback content if the iframe is blocked or fails to load -->
+                <div class="iframe-fallback">
+                  <h3>External Content Blocked</h3>
+                  <p>
+                    The AWWA Regional (SWC) content could not be displayed
+                    directly due to security or network restrictions.
+                  </p>
+                  <p>
+                    Please open the site directly:
+                    <a
+                      href="https://awwa.org.in/regional-awwa/swcawwa/index.html"
+                      target="_blank"
+                      class="text-blue-600 font-bold"
+                      >Open Regional Site in New Tab</a
+                    >
+                  </p>
+                </div>
+              </iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. My Courses Section 
+             Learning management section (currently empty, ready for future course content).
+        -->
+        <div class="app-section hidden" id="section-courses">
+          <div class="profile-section">
+            <div class="profile-card">
+              <!-- Courses Header -->
+              <div class="profile-header-main">
+                <div class="profile-info">
+                  <h3 class="text-brand-darker">My Courses</h3>
+                  <p class="text-text-medium">
+                    Track your learning progress and access course materials
+                  </p>
+                  <span class="profile-role-detail"
+                    >AWWA Learning Platform</span
+                  >
+                </div>
+                <div class="profile-status">
+                  <span class="status-badge active">Learning Active</span>
+                </div>
+              </div>
+
+               <!-- Course Video Content -->
+               <div class="course-video-container">
+                 <div class="course-video-header">
+                   <h4><i class="fas fa-play-circle"></i> Course Video</h4>
+                   <p>Too-Hot-Too-Cold-and-Totally-Confused - Hindi Presentation</p>
+                 </div>
+                 <div class="video-wrapper">
+                   <iframe 
+                     src="https://player.vimeo.com/video/1123142426?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" 
+                     width="100%" 
+                     height="400" 
+                     frameborder="0" 
+                     allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                     referrerpolicy="strict-origin-when-cross-origin" 
+                     title="Too-Hot-Too-Cold-and-Totally-Confused_pptx - Hindi-hi-IN"
+                     class="course-video-iframe">
+                   </iframe>
+                 </div>
+                 <div class="course-video-info">
+                   <div class="video-details">
+                     <span class="video-duration"><i class="fas fa-clock"></i> Duration: 15 minutes</span>
+                     <span class="video-language"><i class="fas fa-language"></i> Language: Hindi</span>
+                   </div>
+                   <div class="video-actions">
+                     <button class="btn btn-primary" onclick="openVideoInNewTab()">
+                       <i class="fas fa-external-link-alt"></i> Open in New Tab
+                     </button>
+                   </div>
+                 </div>
+               </div>
+
+               <div class="course-video-container">
+                <div class="course-video-header">
+                  <h4><i class="fas fa-play-circle"></i> Course Video</h4>
+                  <p>Too-Hot-Too-Cold-and-Totally-Confused - Hindi Presentation</p>
+                </div>
+                <div class="video-wrapper">
+                  <iframe src="https://player.vimeo.com/video/1123144476?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="400" height="300" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Too-Hot-Too-Cold-and-Totally-Confused_pptx (2)"></iframe> 
+                </div>
+                <div class="course-video-info">
+                  <div class="video-details">
+                    <span class="video-duration"><i class="fas fa-clock"></i> Duration: 15 minutes</span>
+                    <span class="video-language"><i class="fas fa-language"></i> Language: Hindi</span>
+                  </div>
+                  <div class="video-actions">
+                    <button class="btn btn-primary" onclick="openVideoInNewTab()">
+                      <i class="fas fa-external-link-alt"></i> Open in New Tab
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===========================================
+         CUSTOM MODAL & TOAST UI (REPLACING ALERT/CONFIRM)
+         =========================================== 
+         Custom modal system for logout confirmation and toast notifications.
+         Replaces browser alerts with more visually appealing UI components.
+         -->
+    <div id="customModal" class="modal-container hidden">
+      <div class="modal-content">
+        <h3 class="modal-title" id="modalTitle"></h3>
+        <p class="modal-body" id="modalBody"></p>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" onclick="closeModal()">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button
+            class="btn btn-danger"
+            id="modalConfirmBtn"
+            onclick="handleModalConfirm()"
+          >
+            <i class="fas fa-check"></i> Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="notificationToastContainer" class="toast-container">
+      <!-- Toast notifications will be dynamically inserted here -->
+    </div>
+
+    <script>
+      // ===========================================
+      // INITIAL DATA & STATE
+      // ===========================================
+      // User information and profile data used throughout the application.
+      // These objects can be modified to update user details and profile information.
+
+      let modalConfirmationCallback = null; // Stores callback function for modal confirmation
+
+      // ===========================================
+      // UTILITY FUNCTIONS: UI & NAVIGATION
+      // ===========================================
+      // Core functions for UI management, navigation, and user interaction.
+      // These functions handle sidebar toggling, section switching, and user info loading.
+      const userInfo = JSON.parse(localStorage.getItem('userInfo') || JSON.stringify(defaultUserInfo));
+      function loadUserInfo() {
+        // Load user data into the static sidebar profile box
+
+
+        const leftPanelName = document.querySelector(".lp-name");
+        const leftPanelRole = document.querySelector(".lp-role");
+        if (leftPanelName) leftPanelName.textContent = userInfo.name;
+
+        // Show/Hide desktop vs mobile header in sidebar based on screen size
+        const mobileHeader = document.getElementById("mobileSidebarHeader");
+        const desktopHeader = document.querySelector(".lp-header");
+
+        if (window.innerWidth <= 768) {
+          mobileHeader.classList.remove("hidden");
+          desktopHeader.classList.add("hidden");
+        } else {
+          mobileHeader.classList.add("hidden");
+          desktopHeader.classList.remove("hidden");
+        }
+      }
+
+      function updateUserProfile() {
+        // Load family data into the fixed header profile box
+        const userNameElement = document.getElementById("headerUserName");
+        const userIdElement = document.getElementById("headerUserID");
+
+        if (userNameElement)
+          userNameElement.textContent = profileData.userName || "User";
+        if (userIdElement)
+          userIdElement.textContent = profileData.familyId || "UID-000";
+      }
+
+      /**
+       * Switches the active main content section based on navigation click.
+       * Handles visibility toggling and triggers iframe scaling if needed.
+       * @param {string} targetSection - The ID of the section to display (e.g., 'section-home').
+       */
+      function switchSection(targetSection) {
+        // Hide all sections and remove active states from navigation
+        document.querySelectorAll(".app-section").forEach((section) => {
+          section.classList.add("hidden");
+        });
+        document.querySelectorAll(".lp-nav li").forEach((li) => {
+          li.classList.remove("active");
+        });
+
+        // Show target section and set active state
+        const target = document.getElementById(targetSection);
+        if (target) {
+          target.classList.remove("hidden");
+          document
+            .querySelector(`.lp-nav li[data-target="${targetSection}"]`)
+            ?.classList.add("active");
+        }
+
+        // Trigger scaling for iframes if the target is an iframe section
+        if (targetSection === "section-regional") {
+          adjustIframeScale("regionalIframe");
+        } else if (targetSection === "section-home") {
+          adjustIframeScale("awwaHomeIframe");
+        }
+        // Note: section-courses doesn't need iframe scaling as it's a card-based view
+      }
+
+      /**
+       * Toggles the collapsible state of the desktop sidebar.
+       */
+      function toggleSidebar() {
+        const leftPanel = document.getElementById("leftPanel");
+        const mainArea = document.querySelector(".main-area");
+        const icon = document
+          .getElementById("sidebarToggleBtn")
+          .querySelector("i");
+
+        const isCollapsed = leftPanel.classList.toggle("collapsed");
+        mainArea.classList.toggle("collapsed");
+        icon.className = isCollapsed
+          ? "fas fa-arrow-right"
+          : "fas fa-arrow-left";
+
+        // Re-adjust iframe scale after sidebar transition completes
+        setTimeout(() => {
+          if (
+            !document
+              .getElementById("section-regional")
+              .classList.contains("hidden")
+          ) {
+            adjustIframeScale("regionalIframe");
+          } else if (
+            !document
+              .getElementById("section-home")
+              .classList.contains("hidden")
+          ) {
+            adjustIframeScale("awwaHomeIframe");
+          }
+        }, 300);
+      }
+
+      /**
+       * Toggles the visibility of the sidebar overlay on mobile screens.
+       */
+      function toggleMobileSidebar() {
+        const leftPanel = document.getElementById("leftPanel");
+        const mainArea = document.getElementById("mainArea");
+        const appHeader = document.getElementById("appHeader");
+
+        const isOpen = leftPanel.classList.toggle("open");
+
+        // Apply blur effect and disable scrolling on the background content
+        mainArea.classList.toggle("blurred", isOpen);
+        appHeader.classList.toggle("blurred", isOpen);
+        document.body.classList.toggle("no-scroll", isOpen);
+      }
+
+      // ===========================================
+      // UTILITY FUNCTIONS: MODAL & TOAST
+      // ===========================================
+      // Functions for custom modal and notification system.
+      // Replaces browser alerts with more visually appealing UI components.
+
+      function showModal(title, body, confirmText, onConfirm) {
+        const modal = document.getElementById("customModal");
+
+        if (!modal) {
+          console.error("Modal element not found!");
+          return;
+        }
+
+        document.getElementById("modalTitle").textContent = title;
+        document.getElementById("modalBody").textContent = body;
+        document.getElementById("modalConfirmBtn").textContent = confirmText;
+
+        modalConfirmationCallback = onConfirm;
+        modal.classList.remove("hidden");
+        setTimeout(() => {
+          modal.classList.add("open");
+        }, 10);
+      }
+
+      function closeModal() {
+        // Implementation of closeModal
+        const modal = document.getElementById("customModal");
+        modal.classList.remove("open");
+        setTimeout(() => {
+          modal.classList.add("hidden");
+        }, 300);
+        modalConfirmationCallback = null;
+      }
+
+      function handleModalConfirm() {
+        // Implementation of handleModalConfirm
+        if (modalConfirmationCallback) {
+          modalConfirmationCallback();
+        }
+        closeModal();
+      }
+
+      function showNotification(type, message, duration = 3000) {
+        // Implementation of showNotification
+        const container = document.getElementById("notificationToastContainer");
+        const icon =
+          type === "success"
+            ? "fas fa-check-circle"
+            : type === "error"
+            ? "fas fa-exclamation-triangle"
+            : "fas fa-info-circle";
+
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `<i class="${icon}"></i><span class="toast-message">${message}</span>`;
+
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add("show");
+        }, 10);
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => {
+            container.removeChild(toast);
+          }, 500);
+        }, duration);
+      }
+
+      // ===========================================
+      // PROFILE EDITING & ACTIONS
+      // ===========================================
+      // Functions for user actions like logout and iframe scaling.
+      // These functions handle user interactions and responsive behavior.
+
+      // function logout() {
+      //   console.log("Logout function called");
+      //   showModal(
+      //     "Confirm Logout",
+      //     "Are you sure you want to log out of the AWWA Family Dashboard? You will need to sign in again.",
+      //     "Yes, Logout",
+      //     () => {
+      //       console.log("Logout confirmed");
+      //       localStorage.removeItem("userInfo");
+      //       showNotification(
+      //         "success",
+      //         "You have been successfully logged out."
+      //       );
+      //       setTimeout(() => {
+      //         console.log("Redirecting to login.html");
+      //         window.location.href = "login2.html";
+      //       }, 1500);
+      //     }
+      //   );
+      // }
+
+      function adjustIframeScale(iframeId) {
+        // Implementation remains the same
+        const iframe = document.getElementById(iframeId);
+        if (!iframe) return;
+
+        const windowWidth = window.innerWidth;
+        const leftPanel = document.getElementById("leftPanel");
+        // Check if sidebar is expanded (only relevant on desktop)
+        const isSidebarOpen =
+          windowWidth > 768 && !leftPanel.classList.contains("collapsed");
+
+        let availableWidth = windowWidth;
+        if (isSidebarOpen) {
+          availableWidth -= 280; // Full sidebar width
+        } else if (windowWidth > 768) {
+          availableWidth -= 70; // Collapsed sidebar width
+        }
+
+        let scale = 1;
+
+        if (windowWidth <= 768) {
+          scale = 0.7;
+        } else if (availableWidth <= 400) {
+          scale = 0.45;
+        } else if (availableWidth <= 600) {
+          scale = 0.55;
+        } else if (availableWidth <= 768) {
+          scale = 0.65;
+        } else if (availableWidth <= 1024) {
+          scale = 0.75;
+        } else if (availableWidth <= 1200) {
+          scale = 0.85;
+        } else {
+          scale = 0.9;
+        }
+
+        // Apply scale and inverse dimensions to fill container
+        iframe.style.transform = `scale(${scale})`;
+        iframe.style.width = `${100 / scale}%`;
+        iframe.style.height = `${100 / scale}%`;
+        iframe.style.minWidth = `${100 / scale}%`;
+        iframe.style.minHeight = `${100 / scale}%`;
+      }
+
+      // ===========================================
+      // PAGE INITIALIZATION
+      // ===========================================
+      // Initial setup when the page loads.
+      // Handles user info loading, event listeners, and default section display.
+
+      document.addEventListener("DOMContentLoaded", function () {
+        loadUserInfo();
+        updateUserProfile();
+
+        window.addEventListener("resize", function () {
+          loadUserInfo(); // Re-run to handle header element visibility on resize
+
+          if (window.innerWidth > 768) {
+            document.getElementById("leftPanel").style.display = "block";
+          } else {
+            // Mobile: ensure desktop display style is removed for overlay
+            document.getElementById("leftPanel").style.display = "";
+          }
+
+          if (
+            !document
+              .getElementById("section-regional")
+              .classList.contains("hidden")
+          ) {
+            adjustIframeScale("regionalIframe");
+          } else if (
+            !document
+              .getElementById("section-home")
+              .classList.contains("hidden")
+          ) {
+            adjustIframeScale("awwaHomeIframe");
+          }
+        });
+
+        switchSection("section-home");
+      });
+
+      // ===========================================
+      // NAVIGATION AND SIDEBAR FUNCTIONS
+      // ===========================================
+      
+      // Mobile Menu Toggle Functionality
+      function toggleMobileMenu() {
+        const mobileNavPopup = document.getElementById('mobileNavPopup');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const icon = mobileMenuToggle.querySelector('i');
+        
+        if (mobileNavPopup.classList.contains('hidden')) {
+          // Open mobile menu
+          mobileNavPopup.classList.remove('hidden');
+          icon.className = 'fas fa-times';
+          document.body.style.overflow = 'hidden'; // Prevent scrolling
+          console.log('Mobile menu opened');
+        } else {
+          // Close mobile menu
+          mobileNavPopup.classList.add('hidden');
+          icon.className = 'fas fa-bars';
+          document.body.style.overflow = ''; // Restore scrolling
+          console.log('Mobile menu closed');
+        }
+      }
+      
+      // Close Mobile Menu
+      function closeMobileMenu() {
+        const mobileNavPopup = document.getElementById('mobileNavPopup');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const icon = mobileMenuToggle.querySelector('i');
+        
+        mobileNavPopup.classList.add('hidden');
+        icon.className = 'fas fa-bars';
+        document.body.style.overflow = ''; // Restore scrolling
+        console.log('Mobile menu closed');
+      }
+      
+      // Navigate to Section (Mobile)
+      function navigateToSection(sectionId) {
+        // Close mobile menu first
+        closeMobileMenu();
+        
+        // Update active states
+        const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+        mobileNavItems.forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('data-target') === sectionId) {
+            item.classList.add('active');
+          }
+        });
+        
+        // Update desktop navigation active states
+        const desktopNavItems = document.querySelectorAll('.lp-nav li');
+        desktopNavItems.forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('data-target') === sectionId) {
+            item.classList.add('active');
+          }
+        });
+        
+        // Show the target section
+        const sections = document.querySelectorAll('.app-section');
+        sections.forEach(section => {
+          section.style.display = 'none';
+        });
+        
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+          targetSection.style.display = 'block';
+        }
+      }
+
+      // Sidebar Toggle Functionality
+      function toggleSidebar() {
+        const leftPanel = document.querySelector('.left-panel');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const icon = sidebarToggleBtn.querySelector('i');
+        
+        if (leftPanel.classList.contains('collapsed')) {
+          // Expand sidebar
+          leftPanel.classList.remove('collapsed');
+          icon.className = 'fas fa-arrow-left';
+          console.log('Sidebar expanded');
+        } else {
+          // Collapse sidebar
+          leftPanel.classList.add('collapsed');
+          icon.className = 'fas fa-arrow-right';
+          console.log('Sidebar collapsed');
+        }
+      }
+
+       // Logout Function
+       function logout() {
+         if (confirm('Are you sure you want to logout?')) {
+           localStorage.removeItem('userInfo');
+           window.location.href = 'login2.html';
+         }
+       }
+
+       // ===========================================
+       // COURSE VIDEO FUNCTIONS
+       // ===========================================
+       // Functions for course video interactions and actions.
+
+       function openVideoInNewTab() {
+         const videoUrl = 'https://player.vimeo.com/video/1123142426?badge=0&autopause=0&player_id=0&app_id=58479';
+         window.open(videoUrl, '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+         console.log('Opening video in new tab');
+       }
+
+       function downloadVideo() {
+         // Note: Vimeo videos typically don't allow direct download due to copyright protection
+         // This function shows a message to the user about alternative options
+         showNotification(
+           'info', 
+           'Video download is not available. Please use the "Open in New Tab" option to view the video in full screen.',
+           5000
+         );
+         
+         // Alternative: Open the video in a new tab for better viewing
+         setTimeout(() => {
+           openVideoInNewTab();
+         }, 1000);
+       }
+
+      // Initialize navigation
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add click listeners to navigation
+        document.querySelectorAll('.lp-nav li').forEach(li => {
+          li.addEventListener('click', function() {
+            const target = this.getAttribute('data-target');
+            navigateToSection(target);
+          });
+        });
+
+        // Initialize sidebar state
+        const leftPanel = document.querySelector('.left-panel');
+        const lpNav = document.getElementById('lpNav');
+        
+        if (window.innerWidth <= 768) {
+          // Mobile view - start with collapsed navigation
+          lpNav.classList.add('collapsed');
+        } else {
+          // Desktop view - always show navigation
+          lpNav.classList.remove('collapsed', 'expanded');
+        }
+
+        // Add keyboard support for mobile menu
+        document.addEventListener('keydown', function(e) {
+          const mobileNavPopup = document.getElementById('mobileNavPopup');
+          if (e.key === 'Escape' && !mobileNavPopup.classList.contains('hidden')) {
+            closeMobileMenu();
+          }
+        });
+        
+        // Prevent body scroll when mobile menu is open
+        const mobileNavPopup = document.getElementById('mobileNavPopup');
+        mobileNavPopup.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, { passive: false });
+      });
+    </script>
+  </body>
+</html>
