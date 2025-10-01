@@ -2627,7 +2627,7 @@
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-users"></i></div>
                         <div class="mini-content">
-                            <div class="mini-value" id="totalFamiliesVal">260</div>
+                            <div class="mini-value" id="totalFamiliesVal">274</div>
                             <small>Total Families</small>
                 </div>
             </div>
@@ -2830,19 +2830,6 @@
             <!-- Current implementation has issues with CORS proxy reliability and data mapping -->
     <div class="families-section app-section hidden" id="section-families">
         <div class="section-header-row">
-<<<<<<< HEAD
-                    <h2>Families <span class="count">(Loading...)</span></h2>
-            <div class="families-actions">
-                <input type="text" class="fam-search" placeholder="Search families..." id="familySearchInput" />
-                <select class="workshop-filter" id="workshopFilter">
-                    <option value="">All WKSP</option>
-                </select>
-                <button class="check-btn" onclick="console.log('Refresh button clicked'); fetchFamiliesFromGoogleSheets();" id="refreshFamiliesBtn">
-                    <i class="fas fa-sync-alt"></i> Refresh Data
-                </button>
-                <button class="check-btn" onclick="toggleAddFamilyForm()" id="addFamilyBtn">
-                    <i class="fas fa-plus"></i> Add Family
-=======
                     <h2>Families <span class="count">(274)</span></h2>
         </div>
         
@@ -2852,7 +2839,6 @@
             <div class="workshop-buttons" id="workshopButtons">
                 <button class="workshop-btn active" data-workshop="" onclick="filterByWorkshop('')">
                     All Workshops
->>>>>>> 5450c02ef0ef4b4deac718f87edc421f91868d82
                 </button>
             </div>
         </div>
@@ -3181,10 +3167,10 @@
             <h1 class="newsletter-bilingual-title">Sainika Shakti Utthaan Patrika | सैनिका शक्ति उत्थान पत्रिका</h1>
             <h2 class="newsletter-description">A Monthly Newsletter of FWO Ranbankura Eagles</h2>
             <div class="newsletter-action-buttons">
-                <button class="newsletter-send-btn" id="newsletterSendBtn" onclick="sendNewsletter()">
+                <!-- <button class="newsletter-send-btn" id="newsletterSendBtn" onclick="sendNewsletter()">
                     <i class="fas fa-paper-plane"></i>
                     <span>Send Newsletter</span>
-                </button>
+                </button> -->
         </div>
         </div>
         <!-- Newsletter Analytics -->
@@ -6002,7 +5988,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 name: 'Col Tarunpreet Singh',
                 designation: 'Commanding Officer',
                 phone: '9650300475',
-                userType: 'L1',
+                userType: 'L1 (Super User)',
                 hasSpouse: true,  // Default user has spouse information
                 spouse: {
                     name: 'Mrs. Deepkiran Kaur',
