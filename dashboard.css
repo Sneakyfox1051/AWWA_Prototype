@@ -173,7 +173,7 @@ body {
 
 /* App Header */
 .app-header { position: sticky; top: 0; z-index: 200; background: var(--surface); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-.app-header-inner { max-width: full; margin: 10px auto; padding: 10px 20px; display:flex; align-items:center; justify-content: space-between; gap: 12px; }
+.app-header-inner { max-width:full; margin: 10px auto; padding: 10px 20px; display:flex; align-items:center; justify-content: space-between; gap: 12px; }
 .app-brand { display:flex; align-items:center; gap: 10px; }
 .app-logo { height: 36px; width: auto; }
 .app-title-wrap { display:flex; flex-direction:column; }
