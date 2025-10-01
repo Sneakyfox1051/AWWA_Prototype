@@ -1994,6 +1994,7 @@ canvas { width: 100% !important; height: 280px !important; }
 
 .panel-card:has(#additionalDetailsTitle) .panel-header i {
     color: #fff;
+   
 }
 
 .panel-card:has(#additionalDetailsTitle) .panel-header h3 {
@@ -2042,6 +2043,7 @@ canvas { width: 100% !important; height: 280px !important; }
     background: linear-gradient(135deg, #ff8c00 0%, #ff7f00 100%);
     color: white;
     border-bottom: 2px solid #ff8c00;
+   
 }
 
 .panel-card[data-wife-details="true"] .panel-header i {
@@ -2051,6 +2053,7 @@ canvas { width: 100% !important; height: 280px !important; }
 .panel-card[data-wife-details="true"] .panel-header h3 {
     color: #fff;
     font-weight: 700;
+    margin-left:58px;
 }
 
 .panel-card[data-wife-details="true"] .panel-body {
@@ -2079,7 +2082,7 @@ canvas { width: 100% !important; height: 280px !important; }
 /* Wife image styling in header */
 .panel-header-image {
     position: absolute;
-    right: 16px;
+    
     top: 50%;
     transform: translateY(-50%);
     width: 40px;

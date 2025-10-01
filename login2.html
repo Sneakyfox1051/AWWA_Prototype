@@ -23,7 +23,9 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
-        background-color: #f8f9fa; /* Lighter background from image */
+        background-color: #f8f9fa; 
+        width: 100%;
+        height:100%;/* Lighter background from image */
       }
       .font-noto-devanagari {
         font-family: "Noto Sans Devanagari", sans-serif;
@@ -45,28 +47,40 @@
     </style>
   </head>
   <body
-    class="flex items-center justify-center min-h-screen p-2 sm:p-3 md:p-4 pt-6 sm:pt-8 md:pt-12"
+    class="flex items-center justify-center min-h-screen p-2 sm:p-3 md:p-4 pt-20 sm:pt-24 md:pt-28"
   >
     <!-- Top-left header with organization logo -->
-    <header class="site-header">
-      <img src="public/Awwa2-logo.png" alt="AWWA" class="header-logo">
+    <header class="site-header height-[98px]">
+      <div class="header-content">
+        <img src="public/AWWA_brochure.png" alt="AWWA Brochure" class="brochure-logo text-left">
+        <h1 class="app-title font-bold text-[35px] text-center margin-[10px] w-full">Ranbankura Eagles FWO : 
+          <span class="bg-gradient-to-r from-red-500 to-yellow-500 bg-clip-text text-transparent font-bold">Centralised Information Hub</span>
+        </h1>
+      </div>
   </header>
 
     <main
       class="w-full max-w-xs sm:max-w-sm md:max-w-2xl lg:max-w-3xl min-h-[400px] sm:min-h-[450px] md:min-h-[500px]"
     >
-      <div
-        class="bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden"
-      >
+       <div
+         class="bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden border-4 border-white"
+       >
         <!-- Left Column - Image Section (hidden on mobile) -->
         <div
-          class="hidden md:block md:w-1/2 bg-[#a7c5f3] p-0 flex flex-col justify-center items-center relative overflow-hidden"
+          class="hidden md:block md:w-1/2 bg-white p-0 flex flex-col justify-center items-center relative overflow-hidden"
         >
-          <img
-            src="public/Untitled design (26).png"
-            alt="AWWA Logo"
-            class="w-full h-full object-cover"
-          />
+          <div class="login-collage">
+            <img
+              src="public/login2.png"
+              alt="Login Image 2"
+              class="collage-image-top"
+            />
+            <img
+              src="public/login3.png"
+              alt="Login Image 3"
+              class="collage-image-bottom"
+            />
+          </div>
         </div>
 
         <!-- Right Column - Login Form Section -->
@@ -76,15 +90,10 @@
           <div class="w-full max-w-md mx-auto">
             <!-- Form Header -->
             <div class="text-center mb-6 sm:mb-8">
-              <div class="mb-4 sm:mb-6">
-                <span
-                  class="inline-block bg-orange-500 text-white text-xs sm:text-sm font-bold px-4 sm:px-6 py-2 sm:py-3 rounded-full uppercase tracking-wider shadow-md"
-                  >PROJECT</span
-                >
-              </div>
+          
               <div class="hindi-hero">
-                <div class="hindi-title">दीप <img src="public/Untitled design (25).png" alt="दीप" class="diya-icon"></div>
-                <div class="hindi-sub">☼ जागरूकता से आत्मनिर्भरता ☼</div>
+                <div class="hindi-title"><img src="public/Awwa.png" alt="दीप" class="diya-icon"></div>
+                
             </div>
               <p class="text-gray-400 text-sm sm:text-base">
                 Please sign in to continue
@@ -221,11 +230,6 @@
       // All users have L1 access level (Super User) with full system permissions.
       
       const validUsers = [
-          // ===========================================
-          // UNIT RANKING USERS (4 MAIN USERS ONLY)
-          // ===========================================
-          // These are the only authorized users of the AWWA system.
-          // All other users have been removed for security and simplicity.
           
           { 
               // Commanding Officer - Highest authority in the unit

@@ -499,6 +499,28 @@
                 font-size: 16px;
             }
             
+            /* Wife Profile Image Styling */
+            .panel-header-image {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 10px;
+            }
+            
+            .wife-profile-image {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                object-fit: cover;
+                border: 4px solid #ff7a00;
+                box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .wife-profile-image:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 20px rgba(255, 122, 0, 0.4);
+            }
+            
             .profile-side-card {
                 padding: 16px;
                 text-align: center;
@@ -2706,8 +2728,8 @@
     </style>
 </head>
 <body>
-    <header class="app-header">
-        <div class="app-header-inner">
+    <header class="app-header ">
+        <div class="app-header-inner ">
             <!-- Mobile Menu Toggle -->
             <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
@@ -2716,7 +2738,11 @@
             <div class="app-brand">
                 <img src="public/Untitled design (27).png" alt="AWWA Logo" class="app-logo" />
                 <div class="app-title-wrap">
+<<<<<<< HEAD
                     <h1 class="app-title">Ranbankura Eagles FWO : <span class="title-orange">Centralized Information HUB</span></h1>
+=======
+                    <h1 class="app-title">Ranbankura Eagles : FWO Centralised Information Hub</h1>
+>>>>>>> a7b02dd5264c54519926495905e60dbafd627f0c
                 </div>
             </div>
             <button class="logout-btn" onclick="logout()">
@@ -2775,7 +2801,6 @@
                     <i class="fas fa-arrow-left"></i>
                 </button>
                 <img src="public/profile.png" alt="Profile" class="lp-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                <div class="lp-avatar" style="display:none;">TS</div>
                 <div class="lp-name">Col Tarunpreet Singh</div>
                 <div class="lp-role">Commanding Officer</div>
             </div>
@@ -2818,14 +2843,16 @@
                 <!-- Additional Details -->
                 <div class="panel-card">
                     <div class="panel-header">
-                        <i class="fas fa-circle-info"></i>
+                       
                         <h3 id="additionalDetailsTitle">Additional Details</h3>
                         <div class="panel-header-image" id="additionalDetailsImage" style="display: none;">
                             <img src="" alt="Wife Image" id="wifeImage" />
                     </div>
+
                     </div>
                     <div class="panel-body" id="additionalDetailsBody">
                         <!-- Dynamic content will be loaded here -->
+                      
                     </div>
                 </div>
 
@@ -3390,6 +3417,15 @@
         <div class="newsletter-title-section">
             <h1 class="newsletter-bilingual-title">Sainika Shakti Utthaan Patrika | सैनिका शक्ति उत्थान पत्रिका</h1>
             <h2 class="newsletter-description">A Monthly Newsletter of FWO Ranbankura Eagles</h2>
+<<<<<<< HEAD
+=======
+            <div class="newsletter-action-buttons">
+                <!-- <button class="newsletter-send-btn" id="newsletterSendBtn" onclick="sendNewsletter()">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Send Newsletter</span>
+                </button> -->
+        </div>
+>>>>>>> a7b02dd5264c54519926495905e60dbafd627f0c
         </div>
         <!-- Newsletter Analytics -->
         <div class="newsletter-analytics">
@@ -4193,6 +4229,9 @@
             // Keep all values static - no data fetching
             console.log('Dashboard initialized with static values');
             
+            // Initialize families count on page load
+            initializeFamiliesCount();
+            
             // Initialize chart responsiveness
             setTimeout(makeChartsResponsive, 1000);
             setTimeout(updateChartSizes, 1500);
@@ -4877,6 +4916,21 @@ async function initChartsOnce() {
         let isLoadingFamilies = false;
         let availableWorkshops = [];
 
+        // Initialize families count on page load
+        async function initializeFamiliesCount() {
+            console.log('Initializing families count...');
+            try {
+                // Try to fetch the count from Google Sheets
+                await fetchFamiliesFromGoogleSheets();
+            } catch (error) {
+                console.log('Failed to fetch families count from Google Sheets, using sample data count');
+                // Fallback to sample data count
+                familiesData = getSampleFamiliesData();
+                filteredFamiliesData = [...familiesData];
+                updateFamiliesStatus('success');
+            }
+        }
+
         // Fetch families data from Google Sheets - TO BE FIXED BY JYOTI AND ADAB
         // Current implementation has issues with CORS proxy reliability and data mapping
         async function fetchFamiliesFromGoogleSheets() {
@@ -5003,6 +5057,7 @@ async function initChartsOnce() {
                 const headers = parseCSVLine(lines[0]);
                 console.log('CSV Headers:', headers);
                 console.log('Total lines:', lines.length);
+                console.log('Processing rows 1 to', lines.length - 1);
                 
                 // Log all column names that might contain husband information
                 const husbandColumns = headers.filter(h => 
@@ -5016,15 +5071,30 @@ async function initChartsOnce() {
                 console.log('All headers:', headers.map((h, i) => `${i}: "${h}"`));
                 
                 const families = [];
+                let skippedCount = 0;
+                let skippedReasons = {};
+                let processedCount = 0;
                 
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
-                    if (!line) continue;
+                    if (!line) {
+                        console.log(`Skipping empty line at index ${i}`);
+                        continue;
+                    }
                     
                     const values = parseCSVLine(line);
                     
                     // Skip if we don't have enough values or if it's a header row
                     if (values.length < headers.length || values[0] === 'WKSP') {
+                        skippedCount++;
+                        const reason = values.length < headers.length ? 'insufficient_columns' : 'header_row';
+                        skippedReasons[reason] = (skippedReasons[reason] || 0) + 1;
+                        console.log(`Skipping row ${i}: ${reason}`, {
+                            valuesLength: values.length,
+                            headersLength: headers.length,
+                            firstValue: values[0],
+                            values: values.slice(0, 3)
+                        });
                         continue;
                     }
                     
@@ -5079,11 +5149,13 @@ async function initChartsOnce() {
                         });
                     }
                     
-                    // Only add if we have at least a lady's name
-                    if (ladyName && ladyName.trim()) {
+                    processedCount++;
+                    
+                    // Add family if we have either lady's name or husband's name
+                    if ((ladyName && ladyName.trim()) || (husbandName && husbandName.trim())) {
                         const familyData = {
                             id: families.length + 1,
-                            name: ladyName.trim(),
+                            name: ladyName.trim() || husbandName.trim() || 'N/A',
                             husband: husbandName.trim() || 'N/A',
                             contact: mobile.trim() || 'N/A',
                             education: qualification.trim() || 'N/A',
@@ -5123,10 +5195,17 @@ async function initChartsOnce() {
                                 availableWorkshops.push(workshop.trim());
                             }
                         }
+                    } else {
+                        // Log families that are skipped due to missing names
+                        skippedCount++;
+                        skippedReasons['missing_names'] = (skippedReasons['missing_names'] || 0) + 1;
+                        console.log('Skipped family - no names:', { ladyName, husbandName, values: values.slice(0, 3) });
                     }
                 }
                 
                 console.log(`Parsed ${families.length} families from CSV`);
+                console.log(`Processed ${processedCount} rows, skipped ${skippedCount} rows:`, skippedReasons);
+                console.log(`Expected 274 families, got ${families.length}, difference: ${274 - families.length}`);
                 return families;
                 
             } catch (error) {
@@ -6261,7 +6340,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 name: 'Col Tarunpreet Singh',
                 designation: 'Commanding Officer',
                 phone: '9650300475',
-                userType: 'L1',
+                userType: 'L1 (Super User)',
                 hasSpouse: true,  // Default user has spouse information
                 spouse: {
                     name: 'Mrs. Deepkiran Kaur',

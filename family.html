@@ -459,6 +459,15 @@
         transition: transform 0.3s ease, box-shadow 0.3s ease;
       }
 
+      /* Alternating light backgrounds for profile cards */
+      .profile-section-card:nth-child(odd) {
+        background: #f8f9ff; /* Light blue shade 1 */
+      }
+
+      .profile-section-card:nth-child(even) {
+        background: #f0f4ff; /* Light blue shade 2 */
+      }
+
       .profile-section-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -1187,6 +1196,32 @@
          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
        }
 
+       /* Flex container for videos */
+       .videos-flex-container {
+         display: flex;
+         gap: 2rem;
+         flex-wrap: wrap;
+         margin-bottom: 2rem;
+       }
+
+       .videos-flex-container .course-video-container {
+         flex: 1;
+         min-width: 300px;
+         margin-bottom: 0;
+       }
+
+       /* Responsive design for mobile */
+       @media (max-width: 768px) {
+         .videos-flex-container {
+           flex-direction: column;
+           gap: 1rem;
+         }
+         
+         .videos-flex-container .course-video-container {
+           min-width: unset;
+         }
+       }
+
        .course-video-header {
          background: #ff7a00;
          color: white;
@@ -1374,7 +1409,10 @@
             <div class="app-brand">
                 <img src="public/Untitled design (27).png" alt="AWWA Logo" class="app-logo" />
                 <div class="app-title-wrap">
-                    <h1 class="app-title">Ranbankura Eagles : AWWA Centralised Information Hub</h1>
+                    <h1 class="app-title">
+                      <span>Ranbankura Eagles FWO : </span>
+                    <span class="text-[orange]"> Centralised Information Hub</span>
+                  </h1>
                 </div>
             </div>
             <button class="logout-btn" onclick="logout()">
@@ -1396,14 +1434,15 @@
             </div>
             <nav class="mobile-nav-menu">
                 <ul>
-                    <li class="mobile-nav-item active" data-target="section-home" onclick="navigateToSection('section-home')">
+                  <li class="mobile-nav-item active " data-target="section-profile" onclick="navigateToSection('section-profile')">
+                    <i class="fas fa-user-circle"></i>
+                    <span>My Profile</span>
+                </li>
+                    <li class="mobile-nav-item" data-target="section-home" onclick="navigateToSection('section-home')">
                         <i class="fas fa-home"></i>
                         <span>AWWA Home</span>
                     </li>
-                    <li class="mobile-nav-item" data-target="section-profile" onclick="navigateToSection('section-profile')">
-                        <i class="fas fa-user-circle"></i>
-                        <span>My Profile</span>
-                    </li>
+
                     <li class="mobile-nav-item" data-target="section-regional" onclick="navigateToSection('section-regional')">
                         <i class="fas fa-globe-americas"></i>
                         <span>AWWA Regional (SWC)</span>
@@ -1439,10 +1478,11 @@
             
             <nav class="lp-nav" id="lpNav">
                 <ul>
-                    <li class="active" data-target="section-home" onclick="navigateToSection('section-home')"><i class="fas fa-home"></i><span>AWWA Home</span></li>
-                    <li data-target="section-profile" onclick="navigateToSection('section-profile')"><i class="fas fa-user-circle"></i><span>My Profile</span></li>
+                  <li class="active" data-target="section-profile" onclick="navigateToSection('section-profile')"><i class="fas fa-user-circle"></i><span>My Profile</span></li>
+                  <li data-target="section-courses" onclick="navigateToSection('section-courses')"><i class="fas fa-graduation-cap"></i><span>My Digital Shiksha</span></li>
+                  <li  data-target="section-home" onclick="navigateToSection('section-home')"><i class="fas fa-globe-americas"></i><span>AWWA Home</span></li>
                     <li data-target="section-regional" onclick="navigateToSection('section-regional')"><i class="fas fa-globe-americas"></i><span>AWWA Regional (SWC)</span></li>
-                    <li data-target="section-courses" onclick="navigateToSection('section-courses')"><i class="fas fa-graduation-cap"></i><span>My Courses</span></li>
+                  
                 </ul>
             </nav>
             
@@ -1455,7 +1495,7 @@
              =========================================== -->
 
         <!-- 1. AWWA Home Section (Iframe View) -->
-        <div class="app-section" id="section-home">
+        <div class="app-section hidden" id="section-home">
           <div class="iframe-container-full">
             <div class="iframe-wrapper-full">
               <iframe
@@ -1493,20 +1533,28 @@
              Contains all family profile information displayed in card format.
              Each section has an orange header and light beige content area.
         -->
-        <div class="app-section hidden" id="section-profile">
+        <div class="app-section" id="section-profile">
           <div class="profile-section">
             <!-- ENHANCED PROFILE CARD START -->
             <div class="profile-card">
               <!-- Profile Summary Header -->
               <div class="profile-header-main">
                 <div class="profile-info">
-                  <h3 class="text-brand-darker"> Welcome! Smt Akansha Devi </h3>
+                  <div class="profile-status">
+                    <span class="status-badge ">624 FWO Family Dashboard</span>
+                  </div>
+                  <h3 class="text-brand-darker text-sm mt-[20px]"> Welcome! 
+                    <span class="font-bold text-[orange]">Smt Akansha Devi</span>
+                  </h3>
                   <p class="text-text-medium">
                     UID / Family ID:
                     <span class="font-bold text-brand-darker">AF-0001</span>
                   </p>
-                  <span class="profile-role-detail">AWWA Family Dashboard</span>
-                </div>
+                    </div>
+                   
+          
+                 
+            
                 <div class="profile-status">
                   <span class="status-badge active">Active Profile</span>
                 </div>
@@ -1518,13 +1566,13 @@
               <div class="profile-section-card">
                 <div class="profile-section-header">
                   <i class="fas fa-user-tag"></i>
-                  <h4>Lady's Personal Details</h4>
+                  <h4>Personal Details</h4>
                 </div>
                 <div class="profile-data-container">
                   <!-- Row 1: Name, DOB, Age - Basic personal information -->
                   <div class="form-row">
                     <div class="form-group">
-                      <label class="data-label">Lady Name</label>
+                      <label class="data-label">Name</label>
                       <!-- Read-only Display -->
                       <div class="data-display" data-field="ladiesName">
                         <span class="data-value">Smt Akansha Devi</span>
@@ -1533,13 +1581,13 @@
                     <div class="form-group">
                       <label class="data-label">Date of Birth</label>
                       <div class="data-display" data-field="dob">
-                        <span class="data-value">14/09/2003</span>
+                        <span class="data-value">14/09/1997</span>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="data-label">Age</label>
                       <div class="data-display" data-field="age">
-                        <span class="data-value">21</span>
+                        <span class="data-value">28</span>
                       </div>
                     </div>
                   </div>
@@ -1576,15 +1624,15 @@
                       >
                         <div class="checkbox-group">
                           <label
-                            ><input type="checkbox" checked readonly />
+                            >
                             English</label
                           >
                           <label
-                            ><input type="checkbox" checked readonly />
+                            >
                             Hindi</label
                           >
                           <label
-                            ><input type="checkbox" checked readonly />
+                            >
                             Punjabi</label
                           >
                         </div>
@@ -1597,7 +1645,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="data-label">Owns Vehicle</label>
+                      <label class="data-label">Owns a Vehicle in Stn</label>
                       <div class="data-display" data-field="ownsVehicle">
                         <span class="data-value">Yes</span>
                       </div>
@@ -1615,13 +1663,13 @@
                     <div class="form-group">
                       <label class="data-label">Personal Email</label>
                       <div class="data-display" data-field="personalEmail">
-                        <span class="data-value">aditi.mehra@email.com</span>
+                        <span class="data-value">akansha.12@email.com</span>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="data-label">Date of Marriage</label>
                       <div class="data-display" data-field="dom">
-                        <span class="data-value">15/06/2023</span>
+                        <span class="data-value">15/06/2017</span>
                       </div>
                     </div>
                   </div>
@@ -1631,7 +1679,7 @@
                     <div class="form-group">
                       <label class="data-label">Years in Marriage</label>
                       <div class="data-display" data-field="yearsMarried">
-                        <span class="data-value">2</span>
+                        <span class="data-value">8</span>
                       </div>
                     </div>
                   </div>
@@ -1657,13 +1705,13 @@
                     <div class="form-group">
                       <label class="data-label">Husband's Rank</label>
                       <div class="data-display">
-                        <span class="data-value">JCO</span>
+                        <span class="data-value">SUB</span>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="data-label">Service in Years</label>
+                      <label class="data-label">Service ( in Years )</label>
                       <div class="data-display">
-                        <span class="data-value">8</span>
+                        <span class="data-value">11</span>
                       </div>
                     </div>
                   </div>
@@ -1671,19 +1719,19 @@
                     <div class="form-group">
                       <label class="data-label">Unit</label>
                       <div class="data-display">
-                        <span class="data-value">52 WKSP</span>
+                        <span class="data-value">624 EME Bn</span>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="data-label">Sub Unit</label>
                       <div class="data-display">
-                        <span class="data-value">Alpha Company</span>
+                        <span class="data-value">832FWC</span>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="data-label">Posting Station</label>
                       <div class="data-display">
-                        <span class="data-value">Ambala Cantt</span>
+                        <span class="data-value">Suratgarh</span>
                       </div>
                     </div>
                   </div>
@@ -1691,13 +1739,13 @@
                     <div class="form-group">
                       <label class="data-label">Date of Posting</label>
                       <div class="data-display">
-                        <span class="data-value">2023-01-15</span>
+                        <span class="data-value">15-01-2023</span>
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="data-label">Husband's DOB</label>
                       <div class="data-display">
-                        <span class="data-value">1995-03-20</span>
+                        <span class="data-value">20-03-1995</span>
                       </div>
                     </div>
                     <div class="form-group">
@@ -1705,7 +1753,7 @@
                         >Husband's Medical Category</label
                       >
                       <div class="data-display">
-                        <span class="data-value">A1</span>
+                        <span class="data-value">SHAPE 1</span>
                       </div>
                     </div>
                   </div>
@@ -1756,7 +1804,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="data-label">Owns Vehicle at Station</label>
+                      <label class="data-label">Owns a Vehicle in Stn</label>
                       <div class="data-display">
                         <span class="data-value">Yes</span>
                       </div>
@@ -1812,47 +1860,27 @@
                     <div class="form-group">
                       <label class="data-label">Military Station</label>
                       <div class="data-display">
-                        <span class="data-value">Ambala Cantt</span>
+                        <span class="data-value">Suratgarh</span>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="data-label">Workshop (WKSP)</label>
+                      <label class="data-label">Type of Accommodation</label>
                       <div class="data-display">
-                        <span class="data-value">52 WKSP</span>
+                        <span class="data-value">Military</span>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="data-label">Quarter Number</label>
-                      <div class="data-display">
-                        <span class="data-value">Q-123</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-row">
                     <div class="form-group">
                       <label class="data-label">Date of Allotment</label>
                       <div class="data-display">
                         <span class="data-value">2023-02-01</span>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="data-label">Colony/Enclave Name</label>
-                      <div class="data-display">
-                        <span class="data-value">Military Colony</span>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="data-label">Block ID (Block Didi)</label>
-                      <div class="data-display">
-                        <span class="data-value">B-07</span>
-                      </div>
-                    </div>
                   </div>
                   <div class="form-row">
                     <div class="form-group">
-                      <label class="data-label">Type of Accommodation</label>
+                      <label class="data-label">Quarter Number</label>
                       <div class="data-display">
-                        <span class="data-value">Military</span>
+                        <span class="data-value">Q-123</span>
                       </div>
                     </div>
                     <div class="form-group">
@@ -1861,19 +1889,39 @@
                         <span class="data-value">1st</span>
                       </div>
                     </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group full-width">
-                      <label class="data-label"
-                        >Full Accommodation Address</label
-                      >
-                      <div class="data-display full-width">
-                        <span class="data-value"
-                          >#526/1, Old Oswal Street Miller, Nirankari Mohalla,
-                          Kucha No.1, Millerganj, Ludhiana</span
-                        >
+                    <div class="form-group">
+                      <label class="data-label">Colony/Enclave Name</label>
+                      <div class="data-display">
+                        <span class="data-value">Military Colony</span>
                       </div>
                     </div>
+                  </div>
+                  <div class="form-row">   
+                      <div class="form-group">
+                        <label class="data-label">Block ID </label>
+                        <div class="data-display">
+                          <span class="data-value">B-07</span>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="data-label">Block DiDi (I/C)</label>
+                        <div class="data-display">
+                          <span class="data-value">Smt Roshni Devi</span>
+                        </div>
+                      </div>
+                      <div class="form-group ">
+                        <label class="data-label"
+                          >Full Accommodation Address</label
+                        >
+                        <div class="data-display ">
+                          <span class="data-value"></span>
+                           Q-123, Old Oswal Street Miller, Nirankari Mohalla,
+                            Kucha No.1, Millerganj, Ludhiana</span
+                          >
+                        </div>
+                      </div>
+                  </div>
+                  <div class="form-row">
                   </div>
                 </div>
               </div>
@@ -1909,22 +1957,18 @@
                           <span class="data-value">1</span>
                         </div>
                       </div>
+                     
+                    </div>
+                    <div class="form-row">
                       <div class="form-group">
                         <label class="data-label">Gender</label>
                         <div class="data-display">
                           <span class="data-value">Boy</span>
                         </div>
                       </div>
-                    </div>
-                    <div class="form-row">
+                    
                       <div class="form-group">
-                        <label class="data-label">Date of Marriage</label>
-                        <div class="data-display">
-                          <span class="data-value">Not Applicable</span>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="data-label">Child Class</label>
+                        <label class="data-label">Child Education</label>
                         <div class="data-display">
                           <span class="data-value">Not Applicable</span>
                         </div>
@@ -1946,7 +1990,7 @@
                       <div class="form-group">
                         <label class="data-label">School Location</label>
                         <div class="data-display">
-                          <span class="data-value">Inside Cantt.</span>
+                          <span class="data-value">Not Applicable</span>
                         </div>
                       </div>
                       <div class="form-group">
@@ -2057,16 +2101,11 @@
               <div class="profile-section-card">
                 <div class="profile-section-header">
                   <i class="fas fa-medkit"></i>
-                  <h4>Medical & ECHS Details</h4>
+                  <h4>Family Medical Details</h4>
                 </div>
                 <div class="profile-data-container">
                   <div class="form-row">
-                    <div class="form-group">
-                      <label class="data-label">Husband Medical Category</label>
-                      <div class="data-display">
-                        <span class="data-value">A1</span>
-                      </div>
-                    </div>
+  
                     <div class="form-group">
                       <label class="data-label">MEC Card Number</label>
                       <div class="data-display">
@@ -2081,26 +2120,18 @@
                         <span class="data-value">JC-00001</span>
                       </div>
                     </div>
-                  </div>
-                  <div class="form-row">
+                    
                     <div class="form-group">
                       <label class="data-label">IVF Case (If applicable)</label>
                       <div class="data-display">
                         <span class="data-value">No</span>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="data-label"
-                        >Current Treatment Details</label
-                      >
-                      <div class="data-display">
-                        <span class="data-value">None</span>
-                      </div>
-                    </div>
                   </div>
+                  
                   <div class="form-row">
                     <div class="form-group full-width">
-                      <label class="data-label">Family Medical Details</label>
+                      <label class="data-label">Family Medical Summary</label>
                       <div class="data-display full-width">
                         <span class="data-value"
                           >No major medical issues reported. All family members
@@ -2129,7 +2160,7 @@
               <div class="profile-section-card">
                 <div class="profile-section-header">
                   <i class="fas fa-users"></i>
-                  <h4>Other Dependents (Parents, Siblings, etc.)</h4>
+                  <h4>Other Dependents (eg., Parents living with Family in Duty Stn)</h4>
                 </div>
                 <div class="profile-data-container">
                   <div class="children-section">
@@ -2150,7 +2181,7 @@
                       <div class="form-group">
                         <label class="data-label">Dependent Age</label>
                         <div class="data-display">
-                          <span class="data-value"></span>
+                          <span class="data-value">Not Applicable</span>
                         </div>
                       </div>
                     </div>
@@ -2194,7 +2225,7 @@
                       <div class="form-group">
                         <label class="data-label">Dependent Age</label>
                         <div class="data-display">
-                          <span class="data-value"></span>
+                          <span class="data-value">Not Applicable</span>
                         </div>
                       </div>
                     </div>
@@ -2237,21 +2268,8 @@
                       <div class="data-display">
                         <span class="data-value">AF-0001</span>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="data-label">Caste/System</label>
-                      <div class="data-display">
-                        <span class="data-value">General</span>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="data-label">Religion</label>
-                      <div class="data-display">
-                        <span class="data-value">Hinduism</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-row">
+                    </div>            
+               
                     <div class="form-group">
                       <label class="data-label">Status</label>
                       <div class="data-display">
@@ -2272,7 +2290,7 @@
                         <span class="data-value"
                           >Family profile is complete and up to date. All
                           required documents have been submitted and verified.
-                          Family is actively participating in AWWA activities
+                          Family is actively participating in FWO activities
                           and welfare programs.</span
                         >
                       </div>
@@ -2287,7 +2305,7 @@
               <div class="profile-section-card">
                 <div class="profile-section-header">
                   <i class="fas fa-hand-holding-heart"></i>
-                  <h4>Welfare & Support Programs</h4>
+                  <h4>FWO Welfare & Support Programs</h4>
                 </div>
                 <div class="profile-data-container">
                   <div class="form-row">
@@ -2298,7 +2316,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="data-label">Expertise Area</label>
+                      <label class="data-label">Area of Expertise </label>
                       <div class="data-display">
                         <span class="data-value">Not Applicable</span>
                       </div>
@@ -2308,15 +2326,15 @@
                         >Badi Didi / Perform Duty Status</label
                       >
                       <div class="data-display">
-                        <span class="data-value">Not Active</span>
+                        <span class="data-value"> Active</span>
                       </div>
                     </div>
                   </div>
                   <div class="form-row">
                     <div class="form-group">
-                      <label class="data-label">Block Didi (IC)</label>
+                      <label class="data-label">Block Didi (I/C)</label>
                       <div class="data-display">
-                        <span class="data-value">Mrs. Sharma - B-07</span>
+                        <span class="data-value">Mrs. Sharma</span>
                       </div>
                     </div>
                     <div class="form-group">
@@ -2379,19 +2397,20 @@
               <!-- Courses Header -->
               <div class="profile-header-main">
                 <div class="profile-info">
-                  <h3 class="text-brand-darker">My Courses</h3>
-                  <p class="text-text-medium">
-                    Track your learning progress and access course materials
+                  <h3 class="text-brand-darker ">
+                     <span class="text-[orange] font-bold text-large">Digital Shiksha :</span>
+                    <span class="text-[27px]">सशक्त नारी, शिक्षित परिवार, डिजिटल शिक्षा खोले हर द्वार !</span>
+                  </h3>
+                  <p class="text-[27px]">
+                    Track progress of your Digital Shiksha and access new course materials.
                   </p>
-                  <span class="profile-role-detail"
-                    >AWWA Learning Platform</span
-                  >
+                
                 </div>
                 <div class="profile-status">
                   <span class="status-badge active">Learning Active</span>
                 </div>
               </div>
-
+             <div class="videos-flex-container">
                <!-- Course Video Content -->
                <div class="course-video-container">
                  <div class="course-video-header">
@@ -2446,6 +2465,8 @@
                   </div>
                 </div>
               </div>
+
+            </div>
             </div>
           </div>
         </div>
@@ -2787,7 +2808,7 @@
           }
         });
 
-        switchSection("section-home");
+        switchSection("section-profile");
       });
 
       // ===========================================
