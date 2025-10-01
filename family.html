@@ -1406,10 +1406,10 @@
                 <i class="fas fa-bars"></i>
             </button>
             
-            <div class="app-brand">
-                <img src="public/Untitled design (27).png" alt="AWWA Logo" class="app-logo" />
+            <div class="app-brand ">
+                <img src="public/Awwa.png" alt="AWWA Logo" class="app-logo h-[45px] w-[100px] " />
                 <div class="app-title-wrap">
-                    <h1 class="app-title">
+                    <h1 class="app-title text-[27x]">
                       <span>Ranbankura Eagles FWO : </span>
                     <span class="text-[orange]"> Centralised Information Hub</span>
                   </h1>
@@ -2414,8 +2414,8 @@
                <!-- Course Video Content -->
                <div class="course-video-container">
                  <div class="course-video-header">
-                   <h4><i class="fas fa-play-circle"></i> Course Video</h4>
-                   <p>Too-Hot-Too-Cold-and-Totally-Confused - Hindi Presentation</p>
+                   <h4><i class="fas fa-play-circle"></i> Sample Course Video - Hindi</h4>
+                   
                  </div>
                  <div class="video-wrapper">
                    <iframe 
@@ -2444,8 +2444,7 @@
 
                <div class="course-video-container">
                 <div class="course-video-header">
-                  <h4><i class="fas fa-play-circle"></i> Course Video</h4>
-                  <p>Too-Hot-Too-Cold-and-Totally-Confused - English Presentation</p>
+                  <h4><i class="fas fa-play-circle"></i>Sample Course Video - English</h4>
                 </div>
                 <div class="video-wrapper">
                   <iframe src="https://player.vimeo.com/video/1123144476?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
@@ -2700,6 +2699,40 @@
             container.removeChild(toast);
           }, 500);
         }, duration);
+      }
+
+      // ===========================================
+      // ABOUT DEEP POPUP FUNCTIONS
+      // ===========================================
+      // Functions to handle the About Deep popup display and interaction.
+
+      function openAboutDeepPopup() {
+        const popup = document.getElementById("aboutDeepPopup");
+        if (!popup) {
+          console.error("About Deep popup element not found!");
+          return;
+        }
+
+        popup.classList.remove("hidden");
+        setTimeout(() => {
+          popup.classList.add("open");
+        }, 10);
+
+        // Prevent body scroll when popup is open
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeAboutDeepPopup() {
+        const popup = document.getElementById("aboutDeepPopup");
+        if (!popup) return;
+
+        popup.classList.remove("open");
+        setTimeout(() => {
+          popup.classList.add("hidden");
+        }, 300);
+
+        // Restore body scroll
+        document.body.style.overflow = "auto";
       }
 
       // ===========================================
