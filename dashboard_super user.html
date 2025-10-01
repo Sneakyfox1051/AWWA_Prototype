@@ -67,7 +67,7 @@
           data-name="did-agent"
           data-monitor="true"
           data-orientation="horizontal"
-          data-position="right"
+          data-position="left"
           data-allow-microphone="true"
           data-require-https="true">
     </script>
@@ -137,7 +137,8 @@
         }
 
         .children-charts-grid .enhanced-chart-card:nth-child(4),
-        .children-charts-grid .enhanced-chart-card:nth-child(5) {
+        .children-charts-grid .enhanced-chart-card:nth-child(5),
+        .children-charts-grid .enhanced-chart-card:nth-child(6) {
             grid-column: span 1;
         }
 
@@ -383,6 +384,15 @@
             
             .app-title {
                 font-size: 16px;
+                color: #1F2937;
+            }
+            
+            .title-orange {
+                color: #ff8c00 !important;
+            }
+            
+            .app-title .title-orange {
+                color: #ff8c00 !important;
             }
             
             .logout-btn {
@@ -1133,6 +1143,14 @@
             font-weight: 600;
             color: #1F2937;
         }
+        
+        .title-orange {
+            color: #ff8c00 !important;
+        }
+        
+        .app-title .title-orange {
+            color: #ff8c00 !important;
+        }
 
         .logout-btn {
             margin-left: auto;
@@ -1193,6 +1211,15 @@
             /* Extra Small Mobile */
             .app-title {
                 font-size: 14px;
+                color: #1F2937;
+            }
+            
+            .title-orange {
+                color: #ff8c00 !important;
+            }
+            
+            .app-title .title-orange {
+                color: #ff8c00 !important;
             }
             
             .welcome-title {
@@ -1238,6 +1265,298 @@
             }
             .profile-side-card{
                 display:none;
+            }
+        }
+
+        /* About Section Styling */
+        .about-section {
+            padding: 24px;
+        }
+        
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+        
+        .about-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        
+        .about-header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #f3f4f6;
+        }
+        
+        .about-header h3 {
+            color: #1f2937;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .about-header h3 i {
+            color: #ff8c00;
+            margin-right: 12px;
+        }
+        
+        .about-subtitle {
+            color: #6b7280;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .about-description {
+            margin-bottom: 32px;
+        }
+        
+        .about-description p {
+            color: #374151;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .about-features {
+            margin-bottom: 32px;
+        }
+        
+        .about-features h4 {
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .about-features h4 i {
+            color: #ff8c00;
+            margin-right: 8px;
+        }
+        
+        .about-features ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 12px;
+        }
+        
+        .about-features li {
+            color: #374151;
+            font-size: 15px;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border-left: 4px solid #ff8c00;
+        }
+        
+        .about-features li i {
+            color: #ff8c00;
+            margin-right: 8px;
+            width: 16px;
+        }
+        
+        .about-stats {
+            margin-bottom: 32px;
+        }
+        
+        .about-stats h4 {
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .about-stats h4 i {
+            color: #ff8c00;
+            margin-right: 8px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff8c00, #ff9500);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        
+        .about-contact {
+            text-align: center;
+        }
+        
+        .about-contact h4 {
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .about-contact h4 i {
+            color: #ff8c00;
+            margin-right: 8px;
+        }
+        
+        .contact-details p {
+            color: #374151;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .contact-details strong {
+            color: #1f2937;
+        }
+        
+        /* Brochure Section Styling */
+        .about-brochure {
+            margin-top: 32px;
+            text-align: center;
+        }
+        
+        .about-brochure h4 {
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .about-brochure h4 i {
+            color: #ff8c00;
+            margin-right: 8px;
+        }
+        
+        .brochure-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .brochure-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .brochure-images {
+            display: flex;
+            width: 400px;
+            height: 280px;
+        }
+        
+        .brochure-image {
+            width: 50%;
+            height: 100%;
+            object-fit: cover;
+            border: 2px solid #fff;
+        }
+        
+        .brochure-left {
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        .brochure-right {
+            border-left: 1px solid #e5e7eb;
+        }
+        
+        .brochure-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .brochure-container:hover .brochure-overlay {
+            opacity: 1;
+        }
+        
+        .brochure-overlay i {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .brochure-overlay span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        /* Brochure Modal Styling */
+        .brochure-modal {
+            max-width: 90vw;
+            max-height: 90vh;
+            width: auto;
+        }
+        
+        .brochure-modal-content {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+        
+        .brochure-modal-image {
+            max-width: 45%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @media (max-width: 768px) {
+            .brochure-images {
+                width: 300px;
+                height: 210px;
+            }
+            
+            .brochure-modal-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .brochure-modal-image {
+                max-width: 90%;
+                max-height: 40vh;
             }
         }
 
@@ -1366,34 +1685,6 @@
             border: 2px dashed #e2e8f0;
         }
         
-        /* Send Newsletter Button Styles */
-        #sendNewsletterBtn {
-            background: linear-gradient(135deg, #ff8c00, #ff9500);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-right: 12px;
-        }
-        
-        #sendNewsletterBtn:hover {
-            background: linear-gradient(135deg, #e67e00, #ff8c00);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
-        }
-        
-        #sendNewsletterBtn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
         
         .families-actions {
             display: flex;
@@ -1482,7 +1773,7 @@
             font-weight: 500;
         }
 
-        /* FW COY Analytics Styles */
+        /* FW Coy Analytics Styles */
         .fw-coy-analytics {
             margin-bottom: 2rem;
         }
@@ -1531,7 +1822,7 @@
             opacity: 0.9;
         }
 
-        /* FW COY Controls */
+        /* FW Coy Controls */
         .fw-coy-controls {
             background: #f8f9fa;
             border-radius: 12px;
@@ -1786,7 +2077,7 @@
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            /* FW COY Analytics Summary */
+            /* FW Coy Analytics Summary */
             .analytics-summary {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 0.75rem;
@@ -1812,7 +2103,7 @@
                 font-size: 0.8rem;
             }
 
-            /* FW COY Controls */
+            /* FW Coy Controls */
             .fw-coy-controls {
                 padding: 1rem;
                 margin-bottom: 1.5rem;
@@ -2280,43 +2571,6 @@
             letter-spacing: 0.5px;
         }
         
-        .newsletter-action-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 16px;
-        }
-        
-        .newsletter-send-btn {
-            background: linear-gradient(135deg, #ff8c00, #ff9500);
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(255, 140, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .newsletter-send-btn:hover {
-            background: linear-gradient(135deg, #e67e00, #ff8c00);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(255, 140, 0, 0.4);
-        }
-        
-        .newsletter-send-btn:active {
-            transform: translateY(-1px);
-        }
-        
-        .newsletter-send-btn i {
-            font-size: 20px;
-        }
         
         @media (max-width: 768px) {
             .newsletter-bilingual-title {
@@ -2327,22 +2581,9 @@
                 font-size: 16px;
             }
             
-            .newsletter-send-btn {
-                padding: 14px 28px;
-                font-size: 16px;
-            }
         }
         
         @media (max-width: 480px) {
-            .newsletter-send-btn {
-                padding: 12px 24px;
-                font-size: 14px;
-                gap: 8px;
-            }
-            
-            .newsletter-send-btn i {
-                font-size: 16px;
-            }
         }
         
         /* Newsletter Charts Styles */
@@ -2521,15 +2762,15 @@
                 <ul>
                     <li class="mobile-nav-item active" data-target="section-dashboard" onclick="navigateToSection('section-dashboard')">
                         <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
+                        <span>Master Dashboard</span>
                     </li>
                     <li class="mobile-nav-item" data-target="section-families" onclick="navigateToSection('section-families')">
                         <i class="fas fa-notes-medical"></i>
-                        <span>Families</span>
+                        <span>All Families</span>
                     </li>
                     <li class="mobile-nav-item" data-target="section-companies" onclick="navigateToSection('section-companies')">
                         <i class="fas fa-building"></i>
-                        <span>FW COY</span>
+                        <span>624 Sub Units</span>
                     </li>
                     <li class="mobile-nav-item" data-target="section-Newsletter" onclick="navigateToSection('section-Newsletter')">
                         <i class="fas fa-calendar"></i>
@@ -2539,10 +2780,10 @@
                         <i class="fas fa-chart-bar"></i>
                         <span>Admin Users</span>
                     </li>
-                    <li class="mobile-nav-item" data-target="section-settings" onclick="navigateToSection('section-settings')">
-                        <i class="fas fa-gear"></i>
-                        <span>Settings</span>
-                    </li>
+        <!-- <li class="mobile-nav-item" data-target="section-about" onclick="navigateToSection('section-about')">
+            <i class="fas fa-info-circle"></i>
+            <span>About</span>
+        </li> -->
                 </ul>
         </div>
     </div>
@@ -2565,11 +2806,12 @@
             
             <nav class="lp-nav" id="lpNav">
                 <ul>
-                    <li class="active" data-target="section-dashboard"><i class="fas fa-home"></i><span>Dashboard</span></li>
-                    <li data-target="section-families"><i class="fas fa-notes-medical"></i><span>Families</span></li>
-                    <li data-target="section-companies"><i class="fas fa-building"></i><span>FW COY</span></li>
+                    <li class="active" data-target="section-dashboard"><i class="fas fa-home"></i><span>Master Dashboard</span></li>
+                    <li data-target="section-families"><i class="fas fa-notes-medical"></i><span>All Families</span></li>
+                    <li data-target="section-companies"><i class="fas fa-building"></i><span>624 Sub Units</span></li>
                     <li data-target="section-Newsletter"><i class="fas fa-calendar"></i><span>Newsletter</span></li>
                     <li data-target="section-Rankings"><i class="fas fa-chart-bar"></i><span>Admin Users</span></li>
+                    <!-- <li data-target="section-about"><i class="fas fa-info-circle"></i><span>About</span></li> -->
                 </ul>
             </nav>
             
@@ -2653,7 +2895,7 @@
                     <div class="stat-mini-card">
                         <div class="mini-icon"><i class="fas fa-calculator"></i></div>
                         <div class="mini-content">
-                            <div class="mini-value" id="avgChildrenVal">1</div>
+                            <div class="mini-value" id="avgChildrenVal">3</div>
                             <small>Special Child</small>
                     </div>
                 </div>
@@ -2704,12 +2946,10 @@
                     CURRENT STATUS: Development/Testing Only
                     -->
                     <div class="stat-mini-card">
-                        <div class="mini-icon"><i class="fas fa-sync-alt"></i></div>
+                        <div class="mini-icon"><i class="fas fa-heart"></i></div>
                         <div class="mini-content">
-                            <button id="refreshDataBtn" class="refresh-btn" onclick="refreshDashboard()">
-                                <i class="fas fa-sync-alt"></i> Refresh Dashboard
-                            </button>
-                            <small id="dataStatus">Static Data</small>
+                            <div class="mini-value" id="healthyFamiliesVal">239</div>
+                            <small>Healthy Families (No Medical Issues)</small>
                     </div>
                         </div>
                     <div class="stat-mini-card">
@@ -2814,10 +3054,17 @@
                     </div>
                 </div>
             
-                        <!-- Chart 11: Health Status Overview - Multi-level Donut -->
+                        <!-- Chart 11: Children Activities Participation - Bar Chart -->
                         <div class="enhanced-chart-card">
                             <div class="chart-container">
-                                <canvas id="healthOverviewChart"></canvas>
+                                <canvas id="activitiesParticipationChart"></canvas>
+                    </div>
+                </div>
+            
+                        <!-- Chart 12: Children Learning Progress - Bar Chart -->
+                        <div class="enhanced-chart-card">
+                            <div class="chart-container">
+                                <canvas id="learningProgressChart"></canvas>
                     </div>
                 </div>
                     </div>
@@ -3069,10 +3316,10 @@
             <!-- Workshop Data Section -->
     <div class="workshop-section app-section hidden" id="section-companies">
         <div class="section-header-row">
-            <h2>FW COY <span class="count" id="workshopCount">(0)</span></h2>
+            <h2>624 Sub Units <span class="count" id="workshopCount">(0)</span></h2>
         </div>
         
-        <!-- FW COY Analytics Summary -->
+        <!-- FW Coy Analytics Summary -->
         <div class="fw-coy-analytics">
             <div class="analytics-summary">
                 <div class="summary-card">
@@ -3081,7 +3328,7 @@
                     </div>
                     <div class="summary-content">
                         <div class="summary-value" id="totalUnits">0</div>
-                        <div class="summary-label">Total FW COY Units</div>
+                        <div class="summary-label">Total 624 Sub Units</div>
                     </div>
                 </div>
                 <div class="summary-card">
@@ -3114,7 +3361,7 @@
             </div>
         </div>
 
-        <!-- FW COY Filters and Controls -->
+        <!-- FW Coy Filters and Controls -->
         <div class="fw-coy-controls">
             <div class="filter-section">
                 <div class="filter-group">
@@ -3166,12 +3413,15 @@
         <div class="newsletter-title-section">
             <h1 class="newsletter-bilingual-title">Sainika Shakti Utthaan Patrika | सैनिका शक्ति उत्थान पत्रिका</h1>
             <h2 class="newsletter-description">A Monthly Newsletter of FWO Ranbankura Eagles</h2>
+<<<<<<< HEAD
+=======
             <div class="newsletter-action-buttons">
                 <!-- <button class="newsletter-send-btn" id="newsletterSendBtn" onclick="sendNewsletter()">
                     <i class="fas fa-paper-plane"></i>
                     <span>Send Newsletter</span>
                 </button> -->
         </div>
+>>>>>>> a7b02dd5264c54519926495905e60dbafd627f0c
         </div>
         <!-- Newsletter Analytics -->
         <div class="newsletter-analytics">
@@ -3430,6 +3680,53 @@
             </div>
         </div>
     </div>
+
+            <!-- About Section - DISABLED -->
+    <!--
+    <div class="about-section app-section hidden" id="section-about">
+        <div class="section-header-row">
+            <h2>About</h2>
+        </div>
+        
+        <div class="about-content">
+            <div class="about-card">
+                <div class="about-brochure">
+                    <h4><i class="fas fa-file-pdf"></i> Organization Brochure</h4>
+                    <div class="brochure-container" onclick="openBrochureModal()">
+                        <div class="brochure-images">
+                            <img src="https://via.placeholder.com/400x280/ff8c00/ffffff?text=Brochure+Page+1" alt="Brochure Page 1" class="brochure-image brochure-left" />
+                            <img src="https://via.placeholder.com/400x280/ff9500/ffffff?text=Brochure+Page+2" alt="Brochure Page 2" class="brochure-image brochure-right" />
+                        </div>
+                        <div class="brochure-overlay">
+                            <i class="fas fa-expand"></i>
+                            <span>Click to view full brochure</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay hidden" id="brochureModal">
+        <div class="modal-container brochure-modal">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>Ranbankura Eagles FWO - Organization Brochure</h3>
+                </div>
+                <button class="modal-close-btn" onclick="closeBrochureModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="brochure-modal-content">
+                    <img src="https://via.placeholder.com/600x800/ff8c00/ffffff?text=Brochure+Page+1" alt="Brochure Page 1" class="brochure-modal-image" />
+                    <img src="https://via.placeholder.com/600x800/ff9500/ffffff?text=Brochure+Page+2" alt="Brochure Page 2" class="brochure-modal-image" />
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
 
         </div>
     </div>
@@ -3794,7 +4091,7 @@
                     'Child 1 Class': 'BSC 2nd',
                     'Disease': '-',
                     'Type of Accommodation': 'P4/10 Old Umrao',
-                    'Special Child': 'No',
+                    'Special Child': 'Yes',
                     'IVF Case': 'No',
                     'Dependent 1 Name': '',
                     'Dependent 2 Name': ''
@@ -3820,7 +4117,7 @@
                     'Child 2 Class': '6th',
                     'Disease': '-',
                     'Type of Accommodation': 'P-395/03, Karam Singh Enclave',
-                    'Special Child': 'No',
+                    'Special Child': 'Yes',
                     'IVF Case': 'No',
                     'Dependent 1 Name': '',
                     'Dependent 2 Name': ''
@@ -3843,7 +4140,7 @@
                     'Child 1 Class': '-',
                     'Disease': '-',
                     'Type of Accommodation': '15/03, Bana Singh Enclave',
-                    'Special Child': 'No',
+                    'Special Child': 'Yes',
                     'IVF Case': 'No',
                     'Dependent 1 Name': '',
                     'Dependent 2 Name': ''
@@ -3946,14 +4243,16 @@ async function initChartsOnce() {
     return;
   }
   
+  console.log('Initializing dashboard charts...');
+  
             // Color palettes for different chart types
             const colorPalettes = {
-                medical: ['#10B981', '#F59E0B', '#EF4444'],
-                education: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6'],
-                gender: ['#3B82F6', '#EC4899', '#6B7280'],
-                workshop: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444', '#84CC16'],
-                age: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
-                health: ['#10B981', '#EF4444']
+                medical: ['#ff8c00', '#ff9500', '#ffa500'],
+                education: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00'],
+                gender: ['#ff8c00', '#ffa500', '#ffb347'],
+                workshop: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00', '#ff6b35', '#ff8c42'],
+                age: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
+                health: ['#ff8c00', '#ff6b35']
             };
 
             // Chart 1: Family Medical Status - Doughnut Chart
@@ -3963,11 +4262,11 @@ async function initChartsOnce() {
                     labels: ['No Issues', 'Has Issues', 'Other'],
       datasets: [{
                         data: [239, 30, 2],
-                        backgroundColor: colorPalettes.medical,
-                        borderWidth: 2,
+                        backgroundColor: ['#8B4513', '#D2691E', '#CD853F'],
+                        borderWidth: 3,
                         borderColor: '#ffffff',
                         hoverOffset: 25,
-                        hoverBackgroundColor: ['#059669', '#D97706', '#DC2626']
+                        hoverBackgroundColor: ['#A0522D', '#B8860B', '#DEB887']
       }]
     },
     options: {
@@ -4102,7 +4401,7 @@ async function initChartsOnce() {
                     labels: ['No Discord', 'Discord Present'],
       datasets: [{
                         data: [250, 24],
-                        backgroundColor: ['#10B981', '#EF4444'],
+                        backgroundColor: ['#ff8c00', '#ff6b35'],
                         borderWidth: 0,
                         hoverOffset: 20
       }]
@@ -4167,7 +4466,7 @@ async function initChartsOnce() {
                     labels: ['Not Involved', 'Involved'],
       datasets: [{
                         data: [269, 5],
-                        backgroundColor: ['#6B7280', '#10B981'],
+                        backgroundColor: ['#ffb347', '#ff8c00'],
                         borderWidth: 0,
                         hoverOffset: 20
       }]
@@ -4199,7 +4498,7 @@ async function initChartsOnce() {
                     labels: ['1 Child', '2 Children', '3 Children', '4+ Children'],
       datasets: [{
                         data: [45, 78, 32, 15],
-                        backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
+                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
       }]
@@ -4230,7 +4529,7 @@ async function initChartsOnce() {
                     labels: ['Male', 'Female'],
       datasets: [{
                         data: [33, 14],
-                        backgroundColor: ['#3B82F6', '#EC4899'],
+                        backgroundColor: ['#ff8c00', '#ffa500'],
                         borderWidth: 3,
                         borderColor: '#FFFFFF',
                         hoverOffset: 20
@@ -4262,7 +4561,7 @@ async function initChartsOnce() {
                     labels: ['0-6 years', '6-12 years', '12-18 years', '18-24 years'],
       datasets: [{
                         data: [45, 78, 52, 8],
-                        backgroundColor: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'],
+                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
       }]
@@ -4294,7 +4593,7 @@ async function initChartsOnce() {
       datasets: [{
                         label: 'Number of Students',
                         data: [15, 8, 12, 6, 4, 25],
-                        backgroundColor: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#EF4444'],
+                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00', '#ff6b35'],
                         borderRadius: 8,
                         borderSkipped: false
       }]
@@ -4332,10 +4631,12 @@ async function initChartsOnce() {
     data: {
                     labels: ['No Special Needs', 'Special Needs'],
       datasets: [{
-                        data: [271, 1],
-                        backgroundColor: colorPalettes.health,
-                        borderWidth: 0,
-                        hoverOffset: 20
+                        data: [269, 3],
+                        backgroundColor: ['#8B4513', '#D2691E'],
+                        borderWidth: 3,
+                        borderColor: '#ffffff',
+                        hoverOffset: 25,
+                        hoverBackgroundColor: ['#A0522D', '#B8860B']
                     }]
                 },
                 options: {
@@ -4358,39 +4659,92 @@ async function initChartsOnce() {
                 }
             });
 
-            // Chart 11: Health Status Overview - Multi-level Donut
-            new Chart(document.getElementById('healthOverviewChart'), {
-                type: 'doughnut',
-        data: {
-                    labels: ['Healthy Families', 'Families with Medical Issues', 'Children with Special Needs'],
-          datasets: [{
-                        data: [239, 30, 1],
-                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
-                        borderWidth: 0,
-                        hoverOffset: 20
-          }]
-        },
-        options: { 
-        responsive: true, 
-        maintainAspectRatio: false, 
-        plugins: { 
-              title: {
-                display: true,
-                            text: 'Overall Health Status',
+            // Chart 11: Children Activities Participation - Bar Chart
+            new Chart(document.getElementById('activitiesParticipationChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Sports', 'Arts & Crafts', 'Music', 'Dance', 'Reading', 'Games'],
+                    datasets: [{
+                        data: [85, 72, 58, 91, 67, 78],
+                        backgroundColor: ['#8B4513', '#D2691E', '#CD853F', '#A0522D', '#B8860B', '#DEB887'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        borderRadius: 8,
+                        hoverBackgroundColor: ['#A0522D', '#B8860B', '#DEB887', '#8B4513', '#D2691E', '#CD853F']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Children Activities Participation',
                             font: { size: 18, weight: 'bold' },
                             color: '#1F2937'
                         },
                         legend: {
-                            position: 'bottom',
-                            labels: { font: { size: 12 } }
+                            display: false
                         }
                     },
-                    cutout: '50%',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { display: false },
+                            ticks: { stepSize: 10 }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    animation: { duration: 2000 }
+                }
+            });
+
+            // Chart 12: Children Learning Progress - Bar Chart
+            new Chart(document.getElementById('learningProgressChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Excellent', 'Good', 'Average', 'Needs Improvement', 'Below Average'],
+                    datasets: [{
+                        data: [45, 78, 92, 34, 12],
+                        backgroundColor: ['#8B4513', '#D2691E', '#CD853F', '#A0522D', '#B8860B'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        borderRadius: 8,
+                        hoverBackgroundColor: ['#A0522D', '#B8860B', '#DEB887', '#8B4513', '#D2691E']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Children Learning Progress',
+                            font: { size: 18, weight: 'bold' },
+                            color: '#1F2937'
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { display: false },
+                            ticks: { stepSize: 10 }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
                     animation: { duration: 2000 }
                 }
             });
 
             window.__chartsReady = true;
+            console.log('Dashboard charts initialized successfully!');
         }
 
         // Navigation functionality
@@ -5345,6 +5699,48 @@ async function initChartsOnce() {
             }
         }
         
+        // DISABLED - About section functions
+        /*
+        // Open Brochure Modal
+        function openBrochureModal() {
+            const modal = document.getElementById('brochureModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+        }
+        
+        // Close Brochure Modal
+        function closeBrochureModal() {
+            const modal = document.getElementById('brochureModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore scrolling
+            }
+        }
+        */
+        
+        // Helper function to check if a value should be displayed
+        function shouldDisplayValue(value) {
+            if (!value || value === 'N/A' || value === 'NA' || value === 'undefined' || value === 'null' || value === '' || value === '-') {
+                return false;
+            }
+            return true;
+        }
+
+        // Helper function to create detail row only if value should be displayed
+        function createDetailRow(label, value, icon = '') {
+            if (!shouldDisplayValue(value)) {
+                return '';
+            }
+            return `
+                <div class="detail-row">
+                    <span class="detail-label">${label}</span>
+                    <span class="detail-value">${value}</span>
+                </div>
+            `;
+        }
+
         // Populate Family Detail Content
         function populateFamilyDetailContent(family) {
             console.log("Family DATA:",family);
@@ -5358,98 +5754,35 @@ async function initChartsOnce() {
                     <div class="family-photo">
                         <i class="fas fa-user-circle"></i>
                     </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Name</span>
-                        <span class="detail-value ">${family.name  || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">WKSP</span>
-                        <span class="detail-value">${family.workshop || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Date of Birth</span>
-                        <span class="detail-value">${family.joined || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Blood Group</span>
-                        <span class="detail-value">${family.bloodGroup || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Religion</span>
-                        <span class="detail-value">${family.religion || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Education</span>
-                        <span class="detail-value">${family.education || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Languages</span>
-                        <span class="detail-value">${family.languages || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Can Drive</span>
-                        <span class="detail-value">${family.canDrive || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Owns Vehicle</span>
-                        <span class="detail-value">${family.ownsVehicle || 'Not Available'}</span>
-                    </div>
+                    ${createDetailRow('Name', family.name)}
+                    ${createDetailRow('WKSP', family.workshop)}
+                    ${createDetailRow('Date of Birth', family.joined)}
+                    ${createDetailRow('Blood Group', family.bloodGroup)}
+                    ${createDetailRow('Religion', family.religion)}
+                    ${createDetailRow('Education', family.education)}
+                    ${createDetailRow('Languages', family.languages)}
+                    ${createDetailRow('Can Drive', family.canDrive)}
+                    ${createDetailRow('Owns Vehicle', family.ownsVehicle)}
                 </div>
                 
                 <div class="family-detail-section">
                     <h4><i class="fas fa-heart"></i> Family Details</h4>
-                    <div class="detail-row">
-                        <span class="detail-label">Husband Name</span>
-                        <span class="detail-value">${family.husband || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Husband Rank</span>
-                        <span class="detail-value">${family.husbandRank || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Unit</span>
-                        <span class="detail-value">${family.unit || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Sub Unit</span>
-                        <span class="detail-value">${family.subUnit || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Posting Station</span>
-                        <span class="detail-value">${family.postingStation || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Date of Posting</span>
-                        <span class="detail-value">${family.dateOfPosting || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Date of Joining</span>
-                        <span class="detail-value">${family.joined || 'Not Available'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Years in Marriage</span>
-                        <span class="detail-value">${family.children || 'Not Available'}</span>
-                    </div>
+                    ${createDetailRow('Husband Name', family.husband)}
+                    ${createDetailRow('Husband Rank', family.husbandRank)}
+                    ${createDetailRow('Unit', family.unit)}
+                    ${createDetailRow('Sub Unit', family.subUnit)}
+                    ${createDetailRow('Posting Station', family.postingStation)}
+                    ${createDetailRow('Date of Posting', family.dateOfPosting)}
+                    ${createDetailRow('Date of Joining', family.joined)}
+                    ${createDetailRow('Years in Marriage', family.children)}
                 </div>
                 
                 <div class="family-detail-section">
                     <h4><i class="fas fa-home"></i> Accommodation</h4>
-                    <div class="detail-row">
-                        <span class="detail-label">Quarter Number</span>
-                        <span class="detail-value">${family.quarterNumber || 'N/A'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Colony Name</span>
-                        <span class="detail-value">${family.colonyName || 'N/A'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Accommodation Type</span>
-                        <span class="detail-value">${family.accommodationType || 'N/A'}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="detail-label">Address</span>
-                        <span class="detail-value">${family.accommodationAddress || 'N/A'}</span>
-                    </div>
+                    ${createDetailRow('Quarter Number', family.quarterNumber)}
+                    ${createDetailRow('Colony Name', family.colonyName)}
+                    ${createDetailRow('Accommodation Type', family.accommodationType)}
+                    ${createDetailRow('Address', family.accommodationAddress)}
                 </div>
                 
                 <div class="family-detail-section">
@@ -5492,53 +5825,75 @@ async function initChartsOnce() {
                 <div class="family-detail-section">
                     <h4><i class="fas fa-phone"></i> Contact Information</h4>
                     <div class="contact-info">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <span>${family.contact || 'N/A'}</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <span>${family.email || 'N/A'}</span>
-                        </div>
+                        ${shouldDisplayValue(family.contact) ? `
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>${family.contact}</span>
+                            </div>
+                        ` : ''}
+                        ${shouldDisplayValue(family.email) ? `
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>${family.email}</span>
+                            </div>
+                        ` : ''}
                     </div>
                 </div>
                 
                 <div class="family-detail-section">
                     <h4><i class="fas fa-chart-bar"></i> Family Statistics</h4>
                     <div class="family-stats">
-                        <div class="stat-card">
-                            <div class="stat-number">${family.workshop || 'N/A'}</div>
-                            <div class="stat-label">Workshop</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">${family.education}</div>
-                            <div class="stat-label">Education Level</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">${family.canDrive }</div>
-                            <div class="stat-label">Can Drive</div>
-                        </div>
+                        ${shouldDisplayValue(family.workshop) ? `
+                            <div class="stat-card">
+                                <div class="stat-number">${family.workshop}</div>
+                                <div class="stat-label">Workshop</div>
+                            </div>
+                        ` : ''}
+                        ${shouldDisplayValue(family.education) ? `
+                            <div class="stat-card">
+                                <div class="stat-number">${family.education}</div>
+                                <div class="stat-label">Education Level</div>
+                            </div>
+                        ` : ''}
+                        ${shouldDisplayValue(family.canDrive) ? `
+                            <div class="stat-card">
+                                <div class="stat-number">${family.canDrive}</div>
+                                <div class="stat-label">Can Drive</div>
+                            </div>
+                        ` : ''}
                     </div>
                 </div>
             `;
         }
         
-        // Add event listeners for family detail modal
+        // Add event listeners for family detail modal and brochure modal
         document.addEventListener('DOMContentLoaded', function() {
             // Close modal when clicking outside
             document.addEventListener('click', function(event) {
-                const modal = document.getElementById('familyDetailModal');
-                if (modal && !modal.classList.contains('hidden')) {
-                    if (event.target === modal) {
+                const familyModal = document.getElementById('familyDetailModal');
+                const brochureModal = document.getElementById('brochureModal');
+                
+                if (familyModal && !familyModal.classList.contains('hidden')) {
+                    if (event.target === familyModal) {
                         closeFamilyDetailModal();
                     }
                 }
+                
+                // DISABLED - About section modal
+                /*
+                if (brochureModal && !brochureModal.classList.contains('hidden')) {
+                    if (event.target === brochureModal) {
+                        closeBrochureModal();
+                    }
+                }
+                */
             });
             
             // Close modal with Escape key
             document.addEventListener('keydown', function(event) {
                 if (event.key === 'Escape') {
                     closeFamilyDetailModal();
+                    // closeBrochureModal(); // DISABLED - About section
                 }
             });
         });
@@ -5575,7 +5930,7 @@ async function initChartsOnce() {
         }
 
         // Load WKSP data
-        // Global variables for FW COY functionality
+        // Global variables for FW Coy functionality
         let currentFilter = 'all';
         let currentSort = 'count-desc';
         let fwCoyData = [];
@@ -5589,7 +5944,7 @@ async function initChartsOnce() {
             fwCoyData = getWKSPStatistics();
             
             if (fwCoyData.length === 0) {
-                workshopGrid.innerHTML = '<div class="no-data">No FW COY data available</div>';
+                workshopGrid.innerHTML = '<div class="no-data">No FW Coy data available</div>';
                 if (workshopCount) workshopCount.textContent = '(0)';
                 updateAnalyticsSummary([]);
                 return;
@@ -5678,7 +6033,7 @@ async function initChartsOnce() {
                     </div>
                             <div class="workshop-info">
                                 <h3>${wksp.name}</h3>
-                                <p>FW COY Unit - ${unitType}</p>
+                                <p>624 Sub Unit - ${unitType}</p>
                     </div>
                 </div>
                         <div class="workshop-stats">
@@ -5763,24 +6118,12 @@ async function initChartsOnce() {
             }
         }
         
-        // Get WKSP statistics from families data
+        // Get WKSP statistics from families data - Google Sheets only
         function getWKSPStatistics() {
-            // Sample WKSP data as fallback
-            const sampleData = [
-                { name: "256 FWC", count: 45 },
-                { name: "286 FWC", count: 38 },
-                { name: "288 AW", count: 42 },
-                { name: "290 FWC", count: 35 },
-                { name: "831 FWC", count: 28 },
-                { name: "832 FWC BHQ", count: 52 },
-                { name: "833 FWC", count: 31 },
-                { name: "834 FWC", count: 29 },
-                { name: "835 FWC", count: 33 },
-                { name: "836 FWC", count: 27 }
-            ];
-            
+            // Only use Google Sheets data, no sample data fallback
             if (!familiesData || familiesData.length === 0) {
-                return sampleData;
+                console.log('No families data available for FW Coy');
+                return [];
             }
             
             const wkspCounts = {};
@@ -5797,20 +6140,22 @@ async function initChartsOnce() {
                 wkspCounts[wksp] = (wkspCounts[wksp] || 0) + 1;
             });
             
-            // If we have valid WKSP data, use it; otherwise use sample data
+            // Only return data if we have valid WKSP data from Google Sheets
             if (validWkspCount > 0) {
                 const result = Object.entries(wkspCounts)
                     .map(([name, count]) => ({ name, count }))
                     .sort((a, b) => b.count - a.count); // Sort by count descending
                     
+                console.log('FW Coy data loaded from Google Sheets:', result);
                 return result;
             } else {
-                return sampleData;
+                console.log('No valid WKSP data found in Google Sheets');
+                return [];
             }
         }
         
 
-        // Initialize FW COY event listeners
+        // Initialize FW Coy event listeners
         function initFwCoyEventListeners() {
             // Filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -5865,11 +6210,11 @@ async function initChartsOnce() {
                     })
                     .catch(function(error) {
                         console.error('Microphone access denied:', error);
-                        alert('Microphone access is required for Badi Didi to work properly. Please allow microphone access and refresh the page.');
+                        console.log('Microphone access denied - Badi Didi will work without voice features');
                     });
             } else {
                 console.error('getUserMedia not supported');
-                alert('Your browser does not support microphone access. Please use a modern browser.');
+                console.log('Microphone not supported - Badi Didi will work without voice features');
             }
         }
 
@@ -5877,9 +6222,10 @@ async function initChartsOnce() {
         function checkHTTPS() {
             if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
                 console.warn('D-ID requires HTTPS for microphone access');
-                alert('For Badi Didi to work properly, this site needs to be accessed via HTTPS. Please use the HTTPS version of your Netlify URL.');
+                console.log('HTTPS recommended for full Badi Didi functionality');
             }
         }
+
 
         // Initialize navigation
 document.addEventListener('DOMContentLoaded', function() {
@@ -5902,21 +6248,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         loadFamilies();
                         }
                     } else if (target === 'section-companies') {
-                        // First try to fetch fresh data, then load workshops
-                        if (familiesData.length === 0) {
+                        // Always fetch fresh data from Google Sheets for FW Coy section
+                        console.log('Loading FW Coy section - fetching fresh data from Google Sheets');
                             fetchFamiliesFromGoogleSheets().then(() => {
                                 loadWorkshops();
                                 setTimeout(initFwCoyEventListeners, 100);
-                            });
-                        } else {
-                            loadWorkshops();
+                        }).catch((error) => {
+                            console.error('Error loading FW Coy data:', error);
+                            loadWorkshops(); // Still try to load with whatever data we have
                             setTimeout(initFwCoyEventListeners, 100);
-                        }
+                        });
                     }
                     
                     // Initialize charts when dashboard is shown
                     if (target === 'section-dashboard') {
-  setTimeout(initChartsOnce, 500);
+                        initChartsOnce();
+                        setTimeout(initChartsOnce, 500);
                     }
                     
                     // Close navigation on mobile after clicking
@@ -5944,7 +6291,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 familySearchInput.addEventListener('input', filterFamilies);
             }
             
-            // Initialize charts
+            // Initialize charts immediately and with delay
+            initChartsOnce();
             setTimeout(initChartsOnce, 1000);
             
             // Add form event listener for Add Family form
@@ -6193,95 +6541,6 @@ function logout() {
     }
 }
 
-// Send Newsletter function
-async function sendNewsletter() {
-    const sendBtn = document.getElementById('newsletterSendBtn');
-    
-    if (!sendBtn) {
-        console.error('Send newsletter button not found');
-        return;
-    }
-    
-    const originalText = sendBtn.innerHTML;
-    
-    // Show loading state
-    sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-    sendBtn.disabled = true;
-    
-    try {
-        console.log('Sending newsletter request to n8n...');
-        
-        // Make request to n8n webhook with CORS handling
-        // Try direct connection first, then fallback to CORS proxy if needed
-        let webhookUrl = 'http://localhost:5678/webhook/45786eec-2803-4a48-a03b-6dc84d3e8ef7';
-        
-        // If direct connection fails, we'll try with a CORS proxy
-        const response = await fetch(webhookUrl, {
-            method: 'POST',
-            mode: 'cors', // Explicitly set CORS mode
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-            },
-            body: JSON.stringify({
-                action: 'send_newsletter',
-                timestamp: new Date().toISOString(),
-                source: 'awwa_dashboard',
-                data: {
-                    newsletter_type: 'monthly_update',
-                    recipients: 'all_subscribers'
-                }
-            })
-        });
-        
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
-        
-        if (response.ok) {
-            const responseData = await response.text();
-            console.log('Response data:', responseData);
-            
-            // Update analytics
-            updateNewsletterAnalytics();
-            
-            // Show success state
-            sendBtn.innerHTML = '<i class="fas fa-check"></i> Sent!';
-            sendBtn.style.background = '#10B981';
-            
-            // Show success message
-            alert('Newsletter sent successfully to all subscribers via n8n!');
-        } else {
-            const errorText = await response.text();
-            console.error('HTTP Error Response:', errorText);
-            throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-        }
-    } catch (error) {
-        console.error('Error sending newsletter:', error);
-        
-        // Show error state
-        sendBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
-        sendBtn.style.background = '#EF4444';
-        
-        // Show detailed error message
-        let errorMessage = 'Failed to send newsletter. ';
-        if (error.name === 'TypeError' && error.message.includes('fetch')) {
-            errorMessage += 'CORS error - n8n server may not be running or CORS not configured.';
-        } else if (error.message.includes('Failed to fetch')) {
-            errorMessage += 'Network error - please check if n8n is running on localhost:5678';
-        } else {
-            errorMessage += `Error: ${error.message}`;
-        }
-        
-        alert(errorMessage);
-    }
-    
-    // Reset button after 3 seconds
-    setTimeout(() => {
-        sendBtn.innerHTML = originalText;
-        sendBtn.disabled = false;
-        sendBtn.style.background = '';
-    }, 3000);
-}
 
 // Update Newsletter Analytics function
 function updateNewsletterAnalytics() {
@@ -6318,6 +6577,7 @@ function updateNewsletterAnalytics() {
 
 // Initialize Newsletter Charts
 function initNewsletterCharts() {
+    console.log('Initializing newsletter charts...');
     // Chart 1: Newsletter Opens Over Time (September 2025)
     const opensCtx = document.getElementById('newsletterOpensChart');
     if (opensCtx) {
@@ -6509,6 +6769,8 @@ function initNewsletterCharts() {
             }
         });
     }
+    
+    console.log('Newsletter charts initialized successfully!');
 }
 
         // Load user info when page loads
