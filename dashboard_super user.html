@@ -4380,12 +4380,12 @@ async function initChartsOnce() {
   
             // Color palettes for different chart types
             const colorPalettes = {
-                medical: ['#ff8c00', '#ff9500', '#ffa500'],
-                education: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00'],
-                gender: ['#ff8c00', '#ffa500', '#ffb347'],
-                workshop: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00', '#ff6b35', '#ff8c42'],
-                age: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
-                health: ['#ff8c00', '#ff6b35']
+                medical: ['#8B4513', '#D2691E', '#FF8C00'],
+                education: ['#8B4513', '#A0522D', '#D2691E', '#FF8C00', '#FFA500'],
+                gender: ['#8B4513', '#D2691E', '#FF8C00'],
+                workshop: ['#8B4513', '#A0522D', '#D2691E', '#CD853F', '#FF8C00', '#FFA500', '#FFB347'],
+                age: ['#8B4513', '#A0522D', '#D2691E', '#FF8C00'],
+                health: ['#8B4513', '#FF8C00']
             };
 
             // Chart 1: Family Medical Status - Doughnut Chart
@@ -4534,7 +4534,7 @@ async function initChartsOnce() {
                     labels: ['No Discord', 'Discord Present'],
       datasets: [{
                         data: [272, 2],
-                        backgroundColor: ['#ff8c00', '#ff6b35'],
+                        backgroundColor: ['#8B4513', '#FF8C00'],
                         borderWidth: 0,
                         hoverOffset: 20
       }]
@@ -4599,7 +4599,7 @@ async function initChartsOnce() {
                     labels: ['Not Involved', 'Involved'],
       datasets: [{
                         data: [269, 5],
-                        backgroundColor: ['#ffb347', '#ff8c00'],
+                        backgroundColor: ['#8B4513', '#FF8C00'],
                         borderWidth: 0,
                         hoverOffset: 20
       }]
@@ -4631,7 +4631,7 @@ async function initChartsOnce() {
                     labels: ['1 Child', '2 Children', '3 Children', '4+ Children'],
       datasets: [{
                         data: [45, 78, 32, 15],
-                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
+                        backgroundColor: ['#8B4513', '#A0522D', '#D2691E', '#FF8C00'],
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
       }]
@@ -4662,7 +4662,7 @@ async function initChartsOnce() {
                     labels: ['Male', 'Female'],
       datasets: [{
                         data: [356, 153],
-                        backgroundColor: ['#ff8c00', '#ffa500'],
+                        backgroundColor: ['#8B4513', '#FF8C00'],
                         borderWidth: 3,
                         borderColor: '#FFFFFF',
                         hoverOffset: 20
@@ -4694,7 +4694,7 @@ async function initChartsOnce() {
                     labels: ['0-6 years', '6-12 years', '12-18 years', '18-24 years'],
       datasets: [{
                         data: [122, 216, 150, 21],
-                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
+                        backgroundColor: ['#8B4513', '#A0522D', '#D2691E', '#FF8C00'],
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
       }]
@@ -4726,7 +4726,7 @@ async function initChartsOnce() {
       datasets: [{
                         label: 'Number of Students',
                         data: [15, 8, 12, 6, 4, 25],
-                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00', '#ff6b35'],
+                        backgroundColor: ['#8B4513', '#A0522D', '#D2691E', '#CD853F', '#FF8C00', '#FFA500'],
                         borderRadius: 8,
                         borderSkipped: false
       }]
