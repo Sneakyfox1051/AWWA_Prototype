@@ -44,7 +44,7 @@
     -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AWWA - Dashboard Home</title>
+    <title>FWO - Dashboard Home</title>
     <link rel="stylesheet" href="dashboard.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -62,8 +62,8 @@
     <script type="module"
           src="https://agent.d-id.com/v2/index.js"
           data-mode="fabio"
-          data-client-key="Z29vZ2xlLW9hdXRoMnwxMDQ1ODAxOTI0NzE1ODExNjczNzI6RjhQTHZmLTVLU3A2Tng1V2JVYjFt"
-          data-agent-id="v2_agt_G23N5m1h"
+          data-client-key="Z29vZ2xlLW9hdXRoMnwxMDIxMzM0MjU3NTU1NzI4MDA3NzA6Mm5XWmh5My13TmRtcDJQU18wNFgx"
+          data-agent-id="v2_agt_U8CsBJU4"
           data-name="did-agent"
           data-monitor="true"
           data-orientation="horizontal"
@@ -4389,12 +4389,12 @@ async function initChartsOnce() {
   
             // Color palettes for different chart types
             const colorPalettes = {
-                medical: ['#ff8c00', '#ff9500', '#ffa500'],
-                education: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00'],
-                gender: ['#ff8c00', '#ffa500', '#ffb347'],
-                workshop: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00', '#ff6b35', '#ff8c42'],
-                age: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
-                health: ['#ff8c00', '#ff6b35']
+                medical: ['#8B4513', '#D2691E', '#FF8C00'],
+                education: ['#8B4513', '#A0522D', '#D2691E', '#FF8C00', '#FFA500'],
+                gender: ['#8B4513', '#D2691E', '#FF8C00'],
+                workshop: ['#8B4513', '#A0522D', '#D2691E', '#CD853F', '#FF8C00', '#FFA500', '#FFB347'],
+                age: ['#8B4513', '#A0522D', '#D2691E', '#FF8C00'],
+                health: ['#8B4513', '#FF8C00']
             };
 
             // Chart 1: Family Medical Status - Doughnut Chart
@@ -4542,8 +4542,8 @@ async function initChartsOnce() {
     data: {
                     labels: ['No Discord', 'Discord Present'],
       datasets: [{
-                        data: [250, 24],
-                        backgroundColor: ['#ff8c00', '#ff6b35'],
+                        data: [272, 2],
+                        backgroundColor: ['#8B4513', '#FF8C00'],
                         borderWidth: 0,
                         hoverOffset: 20
       }]
@@ -4608,7 +4608,7 @@ async function initChartsOnce() {
                     labels: ['Not Involved', 'Involved'],
       datasets: [{
                         data: [269, 5],
-                        backgroundColor: ['#ffb347', '#ff8c00'],
+                        backgroundColor: ['#8B4513', '#FF8C00'],
                         borderWidth: 0,
                         hoverOffset: 20
       }]
@@ -4640,7 +4640,7 @@ async function initChartsOnce() {
                     labels: ['1 Child', '2 Children', '3 Children', '4+ Children'],
       datasets: [{
                         data: [45, 78, 32, 15],
-                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
+                        backgroundColor: ['#8B4513', '#A0522D', '#D2691E', '#FF8C00'],
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
       }]
@@ -4670,8 +4670,8 @@ async function initChartsOnce() {
     data: {
                     labels: ['Male', 'Female'],
       datasets: [{
-                        data: [33, 14],
-                        backgroundColor: ['#ff8c00', '#ffa500'],
+                        data: [356, 153],
+                        backgroundColor: ['#8B4513', '#FF8C00'],
                         borderWidth: 3,
                         borderColor: '#FFFFFF',
                         hoverOffset: 20
@@ -4702,8 +4702,8 @@ async function initChartsOnce() {
     data: {
                     labels: ['0-6 years', '6-12 years', '12-18 years', '18-24 years'],
       datasets: [{
-                        data: [45, 78, 52, 8],
-                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347'],
+                        data: [122, 216, 150, 21],
+                        backgroundColor: ['#8B4513', '#A0522D', '#D2691E', '#FF8C00'],
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
       }]
@@ -4735,7 +4735,7 @@ async function initChartsOnce() {
       datasets: [{
                         label: 'Number of Students',
                         data: [15, 8, 12, 6, 4, 25],
-                        backgroundColor: ['#ff8c00', '#ff9500', '#ffa500', '#ffb347', '#ff7f00', '#ff6b35'],
+                        backgroundColor: ['#8B4513', '#A0522D', '#D2691E', '#CD853F', '#FF8C00', '#FFA500'],
                         borderRadius: 8,
                         borderSkipped: false
       }]
@@ -6204,7 +6204,7 @@ async function initChartsOnce() {
         function getUnitIcon(type) {
             switch (type) {
                 case 'FWC': return 'fas fa-building';
-                case 'AW': return 'fas fa-plane';
+                case 'AW': return 'fas fa-building';
                 case 'BHQ': return 'fas fa-flag';
                 default: return 'fas fa-building';
             }
