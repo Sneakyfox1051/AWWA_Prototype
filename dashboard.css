@@ -177,7 +177,7 @@ body {
 .app-brand { display:flex; align-items:center; gap: 10px; }
 .app-logo { height: 36px; width: auto; }
 .app-title-wrap { display:flex; flex-direction:column; }
-.app-title { font-size: 18px; font-weight: 800; color: var(--brand-darker); line-height: 1.1; }
+.app-title { font-size: 26px; font-weight: 800; color: var(--brand-darker); line-height: 1.1; }
 .app-subtitle { font-size: 12px; color:#6c7a89; font-weight: 800; margin-top: 2px; font-family: 'Ams Vedant', system-ui, -apple-system, Segoe UI; }
 
 /* Mobile Menu Toggle */
@@ -842,41 +842,180 @@ body {
 
 @media (max-width: 1024px) {
   .powerbi-grid { grid-template-columns: 1fr; }
-  .ranking-grid { grid-template-columns: 1fr; }
+  .ranking-grid { 
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+  .rank-card {
+    max-width: 450px;
+    width: 100%;
+    min-height: 400px;
+  }
 }
 
 /* Rankings */
-.ranking-section { padding: 30px; }
-.ranking-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.rank-card { background: var(--surface); border-radius: 12px; box-shadow: 0 3px 14px rgba(0,0,0,0.08); padding: 14px; display:flex; align-items:center; gap: 14px; }
-.rank-left { display:flex; align-items:center; gap: 12px; }
-.rank-badge { width: 36px; height: 36px; border-radius: 10px; background: var(--brand-primary); color:#fff; font-weight: 800; display:flex; align-items:center; justify-content:center; }
-.rank-avatar { width: 48px; height: 48px; border-radius: 12px; background: #f0f3f8; color: var(--brand-darker); font-weight: 800; display:flex; align-items:center; justify-content:center; }
+.ranking-section { 
+    padding: 30px; 
+    border-radius: 16px;
+    margin: 20px 0;
+}
+.ranking-grid { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 30px; 
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}
+.rank-card { 
+    background: var(--surface); 
+    border-radius: 20px; 
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15); 
+    padding: 32px; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
+    gap: 20px; 
+    min-width: 350px;
+    max-width: 380px;
+    min-height: 450px;
+    flex: 1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 122, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    justify-content: center;
+}
+.rank-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--brand-primary), #ff9500);
+    border-radius: 16px 16px 0 0;
+}
+.rank-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    border-color: rgba(255, 122, 0, 0.3);
+}
+.rank-left { 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    gap: 16px; 
+    width: 100%;
+}
+.rank-badge { 
+    width: 60px; 
+    height: 60px; 
+    border-radius: 50%; 
+    background: linear-gradient(135deg, var(--brand-primary), #ff9500); 
+    color: #fff; 
+    font-weight: 800; 
+    font-size: 22px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    box-shadow: 0 6px 20px rgba(255, 122, 0, 0.4);
+    position: relative;
+    z-index: 2;
+}
+.rank-avatar { 
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+    background: #f0f3f8; 
+    color: var(--brand-darker); 
+    font-weight: 800; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border: 5px solid #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
 .rank-avatar-img { 
-    width: 48px; 
-    height: 48px; 
-    border-radius: 12px; 
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
     object-fit: cover; 
-    border: 2px solid #fff; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 5px solid #fff; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     display: block;
     background: #f0f3f8;
     color: var(--brand-darker);
     font-weight: 800;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
-    line-height: 44px;
+    line-height: 90px;
 }
-.rank-info .rank-title { font-size: 12px; font-weight: 800; color:#7f8c8d; text-transform: uppercase; letter-spacing: .3px; }
-.rank-info .rank-name { font-size: 18px; font-weight: 800; color: var(--brand-darker); margin: 2px 0; }
-.rank-info .rank-role { color:#5b6b7a; font-weight: 700; font-size: 13px; }
-.rank-phone { color: var(--brand-primary); text-decoration: none; font-weight: 700; font-size: 13px; }
+.rank-info { 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.rank-info .rank-title { 
+    font-size: 14px; 
+    font-weight: 800; 
+    color: #7f8c8d; 
+    text-transform: uppercase; 
+    letter-spacing: 0.8px; 
+    margin-bottom: 6px;
+}
+.rank-info .rank-name { 
+    font-size: 24px; 
+    font-weight: 900; 
+    color: var(--brand-darker); 
+    margin: 6px 0; 
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.rank-info .rank-role { 
+    color: #5b6b7a; 
+    font-weight: 700; 
+    font-size: 16px; 
+    margin-bottom: 10px;
+    padding: 8px 16px;
+    background: rgba(255, 122, 0, 0.1);
+    border-radius: 25px;
+    display: inline-block;
+}
+.rank-info .user-id { 
+    font-size: 14px; 
+    color: #8aa0b8; 
+    font-weight: 800; 
+    margin: 6px 0;
+
+    letter-spacing: 0.8px;
+}
+.rank-info .user-type { 
+    font-size: 13px; 
+    color: var(--brand-primary); 
+    font-weight: 800; 
+    background: rgba(255, 122, 0, 0.15);
+    padding: 6px 12px;
+    border-radius: 15px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+.rank-phone { 
+    color: var(--brand-primary); 
+    text-decoration: none; 
+    font-weight: 700; 
+    font-size: 13px; 
+}
 .families-section { padding: 30px; }
 .coy-section { padding: 30px; }
 .coy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 .coy-actions { display: flex; gap: 12px; align-items: center; }
-.section-header-row { display:flex; justify-content: space-between; align-items:center; margin-bottom: 20px; }
-.section-header-row h2 { font-size: 22px; font-weight: 700; color: var(--brand-darker); }
+.section-header-row { display:flex; justify-content: center; align-items:center; margin-bottom: 30px; }
+.section-header-row h2 { font-size: 28px; font-weight: 900; color: var(--brand-darker); text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .section-header-row .count { color:#7f8c8d; font-weight:600; }
 .families-actions { display:flex; gap:10px; align-items:center; }
 .fam-search { padding:10px 12px; border:1px solid #e3e7ee; border-radius:8px; min-width:240px; }
@@ -904,7 +1043,7 @@ body {
     padding: 20px;
     margin-bottom: 24px;
 }
-.welcome-title { font-size: 28px; font-weight: 800; color: var(--brand-darker); margin-bottom: 16px; }
+.welcome-title { font-size: 20px; font-weight: 800; color: var(--brand-darker); margin-bottom: 16px; }
 
 .user-grid { display: grid; grid-template-columns: 1.5fr 1.5fr 320px; gap: 16px; }
 .panel-card { background: var(--surface); border-radius: 15px; box-shadow: 0 3px 14px rgba(0,0,0,0.08); }
@@ -2618,13 +2757,44 @@ canvas { width: 100% !important; height: 280px !important; }
     }
     
     /* Rankings Section */
+    .ranking-section {
+
+        padding: 20px;
+        margin: 16px 0;
+    }
+    
     .ranking-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 20px;
+        flex-direction: column;
+        min-height: auto;
     }
     
     .rank-card {
-        padding: 12px;
+        padding: 24px;
+        min-width: auto;
+        max-width: 100%;
+        min-height: 350px;
+    }
+    
+    .rank-avatar-img,
+    .rank-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .rank-badge {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+    
+    .rank-info .rank-name {
+        font-size: 20px;
+    }
+    
+    .rank-info .rank-role {
+        font-size: 14px;
+        padding: 6px 12px;
     }
 }
 
